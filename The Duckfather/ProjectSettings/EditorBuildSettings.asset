@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Test.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/Scenes/TEO/Lobby.unity
+    path: Assets/Scenes/TEO/Online.unity
     guid: 46cb15da231da224bae7702e3539a295
   m_configObjects: {}
