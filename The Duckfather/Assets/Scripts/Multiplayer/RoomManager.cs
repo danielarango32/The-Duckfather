@@ -14,7 +14,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        Debug.Log("Connecting......");
+        Debug.Log("Conectando...");
 
 
         PhotonNetwork.ConnectUsingSettings();
@@ -24,7 +24,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     {
         base.OnConnectedToMaster();
 
-        Debug.Log("Connected To Server");
+        Debug.Log("Conexion Existosa");
 
 
         PhotonNetwork.JoinLobby();
@@ -36,7 +36,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
         base.OnJoinedLobby();
 
 
-        Debug.Log("We are connected and in a room");
+        Debug.Log("Conectado a un lobby");
         
         PhotonNetwork.JoinOrCreateRoom("test", null, null);
 
@@ -46,7 +46,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     {
         base.OnLeftRoom();
 
-        Debug.Log("On a Room");
+        Debug.Log("Conectado a una Sala");
 
         GameObject _playerP = PhotonNetwork.Instantiate(player.name, Spawn.position, Quaternion.identity);
     }
