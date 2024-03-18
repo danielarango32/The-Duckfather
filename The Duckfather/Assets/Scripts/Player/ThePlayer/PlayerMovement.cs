@@ -31,7 +31,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundDistance = 0.4f;
     public LayerMask groundeMask;
-    [SerializeField] private bool isGrounded = false;
+    [SerializeField] public bool isGrounded = false;
+
+
+    [Header("Globalización De Variables")]
+    public float x, z;
 
 
 
@@ -48,8 +52,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
     void Movimiento()
     {
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        x = Input.GetAxis("Horizontal");
+        z = Input.GetAxis("Vertical");
 
         if (Input.GetKeyDown(KeyCode.F) && isGrounded && velocity.y < 0 && canDash)
         {

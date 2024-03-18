@@ -5,25 +5,40 @@ using UnityEngine;
 public class Bala : MonoBehaviour
 {
 
-    [Tooltip("Rigidbody de la bala; arrastrar")] public Rigidbody rb; //La bala necesita un RB, la Interpolate == Interpolate y Collision Detection == Continous
+    [Tooltip("Rigidbody de la bala; arrastrar")] //La bala necesita un RB, la Interpolate == Interpolate y Collision Detection == Continous
+    public Rigidbody rb; 
 
-    [Tooltip("GameObject del efecto de la explosion")] public GameObject explosion;    //Efecto para la explosion
-    [Tooltip("layer de los enemigos a impactar")]
-    public LayerMask whatIsEnemies; //Layer en la que estarian enemigos. Se seleccioan que va a recibir daño por parte de la bala o la explosion
+    [Tooltip("GameObject del efecto de la explosion")] //Efecto para la explosion
+    public GameObject explosion;    
 
-    [Tooltip("Daño que causara la bala")]
-    public int explosionDamage;     //Daño que causara la bala
-    [Tooltip("Rango de la explosion causada por la bala")]
-    public float explosionRange;    //Rango de la explosion
-    [Tooltip("Fuerza que aplicara la explosion sobre lo que impacte")] public float explosionForce;  //Si queremos que los patos se vean afectados por la fisica de las balos y/o explosiones podemos usar esto
+    [Tooltip("layer de los enemigos a impactar")] //Layer en la que estarian enemigos. Se seleccioan que va a recibir daño por parte de la bala o la explosion
+    public LayerMask whatIsEnemies; 
 
-    [Tooltip("Cantidad de rebotes antes de desaparecer la bala")] public int maxCollisions;           //Tiempo de vida dependiendo de los rebotes
-    [Tooltip("Tiempo de vida de la bala")] public float maxLifetime;           //Tiempo de vida en unidades de tiempo
+    [Tooltip("Daño que causara la bala")]  //Daño que causara la bala
+    public int explosionDamage;    
+    [Tooltip("Rango de la explosion causada por la bala")]  //Rango de la explosion
+    public float explosionRange;   
+    [Tooltip("Fuerza que aplicara la explosion sobre lo que impacte")] //Si queremos que los patos se vean afectados por la fisica de las balos y/o explosiones podemos usar esto
+    public float explosionForce;  
+
+    [Tooltip("Cantidad de rebotes antes de desaparecer la bala")]     //Tiempo de vida dependiendo de los rebotes
+    public int maxCollisions;      
+    
+
+    [Tooltip("Tiempo de vida de la bala")] //Tiempo de vida en unidades de tiempo
+    public float maxLifetime;
+    
+    
     public bool explodeOnTouch = true;  //Explota al colisionar con "x"
+
+
 
     [Range(0f, 1f)]             //Slide en el inspector de unity
     public float bounciness;    //Rango del rebote (para el lanzagranadas)
-    [Tooltip("Activar gravedad")] public bool useGravity;     //Activar si a la bala le afecta la gravedad(rebotes)
+
+
+    [Tooltip("Activar gravedad")] 
+    public bool useGravity;     //Activar si a la bala le afecta la gravedad(rebotes)
 
     
 

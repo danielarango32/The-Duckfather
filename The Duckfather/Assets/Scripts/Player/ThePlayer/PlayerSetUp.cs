@@ -6,7 +6,8 @@ public class PlayerSetUp : MonoBehaviour
 {
     public PlayerMovement _playerMove;
     public MouseLook _mouseLook;
-    
+    public AimManager _aimManager;
+    public AnimatorController _animatorController;
     
     [Space]
     public GameObject _camara;
@@ -18,6 +19,9 @@ public class PlayerSetUp : MonoBehaviour
         _mouseLook.enabled = true;
 
         _camara.SetActive(true);
+        _aimManager.enabled = true;
+
+        _animatorController.enabled = true;
 
     }
 }
