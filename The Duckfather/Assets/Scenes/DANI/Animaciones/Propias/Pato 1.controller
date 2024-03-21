@@ -36,7 +36,7 @@ BlendTree:
     m_DirectBlendParameter: MotionX
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 3529a687b31f6ed4996d8b03dcf946ed,
+    m_Motion: {fileID: -7383654975736643147, guid: 2799220106fa9a74ab30cec425f86780,
       type: 3}
     m_Threshold: 0.6
     m_Position: {x: 0, y: 1}
@@ -146,7 +146,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Pato
+  m_Name: Pato 1
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: MotionX
@@ -154,19 +154,19 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: MotionY
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IsJumping
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -194,7 +194,7 @@ AnimatorStateMachine:
     m_Position: {x: 320, y: 120, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2083191437162326018}
-    m_Position: {x: 320, y: 40, z: 0}
+    m_Position: {x: 320, y: 240, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
