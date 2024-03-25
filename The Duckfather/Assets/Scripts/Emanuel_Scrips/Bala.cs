@@ -88,7 +88,9 @@ public class Bala : MonoBehaviour
        
         if (collision.collider.CompareTag("Bullet")) return; //Se puede obviar esta linea si en Unity se desactiva la colison de balas con balas en los projects settings  
         collisions++;
-        if (collision.collider.CompareTag("Enemy") && explodeOnTouch) Explode();
+        if (collision.collider.CompareTag("Player") && explodeOnTouch) Explode();
+
+        
     }
 
     private void Setup() //Rebotes
