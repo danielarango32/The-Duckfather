@@ -372,6 +372,7 @@ GameObject:
   m_Component:
   - component: {fileID: 892912835}
   - component: {fileID: 892912836}
+  - component: {fileID: 892912837}
   m_Layer: 5
   m_Name: Video Player
   m_TagString: Untagged
@@ -428,10 +429,22 @@ VideoPlayer:
   m_ControlledAudioTrackCount: 0
   m_PlayOnAwake: 1
   m_SkipOnDrop: 1
-  m_Looping: 1
+  m_Looping: 0
   m_WaitForFirstFrame: 0
   m_FrameReadyEventEnabled: 0
   m_VideoShaders: []
+--- !u!114 &892912837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892912834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84c1740f88213e848b0845abe577de98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &963770969
 GameObject:
   m_ObjectHideFlags: 0
