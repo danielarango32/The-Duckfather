@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
+using TMPro;
 using UnityEngine;
 
 public class PlayerSetUp : MonoBehaviour
@@ -13,6 +15,10 @@ public class PlayerSetUp : MonoBehaviour
     [Space]
     public GameObject _camara;
     
+    public string nickName;
+    
+    public TextMeshPro nickNameText;
+    
 
     public void IsLocalPlayer()
     {
@@ -25,5 +31,13 @@ public class PlayerSetUp : MonoBehaviour
         _animatorController.enabled = true;
         _shootinController.enabled = true;
 
+    }
+    
+    [PunRPC]
+    public void SetNickName(string _name)
+    {
+        nickName = _name;
+        
+        nickNameText.text = nickName;
     }
 }
