@@ -1,35 +1,30 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
+using UnityEngine.UIElements;
+using UnityEngine.Video;
 
 public class Logo : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public GameObject logoDF;
+    public GameObject Sutdio;
+
+  
     void Start()
     {
-        StartChangeScene();
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        StartCoroutine(LogoTime());
     }
     
-    // change scene to main menu after 5 seconds
-    public void StartChangeScene()
+    IEnumerator LogoTime()
     {
-        StartCoroutine(ChangeScene());
-    }
-
-    IEnumerator ChangeScene()
-    {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(4);
+        logoDF.SetActive(true);
+        Sutdio.SetActive(false);
+        yield return new WaitForSeconds(3);
         SceneManager.LoadScene("Menu");
     }
-    
     
 }

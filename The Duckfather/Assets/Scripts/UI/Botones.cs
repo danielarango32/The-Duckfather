@@ -7,15 +7,13 @@ using TMPro;
 
 public class MenuBotones : MonoBehaviourPunCallbacks
 {
-    [SerializeField] TMP_Text ButtonText;
     [SerializeField] string scene1;
     
     // change scene using button
     
     public void OnClickScee()
     {
-        PhotonNetwork.ConnectUsingSettings();
-        SceneManager.LoadScene("crearJugador");
+        SceneManager.LoadScene("Online");
         
     }
     

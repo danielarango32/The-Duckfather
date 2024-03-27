@@ -651,9 +651,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c91acc40aca4fa3488408b7288a264f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scene: Menu
-  scene1: 
-  scene2: 
+  scene1: Menu
 --- !u!1 &865833504
 GameObject:
   m_ObjectHideFlags: 0
@@ -875,7 +873,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 632041945}
         m_TargetAssemblyTypeName: MenuBotones, Assembly-CSharp
-        m_MethodName: ChangeScene
+        m_MethodName: ChangeScene1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

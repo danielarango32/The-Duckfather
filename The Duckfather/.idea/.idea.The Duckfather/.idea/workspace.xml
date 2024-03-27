@@ -5,12 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="767b46c7-ce85-469b-bc9e-d38d49d547a9" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.The Duckfather/.idea/copilot/chatSessions/00000000000.xd" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.The Duckfather/.idea/copilot/chatSessions/00000000000.xd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.The Duckfather/.idea/copilot/chatSessions/xd.lck" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.The Duckfather/.idea/copilot/chatSessions/xd.lck" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.The Duckfather/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.The Duckfather/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/Player.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Rolix/Lobby.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Rolix/Lobby.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Room and lobby manager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Room and lobby manager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Rolix/Controles.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Rolix/Controles.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Rolix/Online.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Rolix/Online.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/rolix/Menu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/rolix/Menu.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Botones.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Botones.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Logo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Logo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/prefab/RoomItem.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/prefab/RoomItem.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,7 +126,7 @@
       <workItem from="1710988753221" duration="616000" />
       <workItem from="1711307084125" duration="22813000" />
       <workItem from="1711401391486" duration="10436000" />
-      <workItem from="1711555132509" duration="2507000" />
+      <workItem from="1711555132509" duration="6130000" />
     </task>
     <servers />
   </component>
