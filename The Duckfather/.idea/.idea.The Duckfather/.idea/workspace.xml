@@ -8,18 +8,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/.idea.The Duckfather/.idea/copilot/chatSessions/00000000000.xd" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.The Duckfather/.idea/copilot/chatSessions/00000000000.xd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.The Duckfather/.idea/copilot/chatSessions/xd.lck" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.The Duckfather/.idea/copilot/chatSessions/xd.lck" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.The Duckfather/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.The Duckfather/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/PhotonServerSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/PhotonServerSettings.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/Player.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Rolix/Lobby.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Rolix/Lobby.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Rolix/Lobby.unity.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Rolix/Lobby.unity.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Rolix/crearJugador.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Rolix/crearJugador.unity.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/ThePlayer/PlayerSetUp.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/ThePlayer/PlayerSetUp.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/LobbyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/LobbyManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Settings/URP-Balanced.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/URP-Balanced.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Settings/URP-HighFidelity.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/URP-HighFidelity.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Settings/URP-Performant.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/URP-Performant.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Room and lobby manager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Room and lobby manager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,7 +122,8 @@
       <updated>1710988750858</updated>
       <workItem from="1710988753221" duration="616000" />
       <workItem from="1711307084125" duration="22813000" />
-      <workItem from="1711401391486" duration="10435000" />
+      <workItem from="1711401391486" duration="10436000" />
+      <workItem from="1711555132509" duration="2507000" />
     </task>
     <servers />
   </component>

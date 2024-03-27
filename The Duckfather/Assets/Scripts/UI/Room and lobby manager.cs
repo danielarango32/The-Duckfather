@@ -53,6 +53,9 @@ public class Roomandlobbymanager : MonoBehaviourPunCallbacks
 
         Debug.Log("Conectado a una Sala");
         
+        
+        roomCam.SetActive(false);
+        
         SpawnPlayer();
     }
     
