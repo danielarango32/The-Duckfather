@@ -13,13 +13,23 @@ public class MenuBotones : MonoBehaviourPunCallbacks
     
     public void OnClickScee()
     {
-        SceneManager.LoadScene("Online");
-        
+        StartCoroutine(OnlineTime());
     }
-    
-    
+
+    IEnumerator OnlineTime()
+    {
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene("Online");
+    }
+
     public void ChangeScene1()
     {
+        StartCoroutine(creditTime());
+    }
+    
+    IEnumerator creditTime()
+    {
+        yield return new WaitForSeconds(1);
         SceneManager.LoadScene(scene1);
     }
     

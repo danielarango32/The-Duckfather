@@ -16,6 +16,8 @@ public class Botonaudio : MonoBehaviour
     public void PlayAudioHover()
     {
         audioSource.PlayOneShot(Hoversound);
+        // play 1 time
+        
     }
     
     // play audio click
