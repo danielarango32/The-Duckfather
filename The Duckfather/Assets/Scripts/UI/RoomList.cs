@@ -11,7 +11,8 @@ public class RoomList : MonoBehaviourPunCallbacks
     public GameObject RoomManagerGameObject;
     public Roomandlobbymanager roomandlobbymanager;
     
-    [Header("ui")] public Transform roomParentList;
+    [Header("ui")] 
+    public Transform roomParentList;
     public GameObject roomListItemPrefab;
     
     private List<RoomInfo> cachedRoomList = new List<RoomInfo>();
@@ -77,7 +78,7 @@ public class RoomList : MonoBehaviourPunCallbacks
                         cachedRoomList = newList;
                     }
                 }
-            }
+            }   
         }
         
         UpdateUI();

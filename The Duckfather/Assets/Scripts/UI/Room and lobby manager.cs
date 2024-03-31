@@ -39,6 +39,7 @@ public class Roomandlobbymanager : MonoBehaviourPunCallbacks
     {
         
         Debug.Log("Conectando...");
+        
         PhotonNetwork.JoinOrCreateRoom(roomNameToJoin, null, null);
         
         nameUI.SetActive(false);
