@@ -48,7 +48,7 @@ GameObject:
   - component: {fileID: 2070826736453048104}
   - component: {fileID: 4302893271635023876}
   - component: {fileID: 3568924849517641818}
-  - component: {fileID: 4507693269794356584}
+  - component: {fileID: 6352814429602980676}
   m_Layer: 0
   m_Name: PrefabDani
   m_TagString: Untagged
@@ -182,6 +182,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerMove: {fileID: 8384858751120160453}
   _mouseLook: {fileID: 543999698265881663}
+  _aimManager: {fileID: 0}
+  _animatorController: {fileID: 0}
+  _shootinController: {fileID: 0}
   _camara: {fileID: 3379581105895670225}
 --- !u!114 &2070826736453048104
 MonoBehaviour:
@@ -238,7 +241,7 @@ MonoBehaviour:
   armadetected: 0
   parent: {fileID: 4767606736831773184}
   PUparent: {fileID: 1970079420602132268}
---- !u!114 &4507693269794356584
+--- !u!114 &6352814429602980676
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -247,7 +250,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3340080740257102832}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 074a89ac39834e1499cbe635d9bd92d3, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d7b20870fe8d944b893ad8d039df68b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 7450756199417972588}

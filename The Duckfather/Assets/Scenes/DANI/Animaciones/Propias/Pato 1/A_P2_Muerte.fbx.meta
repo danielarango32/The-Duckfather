@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f595e79404655124797dbd808c91ccdd
+guid: 8a012940614652244b5478a1ff0a9b53
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -19,12 +19,7 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'Armature|Armature|mixamo.com|Layer0' has import
-      animation warnings that might lower retargeting quality:\nNote: Activate translation
-      DOF on avatar to improve retargeting quality.\n\t'mixamorig:Spine' has translation
-      animation that will be discarded.\n\t'mixamorig:Neck' has translation animation
-      that will be discarded.\n\t'mixamorig:Head' has translation animation that
-      will be discarded.\n"
+    animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -42,7 +37,7 @@ ModelImporter:
       takeName: Armature|Armature|mixamo.com|Layer0
       internalID: -4791504522942941401
       firstFrame: 0
-      lastFrame: 85
+      lastFrame: 157
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -667,7 +662,7 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 2497a974348bf0240ab0d3f3169e3ace,
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: ae6339c97816b6048bb24d2ed3131cad,
     type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
