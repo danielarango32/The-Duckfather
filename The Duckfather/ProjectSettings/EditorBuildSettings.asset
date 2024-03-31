@@ -5,9 +5,21 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/DANI/Test.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/Rolix/Logo.unity
+    guid: 1b7969be3631a34438da9eec62e63f42
+  - enabled: 1
+    path: Assets/Scenes/Rolix/Menu.unity
+    guid: 001c8a1d8a95b2640bdd5e3674263dcc
+  - enabled: 1
+    path: Assets/Scenes/Rolix/Controles.unity
+    guid: 2349b7c5c83f1f748a43e0b86b91c3b1
+  - enabled: 1
+    path: Assets/Scenes/Rolix/crearJugador.unity
+    guid: 57d3c471a2de9dc4c99a03e63bc9add3
+  - enabled: 1
+    path: Assets/Scenes/Rolix/Lobby.unity
+    guid: a4da87d04dec5a04e8e10ee1c0c44821
   - enabled: 1
     path: Assets/Scenes/TEO/Online.unity
     guid: 46cb15da231da224bae7702e3539a295

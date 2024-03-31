@@ -32,6 +32,9 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     [SerializeField] private float groundDistance = 0.4f;
     public LayerMask groundeMask;
     [SerializeField] public bool isGrounded = false;
+
+
+    [Header("Globalización De Variables")]
     public float x, z;
 
 
