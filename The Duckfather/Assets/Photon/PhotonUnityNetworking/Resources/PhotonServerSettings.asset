@@ -39,6 +39,11 @@ MonoBehaviour:
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
+  - ObtenerVida
+  - ObtenerEscudo
+  - QuitarVida
+  - "Da\xF1orecibido"
+  - Explode
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 0
