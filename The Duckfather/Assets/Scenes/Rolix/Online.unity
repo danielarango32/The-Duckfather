@@ -1095,7 +1095,7 @@ PrefabInstance:
     - target: {fileID: 1202038863310968807, guid: 80ab6e29edbd4d64fb9e06b548846c7e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0000019073486
+      value: 3.46
       objectReference: {fileID: 0}
     - target: {fileID: 1202038863310968807, guid: 80ab6e29edbd4d64fb9e06b548846c7e,
         type: 3}
@@ -2799,12 +2799,12 @@ PrefabInstance:
     - target: {fileID: 1202038863310968807, guid: 80ab6e29edbd4d64fb9e06b548846c7e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 3.3
       objectReference: {fileID: 0}
     - target: {fileID: 1202038863310968807, guid: 80ab6e29edbd4d64fb9e06b548846c7e,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 137.79034
+      value: 143.4
       objectReference: {fileID: 0}
     - target: {fileID: 1202038863310968807, guid: 80ab6e29edbd4d64fb9e06b548846c7e,
         type: 3}
@@ -3494,7 +3494,7 @@ PrefabInstance:
     - target: {fileID: 4517031200132896618, guid: 241c081564cb2164d85b91d2183d62b1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 5.4
       objectReference: {fileID: 0}
     - target: {fileID: 4517031200132896618, guid: 241c081564cb2164d85b91d2183d62b1,
         type: 3}
@@ -3899,7 +3899,7 @@ PrefabInstance:
     - target: {fileID: 4517031200132896618, guid: 241c081564cb2164d85b91d2183d62b1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.760001
+      value: 7.97
       objectReference: {fileID: 0}
     - target: {fileID: 4517031200132896618, guid: 241c081564cb2164d85b91d2183d62b1,
         type: 3}
@@ -6076,7 +6076,7 @@ PrefabInstance:
     - target: {fileID: 8237057121309350089, guid: 42fc7937135ad3b4790e357acfca2a9d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 5.3
       objectReference: {fileID: 0}
     - target: {fileID: 8237057121309350089, guid: 42fc7937135ad3b4790e357acfca2a9d,
         type: 3}
@@ -6219,7 +6219,7 @@ PrefabInstance:
     - target: {fileID: 1202038863310968807, guid: 80ab6e29edbd4d64fb9e06b548846c7e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 3.7
       objectReference: {fileID: 0}
     - target: {fileID: 1202038863310968807, guid: 80ab6e29edbd4d64fb9e06b548846c7e,
         type: 3}
@@ -6270,6 +6270,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PistolRecolectable (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2643260290877223006, guid: 80ab6e29edbd4d64fb9e06b548846c7e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.41
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

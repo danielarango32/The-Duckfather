@@ -14,16 +14,16 @@ public class LifeManager : MonoBehaviour
     [SerializeField] float cantidadDeRegeneracion;
     
     [Header("UI de vida")]
-    public Slider sliderVida;
-    public Slider sliderEscudo;
+    [SerializeField] Slider sliderVida;
+    [SerializeField] Slider sliderEscudo;
 
     public bool danorecibido;
     public float contador;
     
-    public int health;
+    
     private void Update()
     {
-        
+        sliderVida.value = vida;
 
         if (danorecibido)
         {
@@ -106,11 +106,11 @@ public class LifeManager : MonoBehaviour
     [PunRPC]
     public void TakeDamage(int _damage)
     {
-        health -= _damage;
+        vida -= _damage;
         
-        sliderVida.value = health;
         
-        if (health <= 0)
+        
+        if (vida <= 0)
         {
             Destroy(gameObject);
         }
