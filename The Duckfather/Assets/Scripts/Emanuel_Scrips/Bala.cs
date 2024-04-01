@@ -91,10 +91,16 @@ public class Bala : MonoBehaviour
 
         //Delay para destruir 
         Invoke("Delay", 0.05f);
+        Invoke("DelayExplosion", 5.0f);
     }
     private void Delay()
     {
         Destroy(gameObject);
+        
+    }
+    private void DelayExplosion()
+    {
+        Destroy(explosion);
     }
 
     private void OnCollisionEnter(Collision collision)
