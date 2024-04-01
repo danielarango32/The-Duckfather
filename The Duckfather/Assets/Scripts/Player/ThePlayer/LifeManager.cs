@@ -12,14 +12,15 @@ public class LifeManager : MonoBehaviour
     [SerializeField] float escudo = 0;
     [SerializeField] float tiempoParaRegen;
     [SerializeField] float cantidadDeRegeneracion;
-    
+
+
     [Header("UI de vida")]
     [SerializeField] Slider sliderVida;
     [SerializeField] Slider sliderEscudo;
 
     public bool danorecibido;
     public float contador;
-    
+
     
     private void Update()
     {
@@ -88,6 +89,7 @@ public class LifeManager : MonoBehaviour
 
         if (vida <= 0 )
         {
+
             Destroy(this.gameObject);
         } 
     }
@@ -101,18 +103,5 @@ public class LifeManager : MonoBehaviour
 
         yield return null;
 
-    }
-    
-    [PunRPC]
-    public void TakeDamage(int _damage)
-    {
-        vida -= _damage;
-        
-        
-        
-        if (vida <= 0)
-        {
-            Destroy(gameObject);
-        }
-    }
+    }  
 }
