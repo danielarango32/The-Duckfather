@@ -12,10 +12,10 @@ public class Bala : MonoBehaviour
     [Tooltip("GameObject del efecto de la explosion")] //Efecto para la explosion
     public GameObject explosion;    
 
-    [Tooltip("layer de los enemigos a impactar")] //Layer en la que estarian enemigos. Se seleccioan que va a recibir daño por parte de la bala o la explosion
+    [Tooltip("layer de los enemigos a impactar")] //Layer en la que estarian enemigos. Se seleccioan que va a recibir daï¿½o por parte de la bala o la explosion
     public LayerMask whatIsEnemies; 
 
-    [Tooltip("Daño que causara la bala")]  //Daño que causara la bala
+    [Tooltip("Daï¿½o que causara la bala")]  //Daï¿½o que causara la bala
     public int explosionDamage;    
     [Tooltip("Rango de la explosion causada por la bala")]  //Rango de la explosion
     public float explosionRange;   
@@ -45,6 +45,8 @@ public class Bala : MonoBehaviour
 
     int collisions;                     //Cantidad de rebotes que puede realizar la bala
     PhysicMaterial physics_mat;
+    
+    
 
     private void Start()
     {
@@ -56,10 +58,11 @@ public class Bala : MonoBehaviour
         if (collisions > maxCollisions) Explode();
         maxLifetime -= Time.deltaTime;
         if (maxLifetime <= 0) Explode();
+        
     }
 
     [PunRPC]
-    private void Explode()  //Explosion y daño al enemigo por la misma
+    private void Explode()  //Explosion y daï¿½o al enemigo por la misma
     {
         
         if (explosion != null) Instantiate(explosion, transform.position, Quaternion.identity);
@@ -70,7 +73,7 @@ public class Bala : MonoBehaviour
         {
             //Atencion
 
-            //Aqui va la funcion "TakeDamage" del enemigo, en donde dice "scriptname" se reemplaza por el nombre del scrip del enemigo o el que controle el daño que recibira. Si la funcion de recibir daño es diferente, modificar el "TakeDamage" por el correspondiente. 
+            //Aqui va la funcion "TakeDamage" del enemigo, en donde dice "scriptname" se reemplaza por el nombre del scrip del enemigo o el que controle el daï¿½o que recibira. Si la funcion de recibir daï¿½o es diferente, modificar el "TakeDamage" por el correspondiente. 
             ///enemies[i].GetComponent<scriptname>().TakeDamage(explosionDamage);  
             //enemies[i].GetComponent<PhotonView>().RPC("QuitarVida", RpcTarget.All, explosionDamage);
             enemies[i].GetComponent<LifeManager>().QuitarVida(explosionDamage);
@@ -128,5 +131,7 @@ public class Bala : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, explosionRange);
     }
+
+    
 }
 
