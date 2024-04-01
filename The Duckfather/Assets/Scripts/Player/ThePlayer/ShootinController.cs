@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,17 +7,12 @@ public class ShootinController : MonoBehaviour
 {
     [Header("Shooting Attributes")]
     [Space]
+
     [Header("FireRate")]
     public float fireRate = 0.3f;
     public float firerateTimer;
     [SerializeField] bool semiAuto;
 
-    [Space]
-    [Header("Emparentamientos")]
-    [SerializeField] GameObject prefabBala;
-    [SerializeField] Transform canon;
-
-    [Space]
     [Header("Bala")]
     [SerializeField] float velocidad;
 
@@ -27,14 +23,22 @@ public class ShootinController : MonoBehaviour
     [Header("Numero De Balas")]
     [SerializeField] public float numBalas;
 
+    [Space]
+    [Header("Emparentamientos")]
+    [SerializeField] GameObject prefabBala;
+    [SerializeField] Transform canon;
+
+    [Space]
+    
+
     /*
      Lo siguiente va a esconderse
      
-     */
+     
     [Space]
     [Header("Numero De Balas Por Arma")]
     public float balPistol, balbazuca, balMetralleta, balLanza;
-
+    */
 
     [Header("WeaponcontrollerReference")]
     public GameObject WeaponController;
@@ -50,7 +54,7 @@ public class ShootinController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            numArma = 1;
+            numArma = 0;
             SelectorDeArma(numArma);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -101,26 +105,42 @@ public class ShootinController : MonoBehaviour
         numArma = numeroDeArma;
         if (numeroDeArma == 0)
         {
-            
-            WeaponController.transform.Find("ArmaBaseChild").gameObject.SetActive(false);
+            WeaponController.transform.Find("RevolverChild").gameObject.SetActive(false);
+            WeaponController.transform.Find("PistolaChild").gameObject.SetActive(false);
             WeaponController.transform.Find("BazucaChild").gameObject.SetActive(false);
 
             Debug.Log("Armas Desactivadas");
         }
         if (numeroDeArma == 1)
         {
-            WeaponController.transform.Find("ArmaBaseChild").gameObject.SetActive(true);
-            //canon.transform.position = new Vector3(-0.298f, -0.011f, 1.057f);
+            WeaponController.transform.Find("RevolverChild").gameObject.SetActive(false);
+            WeaponController.transform.Find("PistolaChild").gameObject.SetActive(true);
+            WeaponController.transform.Find("BazucaChild").gameObject.SetActive(false);
+            canon = WeaponController.transform.Find("PistolaChild").gameObject.transform;
+            fireRate = 0.3f;
+            velocidad = 50;
+
             Debug.Log("Arma Activada Pistol");
         }
         if (numeroDeArma == 2)
         {
+            WeaponController.transform.Find("RevolverChild").gameObject.SetActive(false);
+            WeaponController.transform.Find("PistolaChild").gameObject.SetActive(false);
             WeaponController.transform.Find("BazucaChild").gameObject.SetActive(true);
-            //canon.transform.position = new Vector3(-0.57f, 0.044f, 0.808f);
+            canon = WeaponController.transform.Find("BazucaChild").gameObject.transform;
+            fireRate = 1.5f;
             Debug.Log("Arma Activada Bazuca");
+            velocidad = 90;
         }
         if (numeroDeArma == 3)
         {
+            WeaponController.transform.Find("RevolverChild").gameObject.SetActive(true);
+            WeaponController.transform.Find("PistolaChild").gameObject.SetActive(false);
+            WeaponController.transform.Find("BazucaChild").gameObject.SetActive(false);
+            canon = WeaponController.transform.Find("RevolverChild").gameObject.transform;
+            fireRate = 0.85f;
+            velocidad = 70;
+
             Debug.Log("Arma Activada Metralleta");
         }
         if (numeroDeArma == 4)
@@ -138,7 +158,11 @@ public class ShootinController : MonoBehaviour
         firerateTimer = 0;
         Debug.Log("Disparando");
 
-        GameObject proyectil = Instantiate(prefabBala, canon.position, canon.rotation);
+        GameObject proyectil;
+
+        //proyectil = PhotonNetwork.Instantiate(prefabBala.name, canon.position, canon.rotation);
+        //Offline
+        proyectil = Instantiate(prefabBala, canon.position, canon.rotation);
 
         Rigidbody rb = proyectil.GetComponent<Rigidbody>();
 
@@ -155,10 +179,10 @@ public class ShootinController : MonoBehaviour
 
     bool Ammo(float disparo)
     {
-        balPistol = balPistol - disparo;
+        numBalas = numBalas - disparo;
 
 
-        if (balPistol <= 0) return false;
+        if (numBalas <= 0) return false;
 
 
         return false;

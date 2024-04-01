@@ -9,13 +9,14 @@ public class PlayerSetUp : MonoBehaviour
     public AimManager _aimManager;
     public AnimatorController _animatorController;
     public ShootinController _shootinController;
-    
+    public LifeManager _lifeManager;
     [Space]
     public GameObject _camara;
     
 
     public void IsLocalPlayer()
     {
+        _lifeManager.enabled = true;
         _playerMove.enabled = true;
         _mouseLook.enabled = true;
 
