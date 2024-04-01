@@ -40,6 +40,11 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - SetNickName
+  - "Da\xF1orecibido"
+  - Explode
+  - ObtenerEscudo
+  - ObtenerVida
+  - QuitarVida
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

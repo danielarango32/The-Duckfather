@@ -3581,6 +3581,79 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 927407208}
   m_CullTransparentMesh: 1
+--- !u!1001 &951342324
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2973092989903772800, guid: 42fc7937135ad3b4790e357acfca2a9d,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8237057121309350089, guid: 42fc7937135ad3b4790e357acfca2a9d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.048498
+      objectReference: {fileID: 0}
+    - target: {fileID: 8237057121309350089, guid: 42fc7937135ad3b4790e357acfca2a9d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.67
+      objectReference: {fileID: 0}
+    - target: {fileID: 8237057121309350089, guid: 42fc7937135ad3b4790e357acfca2a9d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 100.61412
+      objectReference: {fileID: 0}
+    - target: {fileID: 8237057121309350089, guid: 42fc7937135ad3b4790e357acfca2a9d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8237057121309350089, guid: 42fc7937135ad3b4790e357acfca2a9d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8237057121309350089, guid: 42fc7937135ad3b4790e357acfca2a9d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8237057121309350089, guid: 42fc7937135ad3b4790e357acfca2a9d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8237057121309350089, guid: 42fc7937135ad3b4790e357acfca2a9d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8237057121309350089, guid: 42fc7937135ad3b4790e357acfca2a9d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8237057121309350089, guid: 42fc7937135ad3b4790e357acfca2a9d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9185839158082019428, guid: 42fc7937135ad3b4790e357acfca2a9d,
+        type: 3}
+      propertyPath: m_Name
+      value: BazucaRecolectable
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 42fc7937135ad3b4790e357acfca2a9d, type: 3}
 --- !u!1 &1076931108
 GameObject:
   m_ObjectHideFlags: 0
@@ -8912,3 +8985,4 @@ SceneRoots:
   - {fileID: 1445225257}
   - {fileID: 1078021200}
   - {fileID: 1861857682}
+  - {fileID: 951342324}
