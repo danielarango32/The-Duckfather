@@ -14,9 +14,11 @@ GameObject:
   - component: {fileID: 6208855689110340244}
   - component: {fileID: 740001285318142213}
   - component: {fileID: 1467883147547854646}
+  - component: {fileID: -1365635025720226839}
+  - component: {fileID: 8313406552021488754}
   m_Layer: 0
   m_Name: Balita
-  m_TagString: Untagged
+  m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 2459046467128981375}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.9817996, y: 7.447703, z: 109.04826}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.71, y: 0.71, z: 0.71}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -150,12 +152,51 @@ MonoBehaviour:
   explosion: {fileID: 0}
   whatIsEnemies:
     serializedVersion: 2
-    m_Bits: 0
-  explosionDamage: 0
-  explosionRange: 0
+    m_Bits: 128
+  explosionDamage: 50
+  explosionRange: 0.8
   explosionForce: 0
   maxCollisions: 0
   maxLifetime: 5
   explodeOnTouch: 1
   bounciness: 0.209
   useGravity: 1
+--- !u!114 &-1365635025720226839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2459046467128981375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 8313406552021488754}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &8313406552021488754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2459046467128981375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 1

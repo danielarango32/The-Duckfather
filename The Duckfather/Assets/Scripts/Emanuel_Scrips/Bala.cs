@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -57,6 +58,7 @@ public class Bala : MonoBehaviour
         if (maxLifetime <= 0) Explode();
     }
 
+    [PunRPC]
     private void Explode()  //Explosion y daño al enemigo por la misma
     {
         
@@ -70,10 +72,19 @@ public class Bala : MonoBehaviour
 
             //Aqui va la funcion "TakeDamage" del enemigo, en donde dice "scriptname" se reemplaza por el nombre del scrip del enemigo o el que controle el daño que recibira. Si la funcion de recibir daño es diferente, modificar el "TakeDamage" por el correspondiente. 
             ///enemies[i].GetComponent<scriptname>().TakeDamage(explosionDamage);  
+            //enemies[i].GetComponent<PhotonView>().RPC("QuitarVida", RpcTarget.All, explosionDamage);
+            enemies[i].GetComponent<LifeManager>().QuitarVida(explosionDamage);
             
+            
+
             if (enemies[i].GetComponent<Rigidbody>())
+            {
                 enemies[i].GetComponent<Rigidbody>().AddExplosionForce(explosionForce, transform.position, explosionRange);
+            }
+                
         }
+        
+
 
         //Delay para destruir 
         Invoke("Delay", 0.05f);
@@ -85,12 +96,16 @@ public class Bala : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-       
-        if (collision.collider.CompareTag("Bullet")) return; //Se puede obviar esta linea si en Unity se desactiva la colison de balas con balas en los projects settings  
+
+        Explode();
+        /*
+         if (collision.collider.CompareTag("Bullet")) return; //Se puede obviar esta linea si en Unity se desactiva la colison de balas con balas en los projects settings  
         collisions++;
         if (collision.collider.CompareTag("Player") && explodeOnTouch) Explode();
+         
+         */
 
-        
+
     }
 
     private void Setup() //Rebotes
