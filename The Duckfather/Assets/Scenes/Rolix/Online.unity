@@ -5226,7 +5226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c78c3f49031209347a03493a5fdcb43c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 4666621675459349603, guid: c3034ef60c609b1469ea67f86afed000, type: 3}
+  player: {fileID: 3340080740257102832, guid: 45d8e17ce9a21764ea8e266352ed698f, type: 3}
   Spawn: {fileID: 168832110}
   roomCam: {fileID: 553284806}
   nameUI: {fileID: 192809299}
