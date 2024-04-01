@@ -25,6 +25,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     List<PlayerItem> playerList = new List<PlayerItem>();
     [SerializeField] PlayerItem playerName;
     [SerializeField] Transform playerListContent;
+
+    public GameObject player;
+    public Transform Spawn;
     
     
     // Start is called before the first frame update
@@ -84,6 +87,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public void JoinRoom(string roomName)
     {
         PhotonNetwork.JoinRoom(roomName);
+        GameObject _playerP = PhotonNetwork.Instantiate(player.name, Spawn.position, Quaternion.identity);
+
+        _playerP.GetComponent<PlayerSetUp>().IsLocalPlayer();
     }
     
     // Leave the room
