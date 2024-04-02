@@ -160,9 +160,9 @@ public class ShootinController : MonoBehaviour
 
         GameObject proyectil;
 
-        //proyectil = PhotonNetwork.Instantiate(prefabBala.name, canon.position, canon.rotation);
+        proyectil = PhotonNetwork.Instantiate(prefabBala.name, canon.position, canon.rotation);
         //Offline
-        proyectil = Instantiate(prefabBala, canon.position, canon.rotation);
+        //proyectil = Instantiate(prefabBala, canon.position, canon.rotation);
 
         Rigidbody rb = proyectil.GetComponent<Rigidbody>();
 
