@@ -135,6 +135,8 @@ MonoBehaviour:
   _shootinController: {fileID: 924892979236600923}
   _lifeManager: {fileID: 3357442587207767722}
   _camara: {fileID: 3379581105895670225}
+  nickName: 
+  nickNameText: {fileID: 0}
 --- !u!143 &7935280511108784569
 CharacterController:
   m_ObjectHideFlags: 0
