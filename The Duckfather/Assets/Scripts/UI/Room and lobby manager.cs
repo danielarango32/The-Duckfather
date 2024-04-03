@@ -39,7 +39,7 @@ public class Roomandlobbymanager : MonoBehaviourPunCallbacks
     {
         
         Debug.Log("Conectando...");
-        
+         
         PhotonNetwork.JoinOrCreateRoom(roomNameToJoin, null, null);
         
         nameUI.SetActive(false);
@@ -50,7 +50,7 @@ public class Roomandlobbymanager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        base.OnLeftRoom();
+        base.OnJoinedRoom();
 
         Debug.Log("Conectado a una Sala");
         
