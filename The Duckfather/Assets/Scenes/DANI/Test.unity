@@ -636,7 +636,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 9efa5652d449cf042994253c373bf4d6, type: 2}
+      objectReference: {fileID: 2100000, guid: e609a8225f6aac246933d424a1485a08, type: 2}
     - target: {fileID: 2070826736453048104, guid: fabc0b28a8b30554381ec3190b8a3246,
         type: 3}
       propertyPath: sceneViewId
@@ -647,11 +647,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: PrefabDani
       objectReference: {fileID: 0}
+    - target: {fileID: 4237213461355202476, guid: fabc0b28a8b30554381ec3190b8a3246,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4540867819707225648, guid: fabc0b28a8b30554381ec3190b8a3246,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 9efa5652d449cf042994253c373bf4d6, type: 2}
+      objectReference: {fileID: 2100000, guid: e609a8225f6aac246933d424a1485a08, type: 2}
     - target: {fileID: 8726030178103997437, guid: fabc0b28a8b30554381ec3190b8a3246,
         type: 3}
       propertyPath: m_IsActive

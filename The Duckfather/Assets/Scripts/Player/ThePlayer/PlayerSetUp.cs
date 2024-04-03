@@ -30,7 +30,7 @@ public class PlayerSetUp : MonoBehaviour
         _aimManager.enabled = true;
 
         _animatorController.enabled = true;
-        _shootinController.enabled = true;
+        _shootinController.enabled = false;
 
     }
     
