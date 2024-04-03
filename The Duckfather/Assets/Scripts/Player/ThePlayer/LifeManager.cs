@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Timers;
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class LifeManager : MonoBehaviour
 {
@@ -13,20 +12,13 @@ public class LifeManager : MonoBehaviour
     [SerializeField] float tiempoParaRegen;
     [SerializeField] float cantidadDeRegeneracion;
 
-
-    [Header("UI de vida")]
-    [SerializeField] Slider sliderVida;
-    [SerializeField] Slider sliderEscudo;
-
-    public bool danorecibido;
+    public bool dañorecibido;
     public float contador;
-
-    
     private void Update()
     {
-        sliderVida.value = vida;
+        
 
-        if (danorecibido)
+        if (dañorecibido)
         {
             contador = 0;
             
@@ -66,15 +58,15 @@ public class LifeManager : MonoBehaviour
 
     }
     [PunRPC]
-    public void QuitarVida(float Dano, PhotonMessageInfo info = default)
+    public void QuitarVida(float Daño, PhotonMessageInfo info = default)
     {
-        Debug.Log("El dano que llega es=" + Dano);
+        Debug.Log("El daño que llega es=" + Daño);
 
-        StartCoroutine(Danorecibido());
+        StartCoroutine(Dañorecibido());
 
         if (escudo>0)
         {
-            escudo -= Dano;
+            escudo -= Daño;
 
             if (escudo < 0)
             {
@@ -84,24 +76,23 @@ public class LifeManager : MonoBehaviour
         }
         else
         {
-            vida -= Dano;
+            vida -= Daño;
         }
 
         if (vida <= 0 )
         {
-
             Destroy(this.gameObject);
         } 
     }
 
     [PunRPC]
-    IEnumerator Danorecibido()
+    IEnumerator Dañorecibido()
     {
-        danorecibido = true;
+        dañorecibido = true;
         yield return new WaitForSeconds(2f);
-        danorecibido = false;
+        dañorecibido = false;
 
         yield return null;
 
-    }  
+    }
 }
