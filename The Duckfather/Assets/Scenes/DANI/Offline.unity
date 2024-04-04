@@ -309,15 +309,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1239764389128975975, guid: 8b3f6159c8df7a94da7a7da27638e03c,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1469418036}
-    - targetCorrespondingSourceObject: {fileID: 6526382513824571578, guid: 8b3f6159c8df7a94da7a7da27638e03c,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1348188560}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b3f6159c8df7a94da7a7da27638e03c, type: 3}
 --- !u!1 &292631820
 GameObject:
@@ -868,7 +860,7 @@ MonoBehaviour:
   cantidadDeRegeneracion: 2
   sliderVida: {fileID: 0}
   sliderEscudo: {fileID: 0}
-  danorecibido: 0
+  damageRecieved: 0
   contador: 0
 --- !u!1 &1236212540
 GameObject:
@@ -980,54 +972,6 @@ Transform:
   - {fileID: 68602660}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!20 &1313633062 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 1140230727438279915, guid: 8b3f6159c8df7a94da7a7da27638e03c,
-    type: 3}
-  m_PrefabInstance: {fileID: 172570586}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1348188556 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6526382513824571578, guid: 8b3f6159c8df7a94da7a7da27638e03c,
-    type: 3}
-  m_PrefabInstance: {fileID: 172570586}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1348188560
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1348188556}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e43aab2eb4b0a54e84e04633b6cae5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 20
-  fireRate: 10
-  camera: {fileID: 1313633062}
---- !u!1 &1469418032 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1239764389128975975, guid: 8b3f6159c8df7a94da7a7da27638e03c,
-    type: 3}
-  m_PrefabInstance: {fileID: 172570586}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1469418036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1469418032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e43aab2eb4b0a54e84e04633b6cae5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 20
-  fireRate: 10
-  camera: {fileID: 1313633062}
 --- !u!1 &1580071780
 GameObject:
   m_ObjectHideFlags: 0

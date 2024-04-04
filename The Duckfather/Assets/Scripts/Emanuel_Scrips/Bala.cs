@@ -124,7 +124,7 @@ public class Bala : MonoBehaviour
         physics_mat.bounciness = bounciness;
         physics_mat.frictionCombine = PhysicMaterialCombine.Minimum;
         physics_mat.bounceCombine = PhysicMaterialCombine.Maximum;
-        GetComponent<SphereCollider>().material = physics_mat;
+        GetComponent<MeshCollider>().material = physics_mat;
 
        
         rb.useGravity = useGravity;   //Gravedad

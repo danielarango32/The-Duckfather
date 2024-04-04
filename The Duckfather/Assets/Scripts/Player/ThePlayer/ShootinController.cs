@@ -15,6 +15,7 @@ public class ShootinController : MonoBehaviour
 
     [Header("Bala")]
     [SerializeField] float velocidad;
+    [SerializeField] float damage;
 
 
     [Header("Arma Habilitada")]
@@ -27,6 +28,7 @@ public class ShootinController : MonoBehaviour
     [Header("Emparentamientos")]
     [SerializeField] GameObject prefabBala;
     [SerializeField] Transform canon;
+    [SerializeField] Transform target;
 
     [Space]
     
@@ -78,7 +80,14 @@ public class ShootinController : MonoBehaviour
     {
         if(numArma != 0)
         {
-            if (ShouldFire()) Shoot();
+            if (numArma == 2)
+            {
+                if (ShouldFire()) Shoot();
+            }
+            else
+            {
+                if (ShouldFire()) FireRaycast();
+            }
         }
         
     }
@@ -160,9 +169,9 @@ public class ShootinController : MonoBehaviour
 
         GameObject proyectil;
 
-        //proyectil = PhotonNetwork.Instantiate(prefabBala.name, canon.position, canon.rotation);
+        //proyectil = PhotonNetwork.Instantiate(prefabBala.name, canon.position, target.rotation);
         //Offline
-        proyectil = Instantiate(prefabBala, canon.position, canon.rotation);
+        proyectil = Instantiate(prefabBala, canon.position, target.rotation);
 
         Rigidbody rb = proyectil.GetComponent<Rigidbody>();
 
@@ -175,6 +184,33 @@ public class ShootinController : MonoBehaviour
         disparo++;
         Ammo(disparo);
         disparo = 0;
+    }
+
+    void FireRaycast()
+    {
+
+        float disparo = 0;
+        firerateTimer = 0;
+
+        Ray ray = new Ray(canon.transform.position, target.transform.forward);
+        Debug.DrawRay(ray.origin, ray.direction * 100f, Color.green, 2f);
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray.origin, ray.direction, out hit, 100f))
+        {
+            if (hit.transform.gameObject.GetComponent<LifeManager>())
+            {
+                //hit.transform.gameObject.GetComponent<PhotonView>().RPC("QuitarVida", RpcTarget.All, damage);
+                hit.transform.gameObject.GetComponent<LifeManager>().QuitarVida(damage);
+                Debug.DrawRay(hit.transform.position, hit.transform.position, Color.yellow, 2f);
+            }
+        }
+
+        disparo++;
+        Ammo(disparo);
+        disparo = 0;
+
     }
 
     bool Ammo(float disparo)

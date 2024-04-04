@@ -18,7 +18,7 @@ public class LifeManager : MonoBehaviour
     [SerializeField] Slider sliderVida;
     [SerializeField] Slider sliderEscudo;
 
-    public bool danorecibido;
+    public bool damageRecieved;
     public float contador;
 
     
@@ -26,7 +26,7 @@ public class LifeManager : MonoBehaviour
     {
         sliderVida.value = vida;
 
-        if (danorecibido)
+        if (damageRecieved)
         {
             contador = 0;
             
@@ -66,15 +66,15 @@ public class LifeManager : MonoBehaviour
 
     }
     [PunRPC]
-    public void QuitarVida(float Dano, PhotonMessageInfo info = default)
+    public void QuitarVida(float damage, PhotonMessageInfo info = default)
     {
-        Debug.Log("El dano que llega es=" + Dano);
+        Debug.Log("El dano que llega es=" + damage);
 
-        StartCoroutine(Danorecibido());
+        StartCoroutine(DamageRecieved());
 
         if (escudo>0)
         {
-            escudo -= Dano;
+            escudo -= damage;
 
             if (escudo < 0)
             {
@@ -84,7 +84,7 @@ public class LifeManager : MonoBehaviour
         }
         else
         {
-            vida -= Dano;
+            vida -= damage;
         }
 
         if (vida <= 0 )
@@ -95,11 +95,11 @@ public class LifeManager : MonoBehaviour
     }
 
     [PunRPC]
-    IEnumerator Danorecibido()
+    IEnumerator DamageRecieved()
     {
-        danorecibido = true;
+        damageRecieved = true;
         yield return new WaitForSeconds(2f);
-        danorecibido = false;
+        damageRecieved = false;
 
         yield return null;
 

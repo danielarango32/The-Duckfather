@@ -7,8 +7,8 @@ public class DisparoRaycast : MonoBehaviour
 {
     public float damage;
     public float fireRate;
-    [SerializeField]Camera camera;
-    [SerializeField] Transform canon;
+    [SerializeField]Transform target;
+    [SerializeField]Transform canon;
     
 
     private float nextFire;
@@ -33,7 +33,7 @@ public class DisparoRaycast : MonoBehaviour
     void Fire()
     {
 
-        Ray ray = new Ray(canon.transform.position, camera.transform.forward);
+        Ray ray = new Ray(canon.transform.position, target.transform.forward);
         Debug.DrawRay(ray.origin, ray.direction * 100f, Color.green, 2f);
 
         RaycastHit hit;
