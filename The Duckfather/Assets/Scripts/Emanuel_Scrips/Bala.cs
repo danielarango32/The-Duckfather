@@ -64,8 +64,11 @@ public class Bala : MonoBehaviour
     [PunRPC]
     private void Explode()  //Explosion y da�o al enemigo por la misma
     {
-        
-        if (explosion != null) Instantiate(explosion, transform.position, Quaternion.identity);
+
+        if (explosion != null)
+        {
+            Instantiate(explosion, transform.position, Quaternion.identity);
+        } 
 
         
         Collider[] enemies = Physics.OverlapSphere(transform.position, explosionRange, whatIsEnemies);  
@@ -90,6 +93,7 @@ public class Bala : MonoBehaviour
 
 
         //Delay para destruir 
+
         Invoke("Delay", 0.05f);
         Invoke("DelayExplosion", 5.0f);
     }

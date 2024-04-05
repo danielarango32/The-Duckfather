@@ -85,13 +85,16 @@ public class ShootinController : MonoBehaviour
     {
         if(numArma != 0)
         {
+            //Debug.Log("Entra al disparo");
             if (numArma == 2)
             {
+                //Debug.Log("Puede disparar la bazuca");
                 if (ShouldFire()) Shoot();
             }
             else
             {
                 if (ShouldFire()) FireRaycast();
+                //Debug.Log("Puede disparar cualquier otra arma");
             }
         }
         
@@ -124,7 +127,7 @@ public class ShootinController : MonoBehaviour
             WeaponController.transform.Find("BazucaChild").gameObject.SetActive(false);
             WeaponController.transform.Find("ThomsonChild").gameObject.SetActive(false);
             
-            Debug.Log("Armas Desactivadas");
+            //Debug.Log("Armas Desactivadas");
         }
         if (numeroDeArma == 1)
         {
@@ -137,7 +140,7 @@ public class ShootinController : MonoBehaviour
             velocidad = 50;
             damage = 25;
 
-            Debug.Log("Arma Activada Pistol");
+            //Debug.Log("Arma Activada Pistol");
         }
         if (numeroDeArma == 2)
         {
@@ -149,7 +152,7 @@ public class ShootinController : MonoBehaviour
             fireRate = 1.5f;
             velocidad = 90;
 
-            Debug.Log("Arma Activada Bazuca");
+            //Debug.Log("Arma Activada Bazuca");
         }
         if (numeroDeArma == 3)
         {
@@ -162,7 +165,7 @@ public class ShootinController : MonoBehaviour
             velocidad = 70;
             damage = 20;
 
-            Debug.Log("Arma Activada Metralleta");
+            //Debug.Log("Arma Activada Metralleta");
         }
         if (numeroDeArma == 4)
         {
@@ -175,7 +178,7 @@ public class ShootinController : MonoBehaviour
             fireRate = 0.2f;
             velocidad = 70;
             damage = 10;
-            Debug.Log("Arma Activada LanzaGranadas");
+            //Debug.Log("Arma Activada LanzaGranadas");
         }
     }
 

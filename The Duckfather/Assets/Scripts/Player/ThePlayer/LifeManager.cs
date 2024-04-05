@@ -24,7 +24,7 @@ public class LifeManager : MonoBehaviour
     
     private void Update()
     {
-        sliderVida.value = vida;
+        //sliderVida.value = vida;
 
         if (damageRecieved)
         {

@@ -23,12 +23,12 @@ public class MouseLook : MonoBehaviour
 
 
 
-        /*      FPS
+        /*     //FPS
         xRotation -= sensY;
         xRotation = Mathf.Clamp(xRotation, -80f, 80f);  
         transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        */
         
+        */
 
 
 
