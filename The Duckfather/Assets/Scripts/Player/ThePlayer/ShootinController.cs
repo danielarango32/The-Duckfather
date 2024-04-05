@@ -45,7 +45,12 @@ public class ShootinController : MonoBehaviour
     [Header("WeaponcontrollerReference")]
     public GameObject WeaponController;
 
-
+    [Space]
+    [Header("VFX")]
+    [SerializeField] GameObject vfxDisparo;
+    [SerializeField] GameObject hitDisparo;
+    [SerializeField] GameObject vfxDisparoBazuca;
+    [SerializeField] GameObject hitDisparoBazuca;
     private void Start()
     {
         firerateTimer = fireRate;
@@ -117,7 +122,8 @@ public class ShootinController : MonoBehaviour
             WeaponController.transform.Find("RevolverChild").gameObject.SetActive(false);
             WeaponController.transform.Find("PistolaChild").gameObject.SetActive(false);
             WeaponController.transform.Find("BazucaChild").gameObject.SetActive(false);
-
+            WeaponController.transform.Find("ThomsonChild").gameObject.SetActive(false);
+            
             Debug.Log("Armas Desactivadas");
         }
         if (numeroDeArma == 1)
@@ -125,9 +131,11 @@ public class ShootinController : MonoBehaviour
             WeaponController.transform.Find("RevolverChild").gameObject.SetActive(false);
             WeaponController.transform.Find("PistolaChild").gameObject.SetActive(true);
             WeaponController.transform.Find("BazucaChild").gameObject.SetActive(false);
+            WeaponController.transform.Find("ThomsonChild").gameObject.SetActive(false);
             canon = WeaponController.transform.Find("PistolaChild").gameObject.transform;
             fireRate = 0.3f;
             velocidad = 50;
+            damage = 25;
 
             Debug.Log("Arma Activada Pistol");
         }
@@ -136,24 +144,37 @@ public class ShootinController : MonoBehaviour
             WeaponController.transform.Find("RevolverChild").gameObject.SetActive(false);
             WeaponController.transform.Find("PistolaChild").gameObject.SetActive(false);
             WeaponController.transform.Find("BazucaChild").gameObject.SetActive(true);
+            WeaponController.transform.Find("ThomsonChild").gameObject.SetActive(false);
             canon = WeaponController.transform.Find("BazucaChild").gameObject.transform;
             fireRate = 1.5f;
-            Debug.Log("Arma Activada Bazuca");
             velocidad = 90;
+
+            Debug.Log("Arma Activada Bazuca");
         }
         if (numeroDeArma == 3)
         {
             WeaponController.transform.Find("RevolverChild").gameObject.SetActive(true);
             WeaponController.transform.Find("PistolaChild").gameObject.SetActive(false);
             WeaponController.transform.Find("BazucaChild").gameObject.SetActive(false);
+            WeaponController.transform.Find("ThomsonChild").gameObject.SetActive(false);
             canon = WeaponController.transform.Find("RevolverChild").gameObject.transform;
             fireRate = 0.85f;
             velocidad = 70;
+            damage = 20;
 
             Debug.Log("Arma Activada Metralleta");
         }
         if (numeroDeArma == 4)
         {
+
+            WeaponController.transform.Find("RevolverChild").gameObject.SetActive(false);
+            WeaponController.transform.Find("PistolaChild").gameObject.SetActive(false);
+            WeaponController.transform.Find("BazucaChild").gameObject.SetActive(false);
+            WeaponController.transform.Find("ThomsonChild").gameObject.SetActive(true);
+            canon = WeaponController.transform.Find("ThomsonChild").gameObject.transform;
+            fireRate = 0.2f;
+            velocidad = 70;
+            damage = 10;
             Debug.Log("Arma Activada LanzaGranadas");
         }
     }
@@ -169,9 +190,9 @@ public class ShootinController : MonoBehaviour
 
         GameObject proyectil;
 
-        //proyectil = PhotonNetwork.Instantiate(prefabBala.name, canon.position, target.rotation);
+        proyectil = PhotonNetwork.Instantiate(prefabBala.name, canon.position, target.rotation);
         //Offline
-        proyectil = Instantiate(prefabBala, canon.position, target.rotation);
+        //proyectil = Instantiate(prefabBala, canon.position, target.rotation);
 
         Rigidbody rb = proyectil.GetComponent<Rigidbody>();
 
@@ -199,10 +220,15 @@ public class ShootinController : MonoBehaviour
 
         if (Physics.Raycast(ray.origin, ray.direction, out hit, 100f))
         {
+            PhotonNetwork.Instantiate(hitDisparo.name, hit.point, Quaternion.identity);
+
             if (hit.transform.gameObject.GetComponent<LifeManager>())
             {
-                //hit.transform.gameObject.GetComponent<PhotonView>().RPC("QuitarVida", RpcTarget.All, damage);
-                hit.transform.gameObject.GetComponent<LifeManager>().QuitarVida(damage);
+                //online
+                hit.transform.gameObject.GetComponent<PhotonView>().RPC("QuitarVida", RpcTarget.All, damage);
+
+                //offline
+                //hit.transform.gameObject.GetComponent<LifeManager>().QuitarVida(damage);
                 Debug.DrawRay(hit.transform.position, hit.transform.position, Color.yellow, 2f);
             }
         }
