@@ -12,6 +12,10 @@ public class LifeManager : MonoBehaviour
     [SerializeField] float escudo = 0;
     [SerializeField] float tiempoParaRegen;
     [SerializeField] float cantidadDeRegeneracion;
+    
+    public bool isLocalPlayer;
+    
+    private float originalHealthBarSize;
 
 
     [Header("UI de vida")]
@@ -21,9 +25,13 @@ public class LifeManager : MonoBehaviour
     public bool danorecibido;
     public float contador;
 
-    
+    private void Start()
+    {
+        originalHealthBarSize = sliderVida.GetComponent<RectTransform>().sizeDelta.x;
+    }
     private void Update()
     {
+        //sliderVida.GetComponent<RectTransform>().sizeDelta = new Vector2(originalHealthBarSize * vida / 100, sliderVida.GetComponent<RectTransform>().sizeDelta.y);
         sliderVida.value = vida;
 
         if (danorecibido)
@@ -71,6 +79,8 @@ public class LifeManager : MonoBehaviour
         Debug.Log("El dano que llega es=" + Dano);
 
         StartCoroutine(Danorecibido());
+        
+        sliderVida.GetComponent<RectTransform>().sizeDelta = new Vector2(originalHealthBarSize * vida / 100, sliderVida.GetComponent<RectTransform>().sizeDelta.y);
 
         if (escudo>0)
         {
@@ -89,6 +99,9 @@ public class LifeManager : MonoBehaviour
 
         if (vida <= 0 )
         {
+            Roomandlobbymanager.Instance.SpawnPlayer();
+            //Roomandlobbymanager.Instance.
+            //Roomandlobbymanager.Instance
 
             Destroy(this.gameObject);
         } 

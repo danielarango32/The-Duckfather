@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class Roomandlobbymanager : MonoBehaviourPunCallbacks
 {
@@ -40,7 +41,7 @@ public class Roomandlobbymanager : MonoBehaviourPunCallbacks
         
         Debug.Log("Conectando...");
          
-        PhotonNetwork.JoinOrCreateRoom(roomNameToJoin, null, null);
+        PhotonNetwork.JoinOrCreateRoom(roomNameToJoin, new RoomOptions{MaxPlayers = 8}, null);
         
         nameUI.SetActive(false);
         ConnectingUI.SetActive(true);
@@ -64,7 +65,7 @@ public class Roomandlobbymanager : MonoBehaviourPunCallbacks
     {
         GameObject _player = PhotonNetwork.Instantiate(player.name, Spawn.position, Quaternion.identity);
         _player.GetComponent<PlayerSetUp>().IsLocalPlayer();
-        //_playerP.GetComponent<Health>.isLocalPlayer = true;
+        _player.GetComponent<LifeManager>().isLocalPlayer = true;
         
         _player.GetComponent<PhotonView>().RPC("SetNickName", RpcTarget.AllBuffered, nickName);
         

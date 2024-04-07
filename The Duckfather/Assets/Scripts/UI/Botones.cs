@@ -20,6 +20,7 @@ public class MenuBotones : MonoBehaviourPunCallbacks
     {
         yield return new WaitForSeconds(1);
         SceneManager.LoadScene("Online");
+        PhotonNetwork.ConnectUsingSettings();
     }
 
     public void ChangeScene1()
