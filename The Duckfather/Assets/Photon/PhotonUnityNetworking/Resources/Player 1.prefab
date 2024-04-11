@@ -279,11 +279,12 @@ MonoBehaviour:
   canon: {fileID: 7162858636380290480}
   target: {fileID: 7048974435152911936}
   WeaponController: {fileID: 8485890448900580880}
-  vfxDisparo: {fileID: 0}
+  vfxDisparo: {fileID: 110487080824765351, guid: b094cfe72e040be4ba8fb1dd8ab40ec0,
+    type: 3}
   hitDisparo: {fileID: 4534775681404897378, guid: f87edb8b8eb8a1c45ad6606d64ff5575,
     type: 3}
-  vfxDisparoBazuca: {fileID: 0}
-  hitDisparoBazuca: {fileID: 0}
+  vfxDisparoBazuca: {fileID: 6835939625471343036, guid: 2927d3c0dea2f7c4d8bdc1cc7a486a81,
+    type: 3}
 --- !u!114 &3357442587207767722
 MonoBehaviour:
   m_ObjectHideFlags: 0

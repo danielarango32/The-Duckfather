@@ -50,7 +50,6 @@ public class ShootinController : MonoBehaviour
     [SerializeField] GameObject vfxDisparo;
     [SerializeField] GameObject hitDisparo;
     [SerializeField] GameObject vfxDisparoBazuca;
-    [SerializeField] GameObject hitDisparoBazuca;
     private void Start()
     {
         firerateTimer = fireRate;
@@ -59,6 +58,8 @@ public class ShootinController : MonoBehaviour
 
     private void Update()
     {
+
+        
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             numArma = 0;
@@ -83,7 +84,22 @@ public class ShootinController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if(numArma != 0)
+
+        //posición del VFX del disparo
+        if (vfxDisparo.transform.position != canon.position)
+        {
+            vfxDisparo.transform.position = canon.position;
+        }
+        
+        //posición del VFX del disparo de la bazuca
+        if (vfxDisparoBazuca.transform.position != canon.position)
+        {
+            vfxDisparoBazuca.transform.position = canon.position;
+        }
+        
+
+
+        if (numArma != 0)
         {
             //Debug.Log("Entra al disparo");
             if (numArma == 2)
@@ -194,6 +210,8 @@ public class ShootinController : MonoBehaviour
         GameObject proyectil;
 
         proyectil = PhotonNetwork.Instantiate(prefabBala.name, canon.position, target.rotation);
+        PhotonNetwork.Instantiate(vfxDisparoBazuca.name, canon.position, Quaternion.identity);
+        
         //Offline
         //proyectil = Instantiate(prefabBala, canon.position, target.rotation);
 
@@ -224,6 +242,8 @@ public class ShootinController : MonoBehaviour
         if (Physics.Raycast(ray.origin, ray.direction, out hit, 100f))
         {
             PhotonNetwork.Instantiate(hitDisparo.name, hit.point, Quaternion.identity);
+            PhotonNetwork.Instantiate(vfxDisparo.name, canon.position, Quaternion.identity);
+
 
             if (hit.transform.gameObject.GetComponent<LifeManager>())
             {
