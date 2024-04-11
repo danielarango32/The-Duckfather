@@ -55,7 +55,7 @@ public class ShootinController : MonoBehaviour
         firerateTimer = fireRate;
     }
 
-
+    /*
     private void Update()
     {
 
@@ -82,6 +82,9 @@ public class ShootinController : MonoBehaviour
         }
 
     }
+    */
+
+
     private void FixedUpdate()
     {
 
@@ -152,9 +155,10 @@ public class ShootinController : MonoBehaviour
             WeaponController.transform.Find("BazucaChild").gameObject.SetActive(false);
             WeaponController.transform.Find("ThomsonChild").gameObject.SetActive(false);
             canon = WeaponController.transform.Find("PistolaChild").gameObject.transform;
-            fireRate = 0.3f;
+            fireRate = 0.5f;
             velocidad = 50;
-            damage = 25;
+            damage = 10;
+            numBalas = 10000;
 
             //Debug.Log("Arma Activada Pistol");
         }
@@ -167,7 +171,7 @@ public class ShootinController : MonoBehaviour
             canon = WeaponController.transform.Find("BazucaChild").gameObject.transform;
             fireRate = 1.5f;
             velocidad = 90;
-
+            numBalas = 10;  
             //Debug.Log("Arma Activada Bazuca");
         }
         if (numeroDeArma == 3)
@@ -177,11 +181,11 @@ public class ShootinController : MonoBehaviour
             WeaponController.transform.Find("BazucaChild").gameObject.SetActive(false);
             WeaponController.transform.Find("ThomsonChild").gameObject.SetActive(false);
             canon = WeaponController.transform.Find("RevolverChild").gameObject.transform;
-            fireRate = 0.85f;
+            fireRate = 0.9f;
             velocidad = 70;
-            damage = 20;
-
-            //Debug.Log("Arma Activada Metralleta");
+            damage = 25;
+            numBalas = 16;
+            //Debug.Log("Arma Activada Revolver");
         }
         if (numeroDeArma == 4)
         {
@@ -193,8 +197,9 @@ public class ShootinController : MonoBehaviour
             canon = WeaponController.transform.Find("ThomsonChild").gameObject.transform;
             fireRate = 0.2f;
             velocidad = 70;
-            damage = 10;
-            //Debug.Log("Arma Activada LanzaGranadas");
+            damage = 5;
+            numBalas = 80;
+            //Debug.Log("Arma Activada Thomson");
         }
     }
 
@@ -267,7 +272,10 @@ public class ShootinController : MonoBehaviour
         numBalas = numBalas - disparo;
 
 
-        if (numBalas <= 0) return false;
+        if (numBalas <= 0)
+        {
+            SelectorDeArma(0);
+        }
 
 
         return false;

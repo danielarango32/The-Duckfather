@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2090274320947605053}
   - component: {fileID: 7481429359000563628}
   - component: {fileID: 8331278942590853790}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ThomsonRecolectable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -168,6 +168,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Thomson
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f9524a198eda06e45935a445739ec1c4,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
