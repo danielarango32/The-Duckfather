@@ -5,16 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Rolix/Menu.unity
     guid: 001c8a1d8a95b2640bdd5e3674263dcc
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Rolix/Online.unity
     guid: ce1f4be97752dc541b250059aa17abad
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Rolix/Controles.unity
     guid: 2349b7c5c83f1f748a43e0b86b91c3b1
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Rolix/Logo.unity
     guid: 1b7969be3631a34438da9eec62e63f42
   - enabled: 1
