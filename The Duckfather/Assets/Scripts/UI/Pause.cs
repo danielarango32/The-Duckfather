@@ -8,6 +8,8 @@ public class Pause : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
     
+    public bool isPaused;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -19,16 +21,25 @@ public class Pause : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            OpenPauseMenu();
-        }
+            if (isPaused)
+            {
+                ClosePauseMenu();
+            }
+            else
+            {
+                OpenPauseMenu();
+            }
+        }  
     }
     
     // open the pause menu whit esc key
     
     public void OpenPauseMenu()
     {
-        this.pauseMenu.SetActive(true);
+        pauseMenu.SetActive(true);
         Time.timeScale = 0;
+        isPaused = true;
+        Debug.Log("Pause");
     }
     
     // close the pause menu
@@ -37,6 +48,8 @@ public class Pause : MonoBehaviour
     {
         this.pauseMenu.SetActive(false);
         Time.timeScale = 1;
+        isPaused = false;
+        Debug.Log("Unpause");
     }
     
     // back to lobby

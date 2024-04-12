@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {
@@ -32,21 +33,28 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     [SerializeField] private float groundDistance = 0.4f;
     public LayerMask groundeMask;
     [SerializeField] public bool isGrounded = false;
+    
+    private float dashTime;
 
 
-    [Header("Globalización De Variables")]
+    [Header("Globalizaciï¿½n De Variables")]
     public float x, z;
-
-
-
-
-
+    
+    [Header("UI de dash")]
+    [SerializeField] Slider sliderDash;
+    
+    private void Start()
+    {
+        dashTime = sliderDash.GetComponent<RectTransform>().sizeDelta.x;;
+        sliderDash.maxValue = CDDash;
+    }
     private void Update()
     {
 
         Movimiento();
         IsGrounded();
         Saltar();
+        sliderDash.value = CDDash;
 
     }
 
@@ -93,8 +101,9 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(0.01f);
         dashPower = 1;
         canDash = false;
+        
         yield return new WaitForSeconds(CDDash);
         canDash = true;
     }
-
+    
 }

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 public class Timer : MonoBehaviour
 {
@@ -19,31 +21,35 @@ public class Timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.stopTimer = false;
-        this.timeSlider.maxValue = this.time;
-        this.timeSlider.value = this.time;
+        stopTimer = false;
+        timeSlider.maxValue = time;
+        timeSlider.value = time;
     }
 
     // Update is called once per frame
     void Update()
     {
-        float time = this.time - Time.time;   
-        int minutes = Mathf.FloorToInt(time / 180);
-        int seconds = Mathf.FloorToInt(time - minutes * 180);
-        String textTimer = string.Format("{0:00}:{3:00}", minutes, seconds);
+        int timer = (int)PhotonNetwork.CurrentRoom.CustomProperties["Time"]; 
+        int minutes = Mathf.FloorToInt((int)PhotonNetwork.CurrentRoom.CustomProperties["Time"] / 60);
+        int seconds = Mathf.FloorToInt((int)PhotonNetwork.CurrentRoom.CustomProperties["Time"] % 60);
+        String textTimer = string.Format("{0:00}:{1:00}", minutes, seconds);
 
-        if (this.time <= 0)
+        if (timer <= 0)
         {
             StopTimer();
         }
-        if (this.stopTimer == false)
+        if (stopTimer == false)
         {
-            this.timeText.text = textTimer;
-            this.timeSlider.value = this.time;
+            timeText.text = textTimer;
+            timeSlider.value = time;
         }
-        if (time <= 60)
+        if (timer <= 60)
         {
             this.ChangeColor();
+        }
+        else if (timer <= 120)
+        {
+            this.timeSlider.fillRect.GetComponent<Image>().color = Color.yellow;
         }
     }
     
@@ -51,14 +57,17 @@ public class Timer : MonoBehaviour
     
     public void ChangeColor()
     {
-        this.timeSlider.fillRect.GetComponent<Image>().color = Color.red;
+        timeSlider.fillRect.GetComponent<Image>().color = Color.red;
     }
     
     // stop the timer
     
     public void StopTimer()
     {
-        this.stopTimer = true;
+        stopTimer = true;
+        SceneManager.LoadScene("Online");
+        PhotonNetwork.LeaveRoom();
+        
     }
     
     

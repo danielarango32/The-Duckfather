@@ -22,6 +22,8 @@ public class Roomandlobbymanager : MonoBehaviourPunCallbacks
     
     public GameObject ConnectingUI;
     
+    public GameObject TimerUI;
+    
     
     private String nickName = "Player";
     
@@ -57,6 +59,8 @@ public class Roomandlobbymanager : MonoBehaviourPunCallbacks
         
         
         roomCam.SetActive(false);
+        
+        TimerUI.SetActive(true);
         
         SpawnPlayer();
     }

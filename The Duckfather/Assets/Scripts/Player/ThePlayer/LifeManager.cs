@@ -16,6 +16,7 @@ public class LifeManager : MonoBehaviour
     public bool isLocalPlayer;
     
     private float originalHealthBarSize;
+    private float originalShieldBarSize;
 
 
     [Header("UI de vida")]
@@ -28,11 +29,17 @@ public class LifeManager : MonoBehaviour
     private void Start()
     {
         originalHealthBarSize = sliderVida.GetComponent<RectTransform>().sizeDelta.x;
+        sliderVida.maxValue = vida;
+        
+        originalShieldBarSize = sliderEscudo.GetComponent<RectTransform>().sizeDelta.x;
+        sliderEscudo.maxValue = escudo;
+        
     }
     private void Update()
     {
         //sliderVida.GetComponent<RectTransform>().sizeDelta = new Vector2(originalHealthBarSize * vida / 100, sliderVida.GetComponent<RectTransform>().sizeDelta.y);
         sliderVida.value = vida;
+        sliderEscudo.value = escudo;
 
         if (danorecibido)
         {
