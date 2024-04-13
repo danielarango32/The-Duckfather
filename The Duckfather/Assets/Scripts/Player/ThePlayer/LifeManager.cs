@@ -106,7 +106,12 @@ public class LifeManager : MonoBehaviour
 
         if (vida <= 0 )
         {
-            Roomandlobbymanager.Instance.SpawnPlayer();
+            if (isLocalPlayer)
+            {
+                Roomandlobbymanager.Instance.SpawnPlayer();
+            }
+            
+            
             //Roomandlobbymanager.Instance.
             //Roomandlobbymanager.Instance
 

@@ -12,7 +12,7 @@ public class Roomandlobbymanager : MonoBehaviourPunCallbacks
     public GameObject player;
 
     [Space]
-    public Transform Spawn;
+    public Transform[] Spawns;
 
     [Space] 
     public GameObject roomCam;
@@ -67,6 +67,8 @@ public class Roomandlobbymanager : MonoBehaviourPunCallbacks
     
     public void SpawnPlayer()
     {
+        Transform Spawn = Spawns[UnityEngine.Random.Range(0, Spawns.Length)];
+            
         GameObject _player = PhotonNetwork.Instantiate(player.name, Spawn.position, Quaternion.identity);
         _player.GetComponent<PlayerSetUp>().IsLocalPlayer();
         _player.GetComponent<LifeManager>().isLocalPlayer = true;

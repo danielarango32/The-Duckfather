@@ -6,70 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="767b46c7-ce85-469b-bc9e-d38d49d547a9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.The Duckfather/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.The Duckfather/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/Balita.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/Balita.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/Player_2.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/Player_2.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/RoomItem.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/RoomItem.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Rolix/Controles.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Rolix/Controles.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Rolix/Online.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Rolix/Online.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/rolix/Menu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/rolix/Menu.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/ThePlayer/LifeManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/ThePlayer/LifeManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/ThePlayer/PlayerMovement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/ThePlayer/PlayerMovement.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Pause.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Pause.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Room and lobby manager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Room and lobby manager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Timer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Timer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Barra_Energia 1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Barra_Energia 1.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Barra_Energia.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Barra_Energia.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Barra_Escudo.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Barra_Escudo.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Barra_Vida.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Barra_Vida.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_CambiarSkin.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_CambiarSkin.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_Controles.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Boton_Controles.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_Controles.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Boton_Controles.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_CrearPartida.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Boton_CrearPartida.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_CrearPartida.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Boton_CrearPartida.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_Creditos.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Boton_Creditos.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_Creditos.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Boton_Creditos.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_Entrar.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Boton_Entrar.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_Entrar.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Boton_Entrar.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_Jugar.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Boton_Jugar.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_Jugar.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Boton_Jugar.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_RegresarLobby.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Boton_RegresarLobby.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_RegresarLobby.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Boton_RegresarLobby.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_SalirJuego.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Boton_SalirJuego.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_SalirJuego.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Boton_SalirJuego.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_Unirse.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Boton_Unirse.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_Unirse.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Boton_Unirse.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_Volver.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Boton_Volver.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_Volver.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Boton_Volver.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_VolverPartida.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Boton_VolverPartida.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/CAnvas.unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Caligrafia_DuckFather.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Caligrafia_DuckFather.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Casilla_Texto.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Casilla_Texto.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Casilla_Texto.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Casilla_Texto.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Explicacion_Controles.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Explicacion_Controles.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Explicacion_Controles.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Explicacion_Controles.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Lista_Jugadores.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Lista_Jugadores.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Lista_Jugadores.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Lista_Jugadores.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Marcos_Barras.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Marcos_Barras.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Menu.unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/PAntalla_de_carga.unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Recuadro_Skins.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Recuadro_Skins.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Recuadro_Skins.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Recuadro_Skins.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UI_Bazooka.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UI_Bazooka.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UI_Revolver.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/UI_Revolver.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/UI_Revolver.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/UI_Revolver.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Ui_Pistola.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Ui_Pistola.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Ui_Pistola.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Ui_Pistola.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/boton unirse.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/boton unirse.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/logo.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/logo.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/logo.png.meta" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -195,6 +133,7 @@
       <workItem from="1712629942785" duration="2331000" />
       <workItem from="1712812533680" duration="1098000" />
       <workItem from="1712885789655" duration="1615000" />
+      <workItem from="1712966191379" duration="1413000" />
     </task>
     <servers />
   </component>
