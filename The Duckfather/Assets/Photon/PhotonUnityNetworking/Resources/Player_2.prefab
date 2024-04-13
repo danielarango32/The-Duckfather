@@ -120,7 +120,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 474269883536174382}
+      - m_Target: {fileID: 1076569125723351130}
         m_TargetAssemblyTypeName: Pause, Assembly-CSharp
         m_MethodName: ClosePauseMenu
         m_Mode: 1
@@ -602,7 +602,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 474269883536174382}
+      - m_Target: {fileID: 1076569125723351130}
         m_TargetAssemblyTypeName: Pause, Assembly-CSharp
         m_MethodName: BackToLobby
         m_Mode: 1
@@ -1061,6 +1061,7 @@ GameObject:
   - component: {fileID: 959261631441258209}
   - component: {fileID: 924892979236600923}
   - component: {fileID: 3357442587207767722}
+  - component: {fileID: 1076569125723351130}
   m_Layer: 7
   m_Name: Player_2
   m_TagString: Player
@@ -1306,10 +1307,26 @@ MonoBehaviour:
   tiempoParaRegen: 0
   cantidadDeRegeneracion: 0
   isLocalPlayer: 0
+  healthBar: {fileID: 0}
+  shieldBar: {fileID: 0}
   sliderVida: {fileID: 599957188130092005}
   sliderEscudo: {fileID: 5134551065089341007}
   danorecibido: 0
   contador: 0
+--- !u!114 &1076569125723351130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3340080740257102832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a95444cc10fe1ff488ad528a6cd78ddd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseMenu: {fileID: 3581634904156510387}
+  isPaused: 0
 --- !u!1 &3581634904156510387
 GameObject:
   m_ObjectHideFlags: 0
@@ -1319,14 +1336,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5485510101264556917}
-  - component: {fileID: 474269883536174382}
   m_Layer: 5
   m_Name: Pausa
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5485510101264556917
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1350,20 +1366,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &474269883536174382
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3581634904156510387}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a95444cc10fe1ff488ad528a6cd78ddd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pauseMenu: {fileID: 3581634904156510387}
-  isPaused: 0
 --- !u!1 &3711507379934693796
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ public class Pause : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.pauseMenu.SetActive(false);
+        pauseMenu.SetActive(false);
     }
 
     // Update is called once per frame
@@ -21,15 +21,11 @@ public class Pause : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isPaused)
-            {
-                ClosePauseMenu();
-            }
-            else
-            {
+            //if (isPaused == true)
+            
                 OpenPauseMenu();
-            }
-        }  
+            
+        }
     }
     
     // open the pause menu whit esc key
@@ -39,6 +35,7 @@ public class Pause : MonoBehaviour
         pauseMenu.SetActive(true);
         Time.timeScale = 0;
         isPaused = true;
+        Cursor.lockState = CursorLockMode.None;
         Debug.Log("Pause");
     }
     
@@ -46,9 +43,10 @@ public class Pause : MonoBehaviour
     
     public void ClosePauseMenu()
     {
-        this.pauseMenu.SetActive(false);
+        pauseMenu.SetActive(false);
         Time.timeScale = 1;
         isPaused = false;
+        Cursor.lockState = CursorLockMode.Locked;
         Debug.Log("Unpause");
     }
     
@@ -60,6 +58,7 @@ public class Pause : MonoBehaviour
         //GameObject.FindGameObjectsWithTag("join game screen").SetActive(true);
         SceneManager.LoadScene("Online");
         PhotonNetwork.LeaveRoom();
+        Cursor.lockState = CursorLockMode.None;
     }
     
 }
