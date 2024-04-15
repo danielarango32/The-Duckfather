@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.InputSystem;
 
 
 public class MouseLook : MonoBehaviour
@@ -13,6 +14,7 @@ public class MouseLook : MonoBehaviour
     [SerializeField] private Transform playerBody;
     [SerializeField] private Transform camera;
     [SerializeField] private Transform cameraTarget;
+    [SerializeField] private Camera cameraC;
     //float xRotation = 0f;
 
 
@@ -22,8 +24,8 @@ public class MouseLook : MonoBehaviour
     }
     private void Update()
     {
-        float sensX = Input.GetAxis("Mouse X") * sensibility * Time.deltaTime;
-        float sensY = Input.GetAxis("Mouse Y") * sensibility * Time.deltaTime;
+        float sensX = Input.GetAxis("Mouse X");
+        float sensY = Input.GetAxis("Mouse Y");
 
 
 
@@ -34,20 +36,18 @@ public class MouseLook : MonoBehaviour
         
         */
 
-
-
+        
         playerBody.Rotate(Vector3.up * sensX);
+        multiAimConstraint.Rotate(Vector3.up * sensX);
         multiAimConstraint.Rotate(Vector3.left * sensY);
 
         // camara
-        camera.Rotate(Vector3.left * sensY);
+        //camera.Rotate(Vector3.left * sensY);
 
         // camara target
-        cameraTarget.Rotate(Vector3.left * sensY);
-
-        
-
-        cameraTarget.Rotate(Vector3.up * sensX);
+        Vector3 projectedPoint = cameraC.ScreenToWorldPoint(new Vector3(Input.GetAxis("Mouse X"),Input.GetAxis("Mouse Y"),8));
+        Debug.DrawLine(cameraC.transform.position, projectedPoint, Color.cyan, 0.3f);
+        cameraTarget.position = projectedPoint;
 
 
 
