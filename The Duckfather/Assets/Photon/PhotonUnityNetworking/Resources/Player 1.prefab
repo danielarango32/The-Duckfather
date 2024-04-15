@@ -356,6 +356,7 @@ MonoBehaviour:
     type: 3}
   canon: {fileID: 7162858636380290480}
   target: {fileID: 7048974435152911936}
+  multiAimConstraint: {fileID: 5177590982961299002}
   WeaponController: {fileID: 8485890448900580880}
   vfxDisparo: {fileID: 110487080824765351, guid: b094cfe72e040be4ba8fb1dd8ab40ec0,
     type: 3}
@@ -396,6 +397,7 @@ GameObject:
   - component: {fileID: 6129175539184389329}
   - component: {fileID: 7355940332952763061}
   - component: {fileID: 5130875446239849477}
+  - component: {fileID: 7690481051469886927}
   m_Layer: 7
   m_Name: CamaraJugador
   m_TagString: MainCamera
@@ -555,6 +557,19 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7690481051469886927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3379581105895670225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52868a4a972ecc245a15968b354cd8da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetFPS: 60
 --- !u!1 &5976947723955969824
 GameObject:
   m_ObjectHideFlags: 0

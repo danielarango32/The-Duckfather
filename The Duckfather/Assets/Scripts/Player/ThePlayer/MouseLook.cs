@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
-using UnityEngine.InputSystem;
 
 
 public class MouseLook : MonoBehaviour
@@ -20,7 +19,7 @@ public class MouseLook : MonoBehaviour
 
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
     private void Update()
     {
@@ -36,18 +35,24 @@ public class MouseLook : MonoBehaviour
         
         */
 
-        
-        playerBody.Rotate(Vector3.up * sensX);
-        multiAimConstraint.Rotate(Vector3.up * sensX);
-        multiAimConstraint.Rotate(Vector3.left * sensY);
+        //modificación del aim constraint y el playerbody
+        //playerBody.Rotate(Vector3.up * sensX);
+        //multiAimConstraint.Rotate(Vector3.up * sensX);
+        //multiAimConstraint.Rotate(Vector3.left * sensY);
+
+        playerBody.Rotate(Vector3.up * sensX, Space.Self);
+        multiAimConstraint.Rotate(Vector3.up * sensX, Space.Self);
 
         // camara
         //camera.Rotate(Vector3.left * sensY);
 
         // camara target
-        Vector3 projectedPoint = cameraC.ScreenToWorldPoint(new Vector3(Input.GetAxis("Mouse X"),Input.GetAxis("Mouse Y"),8));
+        Vector3 mousePos = Input.mousePosition;
+        //Vector3 projectedPoint = cameraC.ScreenToWorldPoint(new Vector3(Input.GetAxis("Mouse X"),Input.GetAxis("Mouse Y"),8));
+        Vector3 projectedPoint = cameraC.ScreenPointToRay(mousePos).GetPoint(8.0f);
         Debug.DrawLine(cameraC.transform.position, projectedPoint, Color.cyan, 0.3f);
         cameraTarget.position = projectedPoint;
+        //cameraTarget.Rotate(Vector3.left * sensY);
 
 
 
