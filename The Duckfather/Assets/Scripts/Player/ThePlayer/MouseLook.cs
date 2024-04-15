@@ -38,10 +38,14 @@ public class MouseLook : MonoBehaviour
 
         playerBody.Rotate(Vector3.up * sensX);
         multiAimConstraint.Rotate(Vector3.left * sensY);
+
+        // camara
         camera.Rotate(Vector3.left * sensY);
+
+        // camara target
         cameraTarget.Rotate(Vector3.left * sensY);
 
-        // necesito que el target de la camara se mueva en el eje y 
+        
 
         cameraTarget.Rotate(Vector3.up * sensX);
 
