@@ -1,14 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
+
 
 public class MouseLook : MonoBehaviour
 {
     public float sensibility = 120f;
 
 
+    [SerializeField] private Transform multiAimConstraint;
     [SerializeField] private Transform playerBody;
-
+    [SerializeField] private Transform camera;
+    [SerializeField] private Transform cameraTarget;
     //float xRotation = 0f;
 
 
@@ -33,7 +37,17 @@ public class MouseLook : MonoBehaviour
 
 
         playerBody.Rotate(Vector3.up * sensX);
-        
+        multiAimConstraint.Rotate(Vector3.left * sensY);
+        camera.Rotate(Vector3.left * sensY);
+        cameraTarget.Rotate(Vector3.left * sensY);
+
+        // necesito que el target de la camara se mueva en el eje y 
+
+        cameraTarget.Rotate(Vector3.up * sensX);
+
+
+
+
 
     }
 }
