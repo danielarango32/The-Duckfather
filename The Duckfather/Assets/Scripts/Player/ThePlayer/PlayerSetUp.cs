@@ -15,7 +15,7 @@ public class PlayerSetUp : MonoBehaviour
     public PlayerPhotonSoundManager _soundManager;
     [Space]
     public GameObject _camara;
-    
+    public GameObject _camaraCinemachine;
     public string nickName;
     
     public TextMeshPro nickNameText;
@@ -28,6 +28,7 @@ public class PlayerSetUp : MonoBehaviour
         _mouseLook.enabled = true;
 
         _camara.SetActive(true);
+        _camaraCinemachine.SetActive(true);
         _aimManager.enabled = true;
 
         _animatorController.enabled = true;

@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class ShootinController : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class ShootinController : MonoBehaviour
     [SerializeField] GameObject prefabBala;
     [SerializeField] Transform canon;
     [SerializeField] Transform target;
+    [SerializeField] Transform multiAimConstraint;
 
     [Space]
     
@@ -239,7 +241,8 @@ public class ShootinController : MonoBehaviour
         float disparo = 0;
         firerateTimer = 0;
 
-        Ray ray = new Ray(canon.transform.position, target.transform.forward);
+        //Ray ray = new Ray(canon.transform.position, target.transform.forward);
+        Ray ray = new Ray(canon.transform.position, multiAimConstraint.forward);
         Debug.DrawRay(ray.origin, ray.direction * 100f, Color.green, 2f);
 
         RaycastHit hit;
