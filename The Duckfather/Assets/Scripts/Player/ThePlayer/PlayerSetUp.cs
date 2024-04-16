@@ -12,6 +12,7 @@ public class PlayerSetUp : MonoBehaviour
     public AnimatorController _animatorController;
     public ShootinController _shootinController;
     public LifeManager _lifeManager;
+    public PlayerPhotonSoundManager _soundManager;
     [Space]
     public GameObject _camara;
     
@@ -31,6 +32,8 @@ public class PlayerSetUp : MonoBehaviour
 
         _animatorController.enabled = true;
         _shootinController.enabled = true;
+
+        _soundManager.enabled = true;
 
     }
     
