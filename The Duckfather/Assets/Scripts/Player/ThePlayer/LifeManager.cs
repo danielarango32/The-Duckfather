@@ -33,11 +33,11 @@ public class LifeManager : MonoBehaviour
     {
         originalHealthBarSize = healthBar.sizeDelta.x;
         originalHealthBarSize = sliderVida.GetComponent<RectTransform>().sizeDelta.x;
-        sliderVida.maxValue = vida;
+        
         
         originalShieldBarSize = shieldBar.sizeDelta.x;
         originalShieldBarSize = sliderEscudo.GetComponent<RectTransform>().sizeDelta.x;
-        sliderEscudo.maxValue = escudo;
+        
         
     }
     private void Update()
@@ -92,8 +92,6 @@ public class LifeManager : MonoBehaviour
 
         StartCoroutine(Danorecibido());
         
-        healthBar.sizeDelta = new Vector2(originalHealthBarSize * vida / 100, healthBar.sizeDelta.y);
-        shieldBar.sizeDelta = new Vector2(originalShieldBarSize * escudo / 100, shieldBar.sizeDelta.y);
 
         if (escudo>0)
         {
@@ -101,6 +99,7 @@ public class LifeManager : MonoBehaviour
 
             if (escudo < 0)
             {
+                shieldBar.sizeDelta = new Vector2(originalShieldBarSize * escudo / 100, shieldBar.sizeDelta.y);
                 escudo = 0;
             }
             
@@ -112,6 +111,7 @@ public class LifeManager : MonoBehaviour
 
         if (vida <= 0 )
         {
+            healthBar.sizeDelta = new Vector2(originalHealthBarSize * vida / 100, healthBar.sizeDelta.y);
             if (isLocalPlayer)
             {
                 Roomandlobbymanager.Instance.SpawnPlayer();

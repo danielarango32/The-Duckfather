@@ -22,6 +22,15 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     private float dashPower = 1f;
 
     public bool canDash = true;
+    
+    private float dashTime;
+    
+    public RectTransform DashBar;
+    
+    [Header("UI de dash")]
+    [SerializeField] Slider sliderDash;
+    
+    private float timeDashSize;
 
     //GRAVEDAD
     [SerializeField] float gravity = -20f;
@@ -34,19 +43,16 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     public LayerMask groundeMask;
     [SerializeField] public bool isGrounded = false;
     
-    private float dashTime;
-
 
     [Header("Globalizaci�n De Variables")]
     public float x, z;
     
-    [Header("UI de dash")]
-    [SerializeField] Slider sliderDash;
-    
     private void Start()
     {
-        dashTime = sliderDash.GetComponent<RectTransform>().sizeDelta.x;;
-        sliderDash.maxValue = CDDash;
+        dashTime = DashBar.sizeDelta.x;
+        dashTime = sliderDash.GetComponent<RectTransform>().sizeDelta.x;
+        
+        
     }
     private void Update()
     {
@@ -54,7 +60,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         Movimiento();
         IsGrounded();
         Saltar();
-        sliderDash.value = CDDash;
+        sliderDash.value = timeDashSize;
 
     }
 
@@ -101,9 +107,13 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(0.01f);
         dashPower = 1;
         canDash = false;
+        timeDashSize = Time.deltaTime;
+        Debug.Log(timeDashSize);
         
         yield return new WaitForSeconds(CDDash);
         canDash = true;
+        timeDashSize = Time.time;
+        
     }
     
 }

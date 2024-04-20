@@ -1215,6 +1215,8 @@ MonoBehaviour:
   CDDash: 10
   dashModifier: 20
   canDash: 1
+  DashBar: {fileID: 2228595925891385821}
+  sliderDash: {fileID: 4753621634045397773}
   gravity: -20
   groundCheck: {fileID: 3885427244472805276}
   groundDistance: 0.01
@@ -1224,7 +1226,6 @@ MonoBehaviour:
   isGrounded: 0
   x: 0
   z: 0
-  sliderDash: {fileID: 0}
 --- !u!114 &543999698265881663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1307,8 +1308,8 @@ MonoBehaviour:
   tiempoParaRegen: 0
   cantidadDeRegeneracion: 0
   isLocalPlayer: 0
-  healthBar: {fileID: 0}
-  shieldBar: {fileID: 0}
+  healthBar: {fileID: 6481360962729017523}
+  shieldBar: {fileID: 904143175554706003}
   sliderVida: {fileID: 599957188130092005}
   sliderEscudo: {fileID: 5134551065089341007}
   danorecibido: 0
@@ -1793,6 +1794,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeSlider: {fileID: 4251332770454324611}
+  timeBar: {fileID: 0}
   timeText: {fileID: 3511296001278474274}
   time: 180
 --- !u!1 &5042165323666456170
@@ -2290,9 +2292,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 100
+  m_MaxValue: 10
   m_WholeNumbers: 0
-  m_Value: 100
+  m_Value: 10
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
