@@ -1793,8 +1793,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5ce311f9e5b3d7499883b8c355ad3f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeSlider: {fileID: 4251332770454324611}
-  timeBar: {fileID: 0}
   timeText: {fileID: 3511296001278474274}
   time: 180
 --- !u!1 &5042165323666456170
