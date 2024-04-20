@@ -10,5 +10,17 @@ EditorBuildSettings:
     guid: a55bc629d212b364ab97e69ee1530fcc
   - enabled: 1
     path: Assets/Scenes/Rolix/Online 3.unity
-    guid: f37a0ddc5a4a1594e98d51f9442293aa
+    guid: 0b1f14fe24a7b2449a4735b26f03cf9e
+  - enabled: 1
+    path: Assets/Scenes/Rolix/Menu.unity
+    guid: 001c8a1d8a95b2640bdd5e3674263dcc
+  - enabled: 1
+    path: Assets/Scenes/Rolix/Online.unity
+    guid: ce1f4be97752dc541b250059aa17abad
+  - enabled: 1
+    path: Assets/Scenes/Rolix/Online 1.unity
+    guid: 5fd0be132b078cf408ad6f517f2189ef
+  - enabled: 1
+    path: Assets/Scenes/Rolix/Test.unity
+    guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects: {}

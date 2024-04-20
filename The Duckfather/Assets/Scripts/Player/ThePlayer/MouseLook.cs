@@ -29,19 +29,6 @@ public class MouseLook : MonoBehaviour
     [SerializeField] LayerMask aimMask;
 
 
-    [Header("Otras cosas    ")]
-    public float sensibility = 120f;
-
-    
-
-    [SerializeField] private Transform multiAimConstraint;
-    [SerializeField] private Transform playerBody;
-    [SerializeField] private Transform cameraN;
-    [SerializeField] private Transform cameraTarget;
-    [SerializeField] private Camera cameraC;
-    //float xRotation = 0f;
-
-
     private void Start()
     {
         vCam = GetComponentInChildren<CinemachineVirtualCamera>();

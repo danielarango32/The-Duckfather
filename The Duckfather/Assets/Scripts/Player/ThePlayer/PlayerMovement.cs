@@ -115,5 +115,49 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         timeDashSize = Time.time;
         
     }
-    
+
+
+    //Seccion de PowerUps
+    //PowerUP de Velocidad 
+    public void SetMoveSpeed(float newSpeedAdjustment, float returnTime)
+    {
+        speed += newSpeedAdjustment;
+        StartCoroutine(ReturnSpeed(newSpeedAdjustment, returnTime));
+    }
+    public IEnumerator ReturnSpeed(float newSpeedAdjustment, float returnTime)
+    {
+
+
+
+        yield return new WaitForSeconds(returnTime);
+        ReturnMoveSpeed(newSpeedAdjustment);
+
+    }
+
+    public void ReturnMoveSpeed(float newSpeedAdjustment)
+    {
+        speed -= newSpeedAdjustment;
+    }
+
+    //PowerUp de Salto
+
+    public void SetJumpAmount(float newJumpAdjustment, float returnTime)
+    {
+        alturaSalto += newJumpAdjustment;
+        StartCoroutine(ReturnJumpTime(newJumpAdjustment, returnTime));
+    }
+    public IEnumerator ReturnJumpTime(float newJumpAdjustment, float returnTime)
+    {
+
+
+
+        yield return new WaitForSeconds(returnTime);
+        ReturnJump(newJumpAdjustment);
+
+    }
+
+    public void ReturnJump(float newJumpAdjustment)
+    {
+        alturaSalto -= newJumpAdjustment;
+    }
 }
