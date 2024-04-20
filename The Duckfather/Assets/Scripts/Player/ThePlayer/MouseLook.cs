@@ -49,44 +49,11 @@ public class MouseLook : MonoBehaviour
 
         anim = GetComponentInChildren<Animator>();  
         SwitchState(Hip);
-        //Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
     }
     private void Update()
     {
-        //float sensX = Input.GetAxis("Mouse X");
-        //float sensY = Input.GetAxis("Mouse Y");
-
-
-
-        ///*     //FPS
-        //xRotation -= sensY;
-        //xRotation = Mathf.Clamp(xRotation, -80f, 80f);  
-        //transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-
-        //*/
-
-        ////modificación del aim constraint y el playerbody
-        ////playerBody.Rotate(Vector3.up * sensX);
-        ////multiAimConstraint.Rotate(Vector3.up * sensX);
-        ////multiAimConstraint.Rotate(Vector3.left * sensY);
-
-        //playerBody.Rotate(Vector3.up * sensX, Space.Self);
-        //multiAimConstraint.Rotate(Vector3.up * sensX, Space.Self);
-
-        //// camara
-        ////cameraN.Rotate(Vector3.left * sensY);
-
-        //// camara target
-        //Vector3 mousePos = Input.mousePosition;
-        ////Vector3 projectedPoint = cameraC.ScreenToWorldPoint(new Vector3(Input.GetAxis("Mouse X"),Input.GetAxis("Mouse Y"),8));
-        //Vector3 projectedPoint = cameraC.ScreenPointToRay(mousePos).GetPoint(8.0f);
-        //Debug.DrawLine(cameraC.transform.position, projectedPoint, Color.cyan, 0.3f);
-        //cameraTarget.position = projectedPoint;
-        ////cameraTarget.Rotate(Vector3.left * sensY);
-
-        //virtual camera
-        //xAxis.Update(Time.deltaTime);
-        //yAxis.Update(Time.deltaTime);
+        
 
         xAxis += Input.GetAxisRaw("Mouse X") * mouseSense;
         yAxis -= Input.GetAxisRaw("Mouse Y") * mouseSense;
