@@ -6,17 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="767b46c7-ce85-469b-bc9e-d38d49d547a9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.The Duckfather/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.The Duckfather/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Arte/Modelos/Armas/MTL_Armas.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Arte/Modelos/Armas/MTL_Armas.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Arte/Modelos/Armas/MTL_Armas/TexturasArmas.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Arte/Modelos/Armas/MTL_Armas/TexturasArmas.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/PhotonServerSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/PhotonServerSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/DANI/Animaciones.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/DANI/Animaciones.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Rolix/Online.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Rolix/Online.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Dani.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Dani.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Emanuel_Scrips/Bala.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Emanuel_Scrips/Bala.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/ThePlayer/LifeManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/ThePlayer/LifeManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Room and lobby manager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Room and lobby manager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/Player_2.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/Player_2.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/RoomItem.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/RoomItem.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,14 +24,18 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/Carga.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/Creditos.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/FaceObcjectToCam.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/Health.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/Lobby.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/LobbyManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/Pause.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/PlayerItem.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/Room Item.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/Room and lobby manager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/RoomList.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/Timer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/Volver.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/newScript/Launcher.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/newScript/Menu.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/newScript/PlayerListItem.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -136,6 +132,14 @@
       <workItem from="1711866744387" duration="1988000" />
       <workItem from="1711945734028" duration="3596000" />
       <workItem from="1711957659393" duration="1438000" />
+      <workItem from="1712461838718" duration="11662000" />
+      <workItem from="1712547985214" duration="3039000" />
+      <workItem from="1712629942785" duration="2331000" />
+      <workItem from="1712812533680" duration="1098000" />
+      <workItem from="1712885789655" duration="1615000" />
+      <workItem from="1712966191379" duration="5230000" />
+      <workItem from="1713131591178" duration="11885000" />
+      <workItem from="1713557754527" duration="21546000" />
     </task>
     <servers />
   </component>

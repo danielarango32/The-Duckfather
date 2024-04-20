@@ -12,21 +12,41 @@ public class LifeManager : MonoBehaviour
     [SerializeField] float escudo = 0;
     [SerializeField] float tiempoParaRegen;
     [SerializeField] float cantidadDeRegeneracion;
+    
+    public bool isLocalPlayer;
+    
+    public RectTransform healthBar;
+    public RectTransform shieldBar;
+    
+    private float originalHealthBarSize;
+    private float originalShieldBarSize;
 
 
     [Header("UI de vida")]
     [SerializeField] Slider sliderVida;
     [SerializeField] Slider sliderEscudo;
 
-    public bool damageRecieved;
+    public bool danorecibido;
     public float contador;
 
-    
+    private void Start()
+    {
+        originalHealthBarSize = healthBar.sizeDelta.x;
+        originalHealthBarSize = sliderVida.GetComponent<RectTransform>().sizeDelta.x;
+        
+        
+        originalShieldBarSize = shieldBar.sizeDelta.x;
+        originalShieldBarSize = sliderEscudo.GetComponent<RectTransform>().sizeDelta.x;
+        
+        
+    }
     private void Update()
     {
-        //sliderVida.value = vida;
+        //sliderVida.GetComponent<RectTransform>().sizeDelta = new Vector2(originalHealthBarSize * vida / 100, sliderVida.GetComponent<RectTransform>().sizeDelta.y);
+        sliderVida.value = vida;
+        sliderEscudo.value = escudo;
 
-        if (damageRecieved)
+        if (danorecibido)
         {
             contador = 0;
             
@@ -66,40 +86,47 @@ public class LifeManager : MonoBehaviour
 
     }
     [PunRPC]
-    public void QuitarVida(float damage, PhotonMessageInfo info = default)
+    public void QuitarVida(float Dano, PhotonMessageInfo info = default)
     {
-        Debug.Log("El dano que llega es=" + damage);
+        Debug.Log("El dano que llega es=" + Dano);
 
-        StartCoroutine(DamageRecieved());
+        StartCoroutine(Danorecibido());
+        
 
         if (escudo>0)
         {
-            escudo -= damage;
+            escudo -= Dano;
 
             if (escudo < 0)
             {
+                shieldBar.sizeDelta = new Vector2(originalShieldBarSize * escudo / 100, shieldBar.sizeDelta.y);
                 escudo = 0;
             }
             
         }
         else
         {
-            vida -= damage;
+            vida -= Dano;
         }
 
         if (vida <= 0 )
         {
-
+            healthBar.sizeDelta = new Vector2(originalHealthBarSize * vida / 100, healthBar.sizeDelta.y);
+            if (isLocalPlayer)
+            {
+                Roomandlobbymanager.Instance.SpawnPlayer();
+            }
+            
             Destroy(this.gameObject);
         } 
     }
 
     [PunRPC]
-    IEnumerator DamageRecieved()
+    IEnumerator Danorecibido()
     {
-        damageRecieved = true;
+        danorecibido = true;
         yield return new WaitForSeconds(2f);
-        damageRecieved = false;
+        danorecibido = false;
 
         yield return null;
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {
@@ -13,7 +14,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     //VELOCIDAD DEL JUGADOR
     [SerializeField] private float speed = 10f;
     [SerializeField] private float alturaSalto = 3f;
-    
 
 
     //DASH
@@ -22,6 +22,15 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     private float dashPower = 1f;
 
     public bool canDash = true;
+    
+    private float dashTime;
+    
+    public RectTransform DashBar;
+    
+    [Header("UI de dash")]
+    [SerializeField] Slider sliderDash;
+    
+    private float timeDashSize;
 
     //GRAVEDAD
     [SerializeField] float gravity = -20f;
@@ -33,18 +42,25 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     [SerializeField] private float groundDistance = 0.4f;
     public LayerMask groundeMask;
     [SerializeField] public bool isGrounded = false;
-
-
-    [Header("Globalización De Variables")]
-    public float x, z;
     
 
+    [Header("Globalizaciï¿½n De Variables")]
+    public float x, z;
+    
+    private void Start()
+    {
+        dashTime = DashBar.sizeDelta.x;
+        dashTime = sliderDash.GetComponent<RectTransform>().sizeDelta.x;
+        
+        
+    }
     private void Update()
     {
 
         Movimiento();
         IsGrounded();
         Saltar();
+        sliderDash.value = timeDashSize;
 
     }
 
@@ -91,54 +107,13 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(0.01f);
         dashPower = 1;
         canDash = false;
+        timeDashSize = Time.deltaTime;
+        Debug.Log(timeDashSize);
+        
         yield return new WaitForSeconds(CDDash);
         canDash = true;
-    }
-
-    
-    
-    
-    //Seccion de PowerUps
-    //PowerUP de Velocidad 
-    public void SetMoveSpeed(float newSpeedAdjustment, float returnTime)        
-    {
-        speed += newSpeedAdjustment;
-        StartCoroutine(ReturnSpeed(newSpeedAdjustment, returnTime));
-    }
-    public IEnumerator ReturnSpeed(float newSpeedAdjustment,float returnTime)
-    {
-
-
+        timeDashSize = Time.time;
         
-        yield return new WaitForSeconds(returnTime);
-        ReturnMoveSpeed(newSpeedAdjustment);
-       
     }
-
-    public void ReturnMoveSpeed(float newSpeedAdjustment)
-    {
-        speed -= newSpeedAdjustment;
-    }
-
-    //PowerUp de Salto
-
-    public void SetJumpAmount(float newJumpAdjustment, float returnTime)
-    {
-        alturaSalto += newJumpAdjustment;
-        StartCoroutine(ReturnJumpTime(newJumpAdjustment, returnTime));
-    }
-    public IEnumerator ReturnJumpTime(float newJumpAdjustment, float returnTime)
-    {
-
-
-
-        yield return new WaitForSeconds(returnTime);
-        ReturnJump(newJumpAdjustment);
-
-    }
-
-    public void ReturnJump(float newJumpAdjustment)
-    {
-        alturaSalto -= newJumpAdjustment;
-    }
+    
 }
