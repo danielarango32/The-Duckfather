@@ -6,10 +6,10 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
 
-public class RoomManagerNew : MonoBehaviourPunCallbacks
+public class RoomManagerNewr : MonoBehaviourPunCallbacks
 {
     
-    public static RoomManagerNew instance;
+    public static RoomManagerNewr instance;
 
     private void Awake()
     {

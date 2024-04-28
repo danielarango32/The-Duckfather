@@ -47,20 +47,35 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     [Header("Globalizaci�n De Variables")]
     public float x, z;
     
+    PhotonView PV;
+    
+    private void Awake()
+    {
+        PV = GetComponent<PhotonView>();
+    }
+    
     private void Start()
     {
         dashTime = DashBar.sizeDelta.x;
         dashTime = sliderDash.GetComponent<RectTransform>().sizeDelta.x;
-        
-        
+        if (!PV.IsMine)
+        {
+            Destroy(this.GetComponentInChildren<Camera>().gameObject);
+        }
+
     }
     private void Update()
     {
+        if (!PV.IsMine)
+        {
+            return;
+        }
 
         Movimiento();
         IsGrounded();
         Saltar();
         sliderDash.value = timeDashSize;
+        
 
     }
 
