@@ -4969,15 +4969,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 3340080740257102832, guid: 0b062cbf22a264d4ca24d8f3d43f05e2, type: 3}
   Spawns:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 249560682}
+  - {fileID: 476649457}
+  - {fileID: 2054410329}
+  - {fileID: 223751070}
+  - {fileID: 106073803}
+  - {fileID: 333362243}
+  - {fileID: 1465123032}
+  - {fileID: 1595577016}
+  - {fileID: 739713475}
   roomCam: {fileID: 553284806}
   nameUI: {fileID: 192809299}
   ConnectingUI: {fileID: 465963499}
