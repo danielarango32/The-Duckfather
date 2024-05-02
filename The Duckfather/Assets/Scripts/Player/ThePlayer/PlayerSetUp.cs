@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
@@ -19,6 +20,29 @@ public class PlayerSetUp : MonoBehaviour
     
     public TextMeshPro nickNameText;
     
+    PhotonView PV;
+    
+   private void Awake()
+    {
+        PV = GetComponent<PhotonView>();
+    }
+    
+    private void Start()
+    {
+        if (!PV.IsMine)
+        {
+            Destroy(this.GetComponentInChildren<Camera>().gameObject);
+        }
+    }
+
+   private void Update()
+    {
+        if (!PV.IsMine)
+        {
+            return;
+        }
+    }
+
 
     public void IsLocalPlayer()
     {

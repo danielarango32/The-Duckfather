@@ -1,15 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
 
-public class RoomManagerNewr : MonoBehaviourPunCallbacks
+public class RoomManagerNew : MonoBehaviourPunCallbacks
 {
     
-    public static RoomManagerNewr instance;
+    public static RoomManagerNew instance;
 
     private void Awake()
     {
@@ -39,6 +40,7 @@ public class RoomManagerNewr : MonoBehaviourPunCallbacks
         if (scene.buildIndex == 1)
         {
             PhotonNetwork.Instantiate("PlayerManager", Vector3.zero, Quaternion.identity);
+            Debug.Log("PlayerManager instantiated");
         }
     }
     // Start is called before the first frame update
