@@ -103,7 +103,6 @@ Transform:
   - {fileID: 2061849850719320445}
   - {fileID: 7711980066928911238}
   - {fileID: 2675772929565637308}
-  - {fileID: 8417515555627175821}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2166814747463090987
@@ -128,6 +127,7 @@ MonoBehaviour:
   _camaraCinemachine: {fileID: 5829189196083709915}
   nickName: 
   nickNameText: {fileID: 0}
+  PV: {fileID: 3529525577119342405}
 --- !u!1 &562875723905916507
 GameObject:
   m_ObjectHideFlags: 0
@@ -2275,7 +2275,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 359120060618367820}
-  m_Father: {fileID: 5983723619869761506}
+  m_Father: {fileID: 2675772929565637308}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2479,6 +2479,7 @@ Transform:
   - {fileID: 1989065088667631229}
   - {fileID: 7027765017119489000}
   - {fileID: 1845449117108304863}
+  - {fileID: 8417515555627175821}
   m_Father: {fileID: 5983723619869761506}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3529525577119342405
@@ -2705,6 +2706,8 @@ MonoBehaviour:
   sliderEscudo: {fileID: 3093798571450554924}
   danorecibido: 0
   contador: 0
+  ui: {fileID: 1795972037064954129}
+  PV: {fileID: 3529525577119342405}
 --- !u!114 &2941845554713244246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2718,7 +2721,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 3832962283545401041}
+  playerMovement: {fileID: 3653143017897112379}
+  mouseLook: {fileID: 1788872850252932323}
+  shootinController: {fileID: 1761533753094561045}
+  _camara: {fileID: 7306088227030730128}
   isPaused: 0
+  pausa: {fileID: 3832962283545401041}
+  PV: {fileID: 3529525577119342405}
 --- !u!1 &7341411986281030603
 GameObject:
   m_ObjectHideFlags: 0
@@ -3514,6 +3523,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1795972037064954129 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6792283821152114570, guid: d3245d919c3b93c49bba5a6d0b8460ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 5093458103520528027}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3004235234983095019 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8007023210468748400, guid: d3245d919c3b93c49bba5a6d0b8460ff,

@@ -20,28 +20,33 @@ public class PlayerSetUp : MonoBehaviour
     
     public TextMeshPro nickNameText;
     
-    PhotonView PV;
+    public PhotonView PV;
     
    private void Awake()
     {
-        PV = GetComponent<PhotonView>();
+        
     }
     
     private void Start()
     {
         if (!PV.IsMine)
         {
-            Destroy(this.GetComponentInChildren<Camera>().gameObject);
+            //Destroy(GetComponentInChildren<Camera>().gameObject);
+            IsNotLocalPlayer();
+        }
+        else
+        {
+            IsLocalPlayer();
         }
     }
 
-   private void Update()
+  /* private void Update()
     {
         if (!PV.IsMine)
         {
             return;
         }
-    }
+    }*/
 
 
     public void IsLocalPlayer()
@@ -58,6 +63,21 @@ public class PlayerSetUp : MonoBehaviour
         _shootinController.enabled = true;
 
     }
+    public void IsNotLocalPlayer()
+    {
+        _lifeManager.enabled = false;
+        _playerMove.enabled = false;
+        _mouseLook.enabled = false;
+
+        _camara.SetActive(false);
+        _camaraCinemachine.SetActive(false);
+        _aimManager.enabled = false;
+
+        _animatorController.enabled = false;
+        _shootinController.enabled = false;
+
+    }
+
     
     [PunRPC]
     public void SetNickName(string _name)

@@ -7,13 +7,25 @@ using UnityEngine.SceneManagement;
 public class Pause : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
+    public PlayerMovement playerMovement;
+    public MouseLook mouseLook;
+    public ShootinController shootinController;
+    public GameObject _camara;
     
     public bool isPaused;
+    
+    [SerializeField] GameObject pausa;
+    
+    public PhotonView PV;
     
     // Start is called before the first frame update
     void Start()
     {
         pauseMenu.SetActive(false);
+        if (!PV.IsMine)
+        {
+            Destroy(pausa);
+        }
     }
 
     // Update is called once per frame
@@ -33,6 +45,10 @@ public class Pause : MonoBehaviour
     public void OpenPauseMenu()
     {
         pauseMenu.SetActive(true);
+        playerMovement.enabled = false;
+        mouseLook.enabled = false;
+        shootinController.enabled = false;
+        //_camara.SetActive(false);
         //Time.timeScale = 0;
         isPaused = true;
         Cursor.lockState = CursorLockMode.None;
@@ -44,6 +60,10 @@ public class Pause : MonoBehaviour
     public void ClosePauseMenu()
     {
         pauseMenu.SetActive(false);
+        playerMovement.enabled = true;
+        mouseLook.enabled = true;
+        shootinController.enabled = true;
+        //_camara.SetActive(true);
         //Time.timeScale = 1;
         isPaused = false;
         Cursor.lockState = CursorLockMode.Locked;

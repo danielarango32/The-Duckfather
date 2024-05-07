@@ -27,6 +27,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         Debug.Log("Connecting to Master");
         PhotonNetwork.ConnectUsingSettings();
+        // Limit the framerate to 60
+        Application.targetFrameRate = 60;
     }
     
     public override void OnConnectedToMaster()
@@ -40,7 +42,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         MenuManager.instance.OpenMenu("title");
         Debug.Log("Joined Lobby");
-        PhotonNetwork.NickName = "Player" + Random.Range(0, 1000).ToString("0000");
+        
     }
 
     public void CreateRoom()
