@@ -101,6 +101,12 @@ public class LifeManager : MonoBehaviour
     {
 
     }
+    
+    public void TakeDamage(float damage)
+    {
+        PV.RPC(nameof(QuitarVida), PV.Owner, damage);
+    }
+    
     [PunRPC]
     public void QuitarVida(float Dano, PhotonMessageInfo info = default)
     {
@@ -129,6 +135,9 @@ public class LifeManager : MonoBehaviour
         {
             
             Die();
+           // PlayerManager.Find(info.Sender).GetKill();
+            
+            
             /*healthBar.sizeDelta = new Vector2(originalHealthBarSize * vida / 100, healthBar.sizeDelta.y);
             if (isLocalPlayer)
             {
@@ -154,4 +163,5 @@ public class LifeManager : MonoBehaviour
     {
         playerManager.Die();
     }
+    
 }

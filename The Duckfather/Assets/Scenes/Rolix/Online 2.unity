@@ -3629,10 +3629,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 187946751}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000015258789}
-  m_SizeDelta: {x: -530, y: 0}
+  m_AnchoredPosition: {x: 165, y: 0}
+  m_SizeDelta: {x: -530, y: -619.30023}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1019972327
 MonoBehaviour:
@@ -4688,7 +4688,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2092298477}
         m_TargetAssemblyTypeName: Launcher, Assembly-CSharp
-        m_MethodName: LeaveRoom
+        m_MethodName: LeaveFindRoom
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
