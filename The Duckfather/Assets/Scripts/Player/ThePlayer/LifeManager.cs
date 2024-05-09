@@ -28,6 +28,17 @@ public class LifeManager : MonoBehaviour
 
     public bool danorecibido;
     public float contador;
+    
+    [SerializeField] GameObject ui;
+    
+    public PhotonView PV;
+    
+    PlayerManager playerManager;
+    
+    private void Awake()
+    {
+        playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
+    }
 
     private void Start()
     {
@@ -37,6 +48,11 @@ public class LifeManager : MonoBehaviour
         
         originalShieldBarSize = shieldBar.sizeDelta.x;
         originalShieldBarSize = sliderEscudo.GetComponent<RectTransform>().sizeDelta.x;
+        
+        if (!PV.IsMine)
+        {
+            Destroy(ui);
+        }
         
         
     }
@@ -85,6 +101,12 @@ public class LifeManager : MonoBehaviour
     {
 
     }
+    
+    public void TakeDamage(float damage)
+    {
+        PV.RPC(nameof(QuitarVida), PV.Owner, damage);
+    }
+    
     [PunRPC]
     public void QuitarVida(float Dano, PhotonMessageInfo info = default)
     {
@@ -111,13 +133,18 @@ public class LifeManager : MonoBehaviour
 
         if (vida <= 0 )
         {
-            healthBar.sizeDelta = new Vector2(originalHealthBarSize * vida / 100, healthBar.sizeDelta.y);
+            
+            Die();
+           // PlayerManager.Find(info.Sender).GetKill();
+            
+            
+            /*healthBar.sizeDelta = new Vector2(originalHealthBarSize * vida / 100, healthBar.sizeDelta.y);
             if (isLocalPlayer)
             {
-                Roomandlobbymanager.Instance.SpawnPlayer();
+                //Roomandlobbymanager.Instance.SpawnPlayer();
             }
             
-            Destroy(this.gameObject);
+            //Destroy(this.gameObject);*/
         } 
     }
 
@@ -131,4 +158,10 @@ public class LifeManager : MonoBehaviour
         yield return null;
 
     }  
+    
+    void Die()
+    {
+        playerManager.Die();
+    }
+    
 }

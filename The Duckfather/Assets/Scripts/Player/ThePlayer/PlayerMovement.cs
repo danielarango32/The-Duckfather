@@ -47,11 +47,18 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     [Header("Globalizaci�n De Variables")]
     public float x, z;
     
+    PhotonView PV;
+    
+    PlayerManager playerManager;
+    
+    /*private void Awake()
+    {
+        playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
+    }*/
     private void Start()
     {
         dashTime = DashBar.sizeDelta.x;
         dashTime = sliderDash.GetComponent<RectTransform>().sizeDelta.x;
-        
         
     }
     private void Update()
@@ -61,6 +68,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         IsGrounded();
         Saltar();
         sliderDash.value = timeDashSize;
+        
 
     }
 

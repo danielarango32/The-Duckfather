@@ -47,7 +47,7 @@ public class Timer : MonoBehaviour
     public void StopTimer()
     {
         stopTimer = true;
-        SceneManager.LoadScene("Online");
+        SceneManager.LoadScene("Online 2");
         PhotonNetwork.LeaveRoom();
         
     }
