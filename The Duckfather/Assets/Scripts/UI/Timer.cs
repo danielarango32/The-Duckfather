@@ -12,7 +12,7 @@ public class Timer : MonoBehaviour
     
     public TMP_Text timeText;
     
-    public float time = 180;
+    [SerializeField]public float time = 180;
     
     
     private bool stopTimer = false;
