@@ -162,7 +162,7 @@ MonoBehaviour:
   maxLifetime: 5
   explodeOnTouch: 1
   bounciness: 0.209
-  useGravity: 1
+  useGravity: 0
 --- !u!114 &-1365635025720226839
 MonoBehaviour:
   m_ObjectHideFlags: 0
