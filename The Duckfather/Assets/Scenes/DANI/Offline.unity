@@ -731,7 +731,7 @@ PrefabInstance:
     - target: {fileID: 3340080740257102832, guid: fabc0b28a8b30554381ec3190b8a3246,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1070,10 +1070,15 @@ MonoBehaviour:
   escudo: 20
   tiempoParaRegen: 10
   cantidadDeRegeneracion: 2
+  isLocalPlayer: 0
+  healthBar: {fileID: 0}
+  shieldBar: {fileID: 0}
   sliderVida: {fileID: 0}
   sliderEscudo: {fileID: 0}
-  damageRecieved: 0
+  danorecibido: 0
   contador: 0
+  ui: {fileID: 0}
+  PV: {fileID: 0}
 --- !u!1 &1236212540
 GameObject:
   m_ObjectHideFlags: 0

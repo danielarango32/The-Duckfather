@@ -123,6 +123,7 @@ MonoBehaviour:
   _animatorController: {fileID: 1572345405837489205}
   _shootinController: {fileID: 1761533753094561045}
   _lifeManager: {fileID: 605232717319385686}
+  _soundManager: {fileID: 0}
   _camara: {fileID: 4760832159876422628}
   _camaraCinemachine: {fileID: 5829189196083709915}
   nickName: 
@@ -2683,6 +2684,8 @@ MonoBehaviour:
     type: 3}
   vfxDisparoBazuca: {fileID: 6835939625471343036, guid: 2927d3c0dea2f7c4d8bdc1cc7a486a81,
     type: 3}
+  shootSFXIndex: 0
+  playerPhotonSoundManager: {fileID: 0}
 --- !u!114 &605232717319385686
 MonoBehaviour:
   m_ObjectHideFlags: 0
