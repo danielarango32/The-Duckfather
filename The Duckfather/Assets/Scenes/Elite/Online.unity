@@ -926,7 +926,7 @@ MonoBehaviour:
   - {fileID: 2040589944111974088, guid: 241c081564cb2164d85b91d2183d62b1, type: 3}
   - {fileID: 8005371730764229663, guid: c9a58a8d8c769b34d90ff971a7384ab7, type: 3}
   timechange: 3
-  WeaponOn: 0
+  currentGun: {fileID: 0}
 --- !u!4 &1086760718
 Transform:
   m_ObjectHideFlags: 0
