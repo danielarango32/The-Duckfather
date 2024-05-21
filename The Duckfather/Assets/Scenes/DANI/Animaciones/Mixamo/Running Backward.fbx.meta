@@ -58,7 +58,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0.062008098
-        functionName: TriggerFootstepSFX()
+        functionName: TriggerFootstepSFX
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

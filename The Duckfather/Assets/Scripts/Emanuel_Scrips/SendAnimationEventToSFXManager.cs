@@ -10,5 +10,6 @@ public class SendAnimationEventToSFXManager : MonoBehaviour
     public void TriggerFootstepSFX()
     {
         playerPhotonSoundManager.PlayFootStepSFX();
+        
     }
 }

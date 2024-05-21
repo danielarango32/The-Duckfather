@@ -515,6 +515,57 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 540458189}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &568821664
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 568821666}
+  - component: {fileID: 568821665}
+  m_Layer: 0
+  m_Name: SpawnGun
+  m_TagString: Untagged
+  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &568821665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568821664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8bc683fe878e3147bbe0e7528086cab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawn: {fileID: 568821666}
+  arma:
+  - {fileID: 2314999097866486772, guid: 80ab6e29edbd4d64fb9e06b548846c7e, type: 3}
+  - {fileID: 9185839158082019428, guid: 42fc7937135ad3b4790e357acfca2a9d, type: 3}
+  - {fileID: 2040589944111974088, guid: 241c081564cb2164d85b91d2183d62b1, type: 3}
+  - {fileID: 8005371730764229663, guid: c9a58a8d8c769b34d90ff971a7384ab7, type: 3}
+  arma2: {fileID: 0}
+--- !u!4 &568821666
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568821664}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -19.38, y: 1.76, z: 118.32}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &730138486
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -839,6 +890,58 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9a58a8d8c769b34d90ff971a7384ab7, type: 3}
+--- !u!1 &1086760716
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1086760718}
+  - component: {fileID: 1086760717}
+  m_Layer: 0
+  m_Name: SpawnGun (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1086760717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086760716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37357edee500bcc438d074d4fe5136f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawn: {fileID: 1086760718}
+  arma:
+  - {fileID: 2314999097866486772, guid: 80ab6e29edbd4d64fb9e06b548846c7e, type: 3}
+  - {fileID: 9185839158082019428, guid: 42fc7937135ad3b4790e357acfca2a9d, type: 3}
+  - {fileID: 2040589944111974088, guid: 241c081564cb2164d85b91d2183d62b1, type: 3}
+  - {fileID: 8005371730764229663, guid: c9a58a8d8c769b34d90ff971a7384ab7, type: 3}
+  timechange: 3
+  WeaponOn: 0
+--- !u!4 &1086760718
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086760716}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -15.87, y: 1.76, z: 118.32}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1236212540
 GameObject:
   m_ObjectHideFlags: 0
@@ -1152,3 +1255,5 @@ SceneRoots:
   - {fileID: 853367907}
   - {fileID: 1290972926}
   - {fileID: 1064817313}
+  - {fileID: 568821666}
+  - {fileID: 1086760718}

@@ -21,7 +21,8 @@ public class LifeManager : MonoBehaviour
     public bool damageRecieved;
     public float contador;
 
-    
+    public PlayerPhotonSoundManager playerPhotonSoundManager;
+
     private void Update()
     {
         //sliderVida.value = vida;
@@ -85,6 +86,8 @@ public class LifeManager : MonoBehaviour
         else
         {
             vida -= damage;
+
+           // playerPhotonSoundManager.PlayHurtSFX();
         }
 
         if (vida <= 0 )

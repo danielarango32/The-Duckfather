@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,11 @@ public class WeaponCollision : MonoBehaviour
 {
     [Header("Numero de Arma")]
     [SerializeField] float numArma;
+
+
+    public SpawnGun spawnChanger;
+
+    public event Action OnWeaponPickedUp;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -13,7 +19,14 @@ public class WeaponCollision : MonoBehaviour
             other.GetComponent<ShootinController>().SelectorDeArma(numArma);
            
             Debug.Log("jugador reconocido");
+            
+            OnWeaponPickedUp?.Invoke();
+
             this.gameObject.SetActive(false);
+            Destroy(this.gameObject, 5f);
+
+
+           // spawnChanger.changeActivator();
         }
         
     }

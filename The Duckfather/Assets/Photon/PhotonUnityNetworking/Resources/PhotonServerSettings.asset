@@ -49,6 +49,10 @@ MonoBehaviour:
   - Danorecibido
   - Respawn
   - DamageRecieved
+  - PlayFootstepSFX_RPC
+  - PlayShootSFX_RPC
+  - PlayGrabSFX_RPC
+  - PlayHurtSFX_RPC
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -52,6 +52,13 @@ public class ShootinController : MonoBehaviour
     [SerializeField] GameObject vfxDisparo;
     [SerializeField] GameObject hitDisparo;
     [SerializeField] GameObject vfxDisparoBazuca;
+
+
+    [Header("SFX")]
+    
+    public int shootSFXIndex = 0;
+    public PlayerPhotonSoundManager playerPhotonSoundManager;
+
     private void Start()
     {
         firerateTimer = fireRate;
@@ -140,6 +147,9 @@ public class ShootinController : MonoBehaviour
 
     public void SelectorDeArma(float numeroDeArma)
     {
+        shootSFXIndex = (int)numeroDeArma;
+        playerPhotonSoundManager.PlayGrabSFX();
+
         numArma = numeroDeArma;
         if (numeroDeArma == 0)
         {
@@ -209,6 +219,9 @@ public class ShootinController : MonoBehaviour
 
     void Shoot()
     {
+
+        playerPhotonSoundManager.PlayShootSFX(shootSFXIndex);
+
         float disparo = 0;
 
         firerateTimer = 0;
@@ -237,7 +250,7 @@ public class ShootinController : MonoBehaviour
 
     void FireRaycast()
     {
-
+        playerPhotonSoundManager.PlayShootSFX(shootSFXIndex);
         float disparo = 0;
         firerateTimer = 0;
 
