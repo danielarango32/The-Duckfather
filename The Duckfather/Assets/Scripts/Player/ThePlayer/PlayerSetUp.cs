@@ -78,7 +78,7 @@ public class PlayerSetUp : MonoBehaviour
 
         _animatorController.enabled = false;
         _shootinController.enabled = false;
-
+        _soundManager.enabled = false;
     }
 
     

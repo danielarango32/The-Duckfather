@@ -147,8 +147,8 @@ public class ShootinController : MonoBehaviour
 
     public void SelectorDeArma(float numeroDeArma)
     {
-        shootSFXIndex = (int)numeroDeArma;
-        playerPhotonSoundManager.PlayGrabSFX();
+       shootSFXIndex = (int)numeroDeArma;
+       playerPhotonSoundManager.PlayGrabSFX();
 
         numArma = numeroDeArma;
         if (numeroDeArma == 0)

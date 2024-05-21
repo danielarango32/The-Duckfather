@@ -33,10 +33,15 @@ public class Pause : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            //if (isPaused == true)
-            
+            if (isPaused == true)
+            {
+                ClosePauseMenu();
+            }
+
+            else {
                 OpenPauseMenu();
-            
+            }
+
         }
     }
     
