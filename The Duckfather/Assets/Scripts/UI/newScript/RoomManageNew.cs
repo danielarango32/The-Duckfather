@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 public class RoomManagerNew : MonoBehaviourPunCallbacks
 {
-    
+    [SerializeField]private int sceneNumber;
     public static RoomManagerNew instance;
 
     private void Awake()
@@ -37,21 +37,10 @@ public class RoomManagerNew : MonoBehaviourPunCallbacks
     
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.buildIndex == 1)
+        if (scene.buildIndex == sceneNumber)
         {
             PhotonNetwork.Instantiate("PlayerManager", Vector3.zero, Quaternion.identity);
             Debug.Log("PlayerManager instantiated");
         }
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
