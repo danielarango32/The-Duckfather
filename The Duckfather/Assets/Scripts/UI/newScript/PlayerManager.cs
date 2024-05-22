@@ -16,7 +16,7 @@ public class PlayerManager : MonoBehaviour
 
     private int Kills;
     private int Death;
-    
+    private PlayerPhotonSoundManager playerPhotonSoundManager;
     void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -32,7 +32,7 @@ public class PlayerManager : MonoBehaviour
             
         }
         
-        
+        playerPhotonSoundManager= GetComponent<PlayerPhotonSoundManager>();
     }
     
     void CreateController()
@@ -48,7 +48,7 @@ public class PlayerManager : MonoBehaviour
         CreateController();
         
         Death++;
-        
+        playerPhotonSoundManager.PlayDieSFX();
         Hashtable hash = new Hashtable();
         hash.Add("Kills", Death);
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
@@ -63,7 +63,7 @@ public class PlayerManager : MonoBehaviour
     void RPC_GetKill()
     {
         Kills++;
-        
+        playerPhotonSoundManager.PlayQuackSFX();
         Hashtable hash = new Hashtable();
         hash.Add("Kills", Kills);
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);

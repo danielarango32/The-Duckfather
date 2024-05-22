@@ -17,7 +17,7 @@ public class Pause : MonoBehaviour
     [SerializeField] GameObject pausa;
     
     public PhotonView PV;
-    public PlayerPhotonSoundManager playerPhotonSoundManager;
+    private PlayerPhotonSoundManager playerPhotonSoundManager;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +27,7 @@ public class Pause : MonoBehaviour
         {
             Destroy(pausa);
         }
+        playerPhotonSoundManager = GetComponent<PlayerPhotonSoundManager>();
     }
 
     // Update is called once per frame

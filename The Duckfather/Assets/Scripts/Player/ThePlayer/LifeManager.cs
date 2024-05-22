@@ -34,7 +34,8 @@ public class LifeManager : MonoBehaviour
     public PhotonView PV;
     
     PlayerManager playerManager;
-    
+
+    public PlayerPhotonSoundManager playerPhotonSoundManager;
     private void Awake()
     {
         playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
@@ -129,6 +130,7 @@ public class LifeManager : MonoBehaviour
         else
         {
             vida -= Dano;
+            playerPhotonSoundManager.PlayHurtSFX();
         }
 
         if (vida <= 0 )

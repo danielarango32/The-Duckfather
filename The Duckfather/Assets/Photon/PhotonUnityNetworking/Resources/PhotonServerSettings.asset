@@ -56,6 +56,13 @@ MonoBehaviour:
   - PlayShootSFX_RPC
   - PlayPauseSFX_RPC
   - PlayUnPauseSFX_RPC
+  - PlayJumpSFX_RPC
+  - PlaySelectSFX_RPC
+  - PlayFallSFX_RPC
+  - PlayPower1SFX_RPC
+  - PlayPower2SFX_RPC
+  - PlayQuackSFX_RPC
+  - PlayDieSFX_RPC
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

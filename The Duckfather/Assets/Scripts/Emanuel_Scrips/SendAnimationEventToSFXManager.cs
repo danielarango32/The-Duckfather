@@ -12,4 +12,15 @@ public class SendAnimationEventToSFXManager : MonoBehaviour
         playerPhotonSoundManager.PlayFootStepSFX();
         
     }
+
+    public void TriggerJumpSFX()
+    {
+        playerPhotonSoundManager.PlayJumpSFX();
+
+    }
+    public void TriggerFallSFX()
+    {
+        playerPhotonSoundManager.PlayFallSFX();
+
+    }
 }

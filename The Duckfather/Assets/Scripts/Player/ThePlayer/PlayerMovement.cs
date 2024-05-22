@@ -50,7 +50,9 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     PhotonView PV;
     
     PlayerManager playerManager;
-    
+
+    private PlayerPhotonSoundManager playerPhotonSoundManager;
+
     /*private void Awake()
     {
         playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
@@ -59,6 +61,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     {
         dashTime = DashBar.sizeDelta.x;
         dashTime = sliderDash.GetComponent<RectTransform>().sizeDelta.x;
+
+        playerPhotonSoundManager = GetComponent<PlayerPhotonSoundManager>();
         
     }
     private void Update()
@@ -130,6 +134,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     public void SetMoveSpeed(float newSpeedAdjustment, float returnTime)
     {
         speed += newSpeedAdjustment;
+        playerPhotonSoundManager.PlayPower1SFX();
         StartCoroutine(ReturnSpeed(newSpeedAdjustment, returnTime));
     }
     public IEnumerator ReturnSpeed(float newSpeedAdjustment, float returnTime)
@@ -152,6 +157,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     public void SetJumpAmount(float newJumpAdjustment, float returnTime)
     {
         alturaSalto += newJumpAdjustment;
+        playerPhotonSoundManager.PlayPower2SFX();
         StartCoroutine(ReturnJumpTime(newJumpAdjustment, returnTime));
     }
     public IEnumerator ReturnJumpTime(float newJumpAdjustment, float returnTime)

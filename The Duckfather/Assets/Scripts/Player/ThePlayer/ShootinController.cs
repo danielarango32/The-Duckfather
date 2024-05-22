@@ -58,11 +58,12 @@ public class ShootinController : MonoBehaviour
     
     public int shootSFXIndex = 0;
    private int grabSFXIndex = 0;
-    public PlayerPhotonSoundManager playerPhotonSoundManager;
+    private PlayerPhotonSoundManager playerPhotonSoundManager;
 
     private void Start()
     {
         firerateTimer = fireRate;
+        playerPhotonSoundManager = GetComponent<PlayerPhotonSoundManager>();
     }
 
     /*
