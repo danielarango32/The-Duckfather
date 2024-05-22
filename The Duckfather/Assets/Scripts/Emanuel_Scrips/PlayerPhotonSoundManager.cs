@@ -13,10 +13,16 @@ public class PlayerPhotonSoundManager : MonoBehaviour
     public AudioClip[] allGunShootSFX;
 
     public AudioSource GrabSource;
-    public AudioClip GrabSFX;
+    public AudioClip[] GrabSFX;
 
     public AudioSource HurtSource;
     public AudioClip[] allHurtSFX;
+
+    public AudioSource PauseSource;
+    public AudioClip PauseSFX;
+
+    public AudioSource UnPauseSource;
+    public AudioClip UnPauseSFX;
 
     public void PlayFootStepSFX()
     {
@@ -27,6 +33,9 @@ public class PlayerPhotonSoundManager : MonoBehaviour
     public void PlayFootstepSFX_RPC()
     {
         footstepSource.clip = footstepSFX;
+        footstepSource.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+        footstepSource.volume = UnityEngine.Random.Range(0.75f, 0.85f);
+
         footstepSource.Play();
     }
 
@@ -39,19 +48,38 @@ public class PlayerPhotonSoundManager : MonoBehaviour
     public void PlayShootSFX_RPC(int index)
     {
         gunShootSource.clip = allGunShootSFX[index];
+
+        if(index == 4)
+        {
+            gunShootSource.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+            gunShootSource.volume = UnityEngine.Random.Range(0.23f, 0.32f);
+        }
+
+
         gunShootSource.Play();
     }
 
-    public void PlayGrabSFX()
+    public void PlayGrabSFX(int index)
     {
-        GetComponent<PhotonView>().RPC("PlayGrabSFX_RPC", RpcTarget.All);
+        GetComponent<PhotonView>().RPC("PlayGrabSFX_RPC", RpcTarget.All, index);
     }
 
     [PunRPC]
-    public void PlayGrabSFX_RPC()
+    public void PlayGrabSFX_RPC(int index)
     {
-        GrabSource.clip = GrabSFX;
+        
+        if(index == 2)
+        {
+            GrabSource.clip = GrabSFX[index];
+            
+        }
+        else
+        {
+            GrabSource.clip = GrabSFX[index];
+            
+        }
         GrabSource.Play();
+
     }
 
 
@@ -65,6 +93,29 @@ public class PlayerPhotonSoundManager : MonoBehaviour
     {
         HurtSource.clip = allHurtSFX[index];
         HurtSource.Play();
+    }
+
+    public void PlayPauseSFX()
+    {
+        GetComponent<PhotonView>().RPC("PlayPauseSFX_RPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void PlayPauseSFX_RPC()
+    {
+        PauseSource.clip = PauseSFX;
+        PauseSource.Play();
+    }
+    public void PlayUnPauseSFX()
+    {
+        GetComponent<PhotonView>().RPC("PlayUnPauseSFX_RPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void PlayUnPauseSFX_RPC()
+    {
+        UnPauseSource.clip = UnPauseSFX;
+        UnPauseSource.Play();
     }
 
 }

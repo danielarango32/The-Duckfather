@@ -1417,6 +1417,134 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &3491206213900667602
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1007183660394486996}
+  - component: {fileID: 5166006853504416994}
+  m_Layer: 7
+  m_Name: PauseSource
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1007183660394486996
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491206213900667602}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 250220174681520911}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &5166006853504416994
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491206213900667602}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 10
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &3768222560110091828
 GameObject:
   m_ObjectHideFlags: 0
@@ -3453,6 +3581,7 @@ MonoBehaviour:
   isPaused: 0
   pausa: {fileID: 3832962283545401041}
   PV: {fileID: 3529525577119342405}
+  playerPhotonSoundManager: {fileID: 7613993984503062306}
 --- !u!114 &7613993984503062306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3471,15 +3600,24 @@ MonoBehaviour:
   allGunShootSFX:
   - {fileID: 0}
   - {fileID: 8300000, guid: f408778c91ba58b4d9cd01e9b7003410, type: 3}
-  - {fileID: 8300000, guid: e65dc7416ea04f34884aa8acede87d1e, type: 3}
+  - {fileID: 8300000, guid: 9c054121dbdbb224191e2f2af318231b, type: 3}
   - {fileID: 8300000, guid: a6e5e7639f2f43349abb4edaee394cf9, type: 3}
   - {fileID: 8300000, guid: 115f7fbc6a09a07489452c63fb9dbccb, type: 3}
   GrabSource: {fileID: 5167974442887406373}
-  GrabSFX: {fileID: 8300000, guid: a0b373d77db62774c898cce55682a941, type: 3}
+  GrabSFX:
+  - {fileID: 8300000, guid: e0b2bb879043def44b38be5e73570d05, type: 3}
+  - {fileID: 8300000, guid: e0b2bb879043def44b38be5e73570d05, type: 3}
+  - {fileID: 8300000, guid: a0b373d77db62774c898cce55682a941, type: 3}
+  - {fileID: 8300000, guid: e0b2bb879043def44b38be5e73570d05, type: 3}
+  - {fileID: 8300000, guid: e0b2bb879043def44b38be5e73570d05, type: 3}
   HurtSource: {fileID: 8494277083568945660}
   allHurtSFX:
   - {fileID: 8300000, guid: ed34ae49e8973e04cb9661e0efda0c04, type: 3}
   - {fileID: 8300000, guid: 7f060753e7e4c7c40b2f9564c9aac09e, type: 3}
+  PauseSource: {fileID: 5166006853504416994}
+  PauseSFX: {fileID: 8300000, guid: 5f98ce7c00b52ee43b5a1a69db9e1292, type: 3}
+  UnPauseSource: {fileID: 5166006853504416994}
+  UnPauseSFX: {fileID: 8300000, guid: 4cbc7cff62429114d862bb7ccafded44, type: 3}
 --- !u!1 &7341411986281030603
 GameObject:
   m_ObjectHideFlags: 0
@@ -3577,6 +3715,7 @@ Transform:
   - {fileID: 6245536144201497299}
   - {fileID: 25404198637088493}
   - {fileID: 6414578173822269458}
+  - {fileID: 1007183660394486996}
   m_Father: {fileID: 2675772929565637308}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7747558150272259239
@@ -4750,6 +4889,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 6353922120652268891}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b796a4ce3dfa4d84795a6e7765e7f837,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4064241801560115065}
   m_SourcePrefab: {fileID: 100100000, guid: b796a4ce3dfa4d84795a6e7765e7f837, type: 3}
 --- !u!4 &415823230841183606 stripped
 Transform:
@@ -5105,6 +5248,19 @@ MonoBehaviour:
   - m_Rig: {fileID: 1104403997955360248}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &4064241801560115065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8195214845110030753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b38caa86f089b44d989dc3adef2dd95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPhotonSoundManager: {fileID: 7613993984503062306}
 --- !u!4 &8298795407057432902 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8191740002585371210, guid: b796a4ce3dfa4d84795a6e7765e7f837,

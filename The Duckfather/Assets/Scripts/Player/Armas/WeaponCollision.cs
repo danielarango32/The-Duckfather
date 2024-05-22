@@ -20,10 +20,10 @@ public class WeaponCollision : MonoBehaviour
            
             Debug.Log("jugador reconocido");
             
-            OnWeaponPickedUp?.Invoke();
+            
 
             this.gameObject.SetActive(false);
-            Destroy(this.gameObject, 5f);
+            Destroy(this.gameObject, 0.5f);
 
 
            // spawnChanger.changeActivator();

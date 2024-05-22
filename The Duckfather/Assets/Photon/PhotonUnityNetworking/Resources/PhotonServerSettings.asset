@@ -54,6 +54,8 @@ MonoBehaviour:
   - PlayGrabSFX_RPC
   - PlayHurtSFX_RPC
   - PlayShootSFX_RPC
+  - PlayPauseSFX_RPC
+  - PlayUnPauseSFX_RPC
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -17,7 +17,8 @@ public class Pause : MonoBehaviour
     [SerializeField] GameObject pausa;
     
     public PhotonView PV;
-    
+    public PlayerPhotonSoundManager playerPhotonSoundManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,6 +59,8 @@ public class Pause : MonoBehaviour
         isPaused = true;
         Cursor.lockState = CursorLockMode.None;
         Debug.Log("Pause");
+
+        playerPhotonSoundManager.PlayPauseSFX();
     }
     
     // close the pause menu
@@ -73,6 +76,7 @@ public class Pause : MonoBehaviour
         isPaused = false;
         Cursor.lockState = CursorLockMode.Locked;
         Debug.Log("Unpause");
+        playerPhotonSoundManager.PlayUnPauseSFX();
     }
     
     // back to lobby
