@@ -29,7 +29,7 @@ public class MouseLook : MonoBehaviour
     [SerializeField] LayerMask aimMask;
 
 
-    private void Start()
+    private void Awake()
     {
         vCam = GetComponentInChildren<CinemachineVirtualCamera>();
         hipsFov = vCam.m_Lens.FieldOfView;

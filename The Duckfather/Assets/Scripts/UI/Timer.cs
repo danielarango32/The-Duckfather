@@ -14,7 +14,7 @@ public class Timer : MonoBehaviour
     
     [SerializeField]public float time = 180;
     
-    
+
     private bool stopTimer = false;
     
     // Start is called before the first frame update
@@ -47,6 +47,7 @@ public class Timer : MonoBehaviour
     public void StopTimer()
     {
         stopTimer = true;
+        Cursor.lockState = CursorLockMode.None;
         SceneManager.LoadScene("Online 2");
         PhotonNetwork.LeaveRoom();
         
