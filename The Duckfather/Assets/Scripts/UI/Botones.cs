@@ -19,7 +19,7 @@ public class MenuBotones : MonoBehaviourPunCallbacks
     IEnumerator OnlineTime()
     {
         yield return new WaitForSeconds(1);
-        SceneManager.LoadScene("Online2");
+        SceneManager.LoadScene("Online 2");
         PhotonNetwork.ConnectUsingSettings();
     }
 

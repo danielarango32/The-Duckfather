@@ -17,6 +17,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] GameObject roomListItemPrefab;
     [SerializeField] GameObject PlayerListItemPrefab;
     [SerializeField] GameObject startGameButton;
+    [SerializeField] int sceneIndex;
     // Start is called before the first frame update
     
     private void Awake()
@@ -89,7 +90,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     
     public void StartGame()
     {
-        PhotonNetwork.LoadLevel(1);
+        PhotonNetwork.LoadLevel(sceneIndex);
     }
     public void LeaveRoom()
     {
