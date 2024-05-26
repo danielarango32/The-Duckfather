@@ -9,7 +9,7 @@ public class LifeManager : MonoBehaviour
 {
     [Header("Sistema de vida")]
     [SerializeField] float vida = 100;
-    [SerializeField] float escudo = 0;
+    [SerializeField] float escudo = 100;
     [SerializeField] float tiempoParaRegen;
     [SerializeField] float cantidadDeRegeneracion;
     
@@ -119,19 +119,24 @@ public class LifeManager : MonoBehaviour
         if (escudo>0)
         {
             escudo -= Dano;
+            
+            shieldBar.sizeDelta = new Vector2(originalShieldBarSize * escudo / 100, shieldBar.sizeDelta.y);
 
             if (escudo < 0)
             {
-                shieldBar.sizeDelta = new Vector2(originalShieldBarSize * escudo / 100, shieldBar.sizeDelta.y);
+                
                 escudo = 0;
             }
             
         }
         else
         {
+            healthBar.sizeDelta = new Vector2(originalHealthBarSize * vida / 100, healthBar.sizeDelta.y);
             vida -= Dano;
             playerPhotonSoundManager.PlayHurtSFX();
         }
+        
+        
 
         if (vida <= 0 )
         {
