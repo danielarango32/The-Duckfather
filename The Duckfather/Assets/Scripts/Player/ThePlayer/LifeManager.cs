@@ -132,6 +132,8 @@ public class LifeManager : MonoBehaviour
             vida -= Dano;
             playerPhotonSoundManager.PlayHurtSFX();
         }
+        
+        healthBar.sizeDelta = new Vector2(originalHealthBarSize * vida / 100, healthBar.sizeDelta.y);
 
         if (vida <= 0 )
         {
