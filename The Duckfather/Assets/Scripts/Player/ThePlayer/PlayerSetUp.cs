@@ -76,7 +76,7 @@ public class PlayerSetUp : MonoBehaviour
         _camaraCinemachine.SetActive(false);
         _aimManager.enabled = false;
 
-        _animatorController.enabled = false;
+        _animatorController.enabled = true;
         _shootinController.enabled = false;
         _soundManager.enabled = false;
     }

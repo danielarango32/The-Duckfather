@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,5 +27,11 @@ public class AnimatorController : MonoBehaviour
         {
             animator.SetBool("IsJumping", false);
         }
+    }
+
+    [PunRPC]
+    public void SyncJumpState(bool isJumping)
+    {
+        animator.SetBool("IsJumping", isJumping);
     }
 }

@@ -2120,7 +2120,6 @@ MonoBehaviour:
   canon: {fileID: 2837993280809265598}
   target: {fileID: 7711980066928911238}
   multiAimConstraint: {fileID: 3214446573945608600}
-  armaUIParent: {fileID: 2192139283231685098}
   balasUI: {fileID: 9174147714790488532}
   numBalasUI: {fileID: 4332386666535997041}
   bazucaUI: {fileID: 2376230717951880653}
@@ -3092,12 +3091,6 @@ MonoBehaviour:
 --- !u!1 &1795972037064954129 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6792283821152114570, guid: d3245d919c3b93c49bba5a6d0b8460ff,
-    type: 3}
-  m_PrefabInstance: {fileID: 5093458103520528027}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2192139283231685098 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6396116668796977009, guid: d3245d919c3b93c49bba5a6d0b8460ff,
     type: 3}
   m_PrefabInstance: {fileID: 5093458103520528027}
   m_PrefabAsset: {fileID: 0}

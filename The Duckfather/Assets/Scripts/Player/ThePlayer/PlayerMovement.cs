@@ -76,10 +76,20 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
     }
 
+    [PunRPC]
+    public void SyncMovement(float x, float z)
+    {
+        this.x = x;
+        this.z = z;
+    }
+
+
     void Movimiento()
     {
         x = Input.GetAxis("Horizontal");
         z = Input.GetAxis("Vertical");
+
+        photonView.RPC("SyncMovement", RpcTarget.Others, x, z);
 
         if (Input.GetKeyDown(KeyCode.F) && isGrounded && velocity.y < 0 && canDash)
         {
@@ -108,8 +118,12 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(alturaSalto * -2 * gravity);
+            photonView.RPC("SyncJumpState", RpcTarget.Others, true);
         }
-
+        else
+        {
+            photonView.RPC("SyncJumpState", RpcTarget.Others, false);
+        }
 
         controller.Move(velocity * Time.deltaTime);
     }
