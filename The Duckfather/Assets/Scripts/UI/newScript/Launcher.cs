@@ -25,7 +25,10 @@ public class Launcher : MonoBehaviourPunCallbacks
     void Start()
     {
         Debug.Log("Connecting to Master");
-        PhotonNetwork.ConnectUsingSettings();
+        if (!PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.ConnectUsingSettings();
+        }
         Application.targetFrameRate = 60;
     }
 
@@ -33,7 +36,6 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         Debug.Log("Connected to Master");
         PhotonNetwork.JoinLobby();
-        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     public override void OnJoinedLobby()
@@ -95,6 +97,13 @@ public class Launcher : MonoBehaviourPunCallbacks
         MenuManager.instance.OpenMenu("loading");
     }
 
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        // Intentar conectarse nuevamente después de desconectarse
+        PhotonNetwork.ConnectUsingSettings();
+    }
+
+
     public void LeaveFindRoom()
     {
         MenuManager.instance.OpenMenu("title");
@@ -109,6 +118,17 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         MenuManager.instance.OpenMenu("title");
+
+        // Si el jugador que abandona es el MasterClient, finalizar la sesión para todos los jugadores restantes
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("MasterClient left the room. Terminating session.");
+            PhotonNetwork.DestroyAll();
+            PhotonNetwork.LeaveRoom();
+        }
+
+        // Desconectar de Photon Network
+        PhotonNetwork.Disconnect();
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
