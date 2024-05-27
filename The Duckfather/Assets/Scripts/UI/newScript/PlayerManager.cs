@@ -7,15 +7,17 @@ using System.IO;
 using System.Linq;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
+
 public class PlayerManager : MonoBehaviour
 {
     [SerializeField] private string patoName;
+    public GameObject Camaraloose;
     PhotonView PV;
     
     GameObject controller;
 
     private int Kills;
-    private int Death;
+    private int Death = 0;
     private PlayerPhotonSoundManager playerPhotonSoundManager;
     void Awake()
     {
@@ -24,6 +26,8 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        Camaraloose.SetActive(false);
         
         if (PV.IsMine)
         {
@@ -46,15 +50,32 @@ public class PlayerManager : MonoBehaviour
     {
         PhotonNetwork.Destroy(controller);
         CreateController();
-        
+        Camaraloose.SetActive(true);
         Death++;
-        playerPhotonSoundManager.PlayDieSFX();
+        //playerPhotonSoundManager.PlayDieSFX();
         Hashtable hash = new Hashtable();
-        hash.Add("Kills", Death);
+        hash.Add("deaths", Death);
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        Debug.Log("Death: " + Death);
+    }
+
+    // if the player dont die and the camera dont loose after all other players die and active ther camara win
+
+    public void Win(Hashtable changedProps)
+    {
+        
+        if (Camaraloose.activeSelf == false && changedProps.ContainsKey("deaths")) 
+        {
+            Debug.Log("You Win");
+        }
+        else if (Camaraloose.activeSelf == true && changedProps.ContainsKey("deaths"))
+        {
+            Debug.Log("You Lose");
+        }
+        
     }
     
-    public void GetKill()
+    /*public void GetKill()
     {
         PV.RPC(nameof(this.RPC_GetKill), PV.Owner);
     }
@@ -67,7 +88,7 @@ public class PlayerManager : MonoBehaviour
         Hashtable hash = new Hashtable();
         hash.Add("Kills", Kills);
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
-    }
+    }*/
     
     public void RandomSkin()
     {
@@ -86,8 +107,5 @@ public class PlayerManager : MonoBehaviour
         }
         Debug.Log("Skin: " + patoName);
     }
-    /* public static PlayerManager Find(Player player)
-     {
-         return FindObjectOfType<PlayerManager>().SingleOrDefault(x => x.PV.Owner == player);
-     }*/
+   
 }
