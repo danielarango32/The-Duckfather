@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
@@ -33,7 +34,14 @@ public class ShootinController : MonoBehaviour
     [SerializeField] Transform multiAimConstraint;
 
     [Space]
-    
+    [Header("UI")]
+    [SerializeField] private GameObject balasUI;
+    [SerializeField] private TMP_Text numBalasUI;
+    [SerializeField] private GameObject bazucaUI;
+    [SerializeField] private GameObject revolverUI;
+    [SerializeField] private GameObject thomsonUI;
+    [SerializeField] private GameObject pistolaUI;
+
 
     /*
      Lo siguiente va a esconderse
@@ -127,6 +135,14 @@ public class ShootinController : MonoBehaviour
                 //Debug.Log("Puede disparar cualquier otra arma");
             }
         }
+        if (numBalas == 0)
+        {
+            numBalasUI.text = "";
+        }
+        else
+        {
+            numBalasUI.text = numBalas.ToString();
+        }
         
     }
 
@@ -161,6 +177,12 @@ public class ShootinController : MonoBehaviour
             WeaponController.transform.Find("BazucaChild").gameObject.SetActive(false);
             WeaponController.transform.Find("ThomsonChild").gameObject.SetActive(false);
             
+            bazucaUI.gameObject.SetActive(false);
+            revolverUI.gameObject.SetActive(false);
+            thomsonUI.gameObject.SetActive(false);
+            pistolaUI.gameObject.SetActive(false);
+            
+
             //Debug.Log("Armas Desactivadas");
         }
         if (numeroDeArma == 1)
@@ -169,6 +191,13 @@ public class ShootinController : MonoBehaviour
             WeaponController.transform.Find("PistolaChild").gameObject.SetActive(true);
             WeaponController.transform.Find("BazucaChild").gameObject.SetActive(false);
             WeaponController.transform.Find("ThomsonChild").gameObject.SetActive(false);
+
+            balasUI.gameObject.SetActive(true);
+            pistolaUI.gameObject.SetActive(true);
+            bazucaUI.gameObject.SetActive(false);
+            revolverUI.gameObject.SetActive(false);
+            thomsonUI.gameObject.SetActive(false);
+            
             canon = WeaponController.transform.Find("PistolaChild").gameObject.transform;
             fireRate = 0.5f;
             velocidad = 50;
@@ -183,6 +212,12 @@ public class ShootinController : MonoBehaviour
             WeaponController.transform.Find("PistolaChild").gameObject.SetActive(false);
             WeaponController.transform.Find("BazucaChild").gameObject.SetActive(true);
             WeaponController.transform.Find("ThomsonChild").gameObject.SetActive(false);
+            balasUI.gameObject.SetActive(true);
+            pistolaUI.gameObject.SetActive(false);
+            bazucaUI.gameObject.SetActive(true);
+            revolverUI.gameObject.SetActive(false);
+            thomsonUI.gameObject.SetActive(false);
+            
             canon = WeaponController.transform.Find("BazucaChild").gameObject.transform;
             fireRate = 1.5f;
             velocidad = 90;
@@ -195,6 +230,12 @@ public class ShootinController : MonoBehaviour
             WeaponController.transform.Find("PistolaChild").gameObject.SetActive(false);
             WeaponController.transform.Find("BazucaChild").gameObject.SetActive(false);
             WeaponController.transform.Find("ThomsonChild").gameObject.SetActive(false);
+            balasUI.gameObject.SetActive(true);
+            pistolaUI.gameObject.SetActive(false);
+            bazucaUI.gameObject.SetActive(false);
+            revolverUI.gameObject.SetActive(true);
+            thomsonUI.gameObject.SetActive(false);
+            
             canon = WeaponController.transform.Find("RevolverChild").gameObject.transform;
             fireRate = 0.9f;
             velocidad = 70;
@@ -209,6 +250,12 @@ public class ShootinController : MonoBehaviour
             WeaponController.transform.Find("PistolaChild").gameObject.SetActive(false);
             WeaponController.transform.Find("BazucaChild").gameObject.SetActive(false);
             WeaponController.transform.Find("ThomsonChild").gameObject.SetActive(true);
+            balasUI.gameObject.SetActive(true);
+            pistolaUI.gameObject.SetActive(false);
+            bazucaUI.gameObject.SetActive(false);
+            revolverUI.gameObject.SetActive(false);
+            thomsonUI.gameObject.SetActive(true);
+            
             canon = WeaponController.transform.Find("ThomsonChild").gameObject.transform;
             fireRate = 0.2f;
             velocidad = 70;
