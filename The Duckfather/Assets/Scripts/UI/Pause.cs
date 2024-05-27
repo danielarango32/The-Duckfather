@@ -86,7 +86,7 @@ public class Pause : MonoBehaviour
     {
         ClosePauseMenu();
         //GameObject.FindGameObjectsWithTag("join game screen").SetActive(true);
-        SceneManager.LoadScene("Online");
+        SceneManager.LoadScene("Online 2");
         PhotonNetwork.LeaveRoom();
         Cursor.lockState = CursorLockMode.None;
     }

@@ -1,10 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 
@@ -17,8 +13,18 @@ public class Timer : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        // Esperar a que todos los jugadores se unan antes de iniciar el temporizador
-        PhotonNetwork.AddCallbackTarget(this);
+        // Inicializar el temporizador en el MasterClient
+        if (PhotonNetwork.IsMasterClient)
+        {
+            timer = timerDuration;
+            timerStarted = true;
+            photonView.RPC("SyncTimer", RpcTarget.All, timer, timerStarted);
+        }
+    }
+
+    private void Awake()
+    {
+        UpdateTimerText(timerDuration); // Asegurarse de que el texto del temporizador se actualice en Awake
     }
 
     private void Update()
@@ -27,6 +33,7 @@ public class Timer : MonoBehaviourPunCallbacks
         {
             timer -= Time.deltaTime;
             UpdateTimerText(timer);
+            Debug.Log("Timer updating for " + PhotonNetwork.NickName + ": " + timer);
 
             if (timer <= 0f && PhotonNetwork.IsMasterClient)
             {
@@ -34,42 +41,42 @@ public class Timer : MonoBehaviourPunCallbacks
                 EndGame();
             }
         }
-        Debug.Log(timer);
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        // Cuando un nuevo jugador se une, verificar si todos los jugadores han entrado
-        if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers)
+        Debug.Log("Player entered room: " + newPlayer.NickName);
+        // Sincronizar el temporizador con el nuevo jugador
+        if (PhotonNetwork.IsMasterClient)
         {
-            // Iniciar el temporizador
-            timer = timerDuration;
-            timerStarted = true;
-
-            // Notificar a todos los clientes que el temporizador ha comenzado
-            photonView.RPC("StartTimer", RpcTarget.All, timer);
+            Debug.Log("MasterClient: Syncing timer with new player " + newPlayer.NickName);
+            photonView.RPC("SyncTimer", newPlayer, timer, timerStarted);
         }
     }
 
     [PunRPC]
-    private void StartTimer(float duration)
+    private void SyncTimer(float currentTimer, bool isStarted)
     {
-        timer = duration;
-        timerStarted = true;
+        Debug.Log("SyncTimer RPC called with currentTimer: " + currentTimer + " and isStarted: " + isStarted);
+        timer = currentTimer;
+        timerStarted = isStarted;
+        UpdateTimerText(timer);
     }
 
     private void EndGame()
     {
         // Finalizar la partida y la sesión
+        Debug.Log("Game ended.");
         PhotonNetwork.DestroyAll();
         PhotonNetwork.LeaveRoom();
     }
 
-    private void UpdateTimerText(float timer)
+    private void UpdateTimerText(float currentTimer)
     {
-        int minutes = Mathf.FloorToInt(timer / 60f);
-        int seconds = Mathf.FloorToInt(timer - minutes * 60f);
+        int minutes = Mathf.FloorToInt(currentTimer / 60f);
+        int seconds = Mathf.FloorToInt(currentTimer - minutes * 60f);
         string textTimer = string.Format("{0:00}:{1:00}", minutes, seconds);
         timeText.text = textTimer;
     }
 }
+

@@ -64,6 +64,9 @@ MonoBehaviour:
   - PlayQuackSFX_RPC
   - PlayDieSFX_RPC
   - StartTimer
+  - SyncTimer
+  - SyncWeaponSelection
+  - SyncAnimationParameters
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
