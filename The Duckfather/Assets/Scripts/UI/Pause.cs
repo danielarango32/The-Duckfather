@@ -85,8 +85,9 @@ public class Pause : MonoBehaviour
     public void BackToLobby()
     {
         ClosePauseMenu();
-        SceneManager.LoadScene("Online 2"); // Cargar la escena del lobby
-        PhotonNetwork.LeaveRoom(); // Abandonar la sala
+        //GameObject.FindGameObjectsWithTag("join game screen").SetActive(true);
+        SceneManager.LoadScene("Online 2");
+        PhotonNetwork.LeaveRoom();
         Cursor.lockState = CursorLockMode.None;
     }
     
