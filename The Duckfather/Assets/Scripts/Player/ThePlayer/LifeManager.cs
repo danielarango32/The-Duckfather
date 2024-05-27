@@ -43,12 +43,12 @@ public class LifeManager : MonoBehaviour
 
     private void Start()
     {
-        originalHealthBarSize = healthBar.sizeDelta.x;
+        /*originalHealthBarSize = healthBar.sizeDelta.x;
         originalHealthBarSize = sliderVida.GetComponent<RectTransform>().sizeDelta.x;
         
         
         originalShieldBarSize = shieldBar.sizeDelta.x;
-        originalShieldBarSize = sliderEscudo.GetComponent<RectTransform>().sizeDelta.x;
+        originalShieldBarSize = sliderEscudo.GetComponent<RectTransform>().sizeDelta.x;*/
         
         if (!PV.IsMine)
         {
@@ -59,16 +59,15 @@ public class LifeManager : MonoBehaviour
     }
     private void Update()
     {
-        if (PV.IsMine)
-        {
-            sliderVida.value = vida;
-            sliderEscudo.value = escudo; 
-        }
+        
+        
+        sliderVida.value = vida;
+        sliderEscudo.value = escudo; 
+        
 
         if (danorecibido)
         {
             contador = 0;
-            
         }
         else
         {
@@ -113,14 +112,14 @@ public class LifeManager : MonoBehaviour
     [PunRPC]
     public void QuitarVida(float Dano, PhotonMessageInfo info = default)
     {
+        if(!PV.IsMine) return;
         
-        if (PV.IsMine)
-        {
-            Debug.Log("El dano que llega es=" + Dano);
+        Debug.Log("El dano que llega es=" + Dano);
 
-            StartCoroutine(Danorecibido());
-            
-            if (escudo > 0)
+        //StartCoroutine(Danorecibido());
+
+          
+           /* if (escudo > 0)
             {
                 escudo -= Dano;
 
@@ -133,23 +132,17 @@ public class LifeManager : MonoBehaviour
                 }
 
             }
-            else
-            {
+            else*/
+            //{
                 healthBar.sizeDelta = new Vector2(originalHealthBarSize * vida / 100, healthBar.sizeDelta.y);
                 vida -= Dano;
-                playerPhotonSoundManager.PlayHurtSFX();
-            }
-
-
-
+                //playerPhotonSoundManager.PlayHurtSFX();
+            //}
             if (vida <= 0)
             {
-
                 Die();
-                
             }
 
-        }
     }
 
     [PunRPC]
