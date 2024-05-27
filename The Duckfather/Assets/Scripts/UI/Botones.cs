@@ -5,9 +5,10 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 using TMPro;
 
-public class MenuBotones : MonoBehaviourPunCallbacks
+public class Botones : MonoBehaviourPunCallbacks
 {
-    [SerializeField] string scene1;
+    [SerializeField] private GameObject[] gameObjectToShow;
+    [SerializeField] private GameObject[] gameObjectToHide;
     
     // change scene using button
     
@@ -22,17 +23,44 @@ public class MenuBotones : MonoBehaviourPunCallbacks
         SceneManager.LoadScene("Online 2");
     }
 
-    public void ChangeScene1()
+    public void ShowGameObject()
     {
-        StartCoroutine(creditTime());
+        StartCoroutine(ShowStuffCoroutine());
+        StartCoroutine(HideStuffCoroutine());
     }
     
-    IEnumerator creditTime()
+    IEnumerator ShowStuffCoroutine()
     {
         yield return new WaitForSeconds(1);
-        SceneManager.LoadScene(scene1);
+
+        if(gameObjectToShow != null)
+        {
+            for (int i =0; i < gameObjectToShow.Length; i++)
+            {
+                gameObjectToShow[i].SetActive(true);
+            }
+        }
+            
+        yield break;
+           
+    }
+    IEnumerator HideStuffCoroutine()
+    {
+        yield return new WaitForSeconds(1);
+
+        if(gameObjectToHide != null)
+        {
+            for (int i =0; i < gameObjectToHide.Length; i++)
+            {
+                gameObjectToHide[i].SetActive(false);
+            }
+        }
+            
+        yield break;
+           
     }
     
+
    
     
     // exit game

@@ -6,52 +6,70 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
+using Photon.Realtime;
 
-public class Timer : MonoBehaviour
+public class Timer : MonoBehaviourPunCallbacks
 {
-    
     public TMP_Text timeText;
-    
-    [SerializeField]public float time = 180;
-    
+    public float timerDuration = 180f; // Duración del temporizador en segundos
+    private float timer;
+    private bool timerStarted = false;
 
-    private bool stopTimer = false;
-    
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        stopTimer = false;
-        
+        // Esperar a que todos los jugadores se unan antes de iniciar el temporizador
+        PhotonNetwork.AddCallbackTarget(this);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        float timer = time - Time.time;
+        if (timerStarted)
+        {
+            timer -= Time.deltaTime;
+            UpdateTimerText(timer);
+
+            if (timer <= 0f && PhotonNetwork.IsMasterClient)
+            {
+                // Finalizar la partida y la sesión
+                EndGame();
+            }
+        }
+        Debug.Log(timer);
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        // Cuando un nuevo jugador se une, verificar si todos los jugadores han entrado
+        if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers)
+        {
+            // Iniciar el temporizador
+            timer = timerDuration;
+            timerStarted = true;
+
+            // Notificar a todos los clientes que el temporizador ha comenzado
+            photonView.RPC("StartTimer", RpcTarget.All, timer);
+        }
+    }
+
+    [PunRPC]
+    private void StartTimer(float duration)
+    {
+        timer = duration;
+        timerStarted = true;
+    }
+
+    private void EndGame()
+    {
+        // Finalizar la partida y la sesión
+        PhotonNetwork.DestroyAll();
+        PhotonNetwork.LeaveRoom();
+    }
+
+    private void UpdateTimerText(float timer)
+    {
         int minutes = Mathf.FloorToInt(timer / 60f);
         int seconds = Mathf.FloorToInt(timer - minutes * 60f);
         string textTimer = string.Format("{0:00}:{1:00}", minutes, seconds);
-        
-        if (timer <= 0)
-        {
-            StopTimer();
-        }
-        if (stopTimer == false)
-        {
-            timeText.text = textTimer;
-        }
+        timeText.text = textTimer;
     }
-    
-    // stop the timer
-    
-    public void StopTimer()
-    {
-        stopTimer = true;
-        Cursor.lockState = CursorLockMode.None;
-        SceneManager.LoadScene("Online 2");
-        PhotonNetwork.LeaveRoom();
-        
-    }
-    
-    
 }
