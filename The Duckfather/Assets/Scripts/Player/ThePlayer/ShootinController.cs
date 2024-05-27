@@ -42,6 +42,9 @@ public class ShootinController : MonoBehaviour
     [SerializeField] private GameObject thomsonUI;
     [SerializeField] private GameObject pistolaUI;
 
+    [Header("PhotonView")]
+    public PhotonView photonView;
+
 
     /*
      Lo siguiente va a esconderse
@@ -72,6 +75,7 @@ public class ShootinController : MonoBehaviour
     {
         firerateTimer = fireRate;
         playerPhotonSoundManager = GetComponent<PlayerPhotonSoundManager>();
+        photonView = GetComponent<PhotonView>();
     }
 
     /*
@@ -106,6 +110,9 @@ public class ShootinController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!photonView.IsMine) return; // Si no es el jugador local, no hacer nada
+
+
 
         //posición del VFX del disparo
         if (vfxDisparo.transform.position != canon.position)
@@ -263,9 +270,22 @@ public class ShootinController : MonoBehaviour
             numBalas = 80;
             //Debug.Log("Arma Activada Thomson");
         }
+        if (!photonView.IsMine) // Verifica si es el jugador local
+        {
+            bazucaUI.gameObject.SetActive(false);
+            revolverUI.gameObject.SetActive(false);
+            thomsonUI.gameObject.SetActive(false);
+            pistolaUI.gameObject.SetActive(false);
+        }
+
+        photonView.RPC("SyncWeaponChange", RpcTarget.Others, numeroDeArma);
     }
 
-
+    [PunRPC]
+    public void SyncWeaponChange(float weaponNumber)
+    {
+        SelectorDeArma(weaponNumber);
+    }
 
     void Shoot()
     {

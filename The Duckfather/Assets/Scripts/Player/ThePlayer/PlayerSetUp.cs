@@ -22,6 +22,8 @@ public class PlayerSetUp : MonoBehaviour
     public TextMeshPro nickNameText;
     
     public PhotonView PV;
+
+
     
    private void Awake()
     {
@@ -77,7 +79,7 @@ public class PlayerSetUp : MonoBehaviour
         _aimManager.enabled = false;
 
         _animatorController.enabled = true;
-        _shootinController.enabled = false;
+        _shootinController.enabled = true;
         _soundManager.enabled = false;
     }
 
