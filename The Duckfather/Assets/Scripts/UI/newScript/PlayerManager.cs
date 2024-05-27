@@ -19,6 +19,8 @@ public class PlayerManager : MonoBehaviour
     private int Kills;
     private int Death = 0;
     private PlayerPhotonSoundManager playerPhotonSoundManager;
+
+    SpawnManager spawnManager;
     void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -49,7 +51,8 @@ public class PlayerManager : MonoBehaviour
     public void Die()
     {
         PhotonNetwork.Destroy(controller);
-        CreateController();
+        //PhotonNetwork.Destroy(gameObject);
+        //CreateController();
         Camaraloose.SetActive(true);
         Death++;
         //playerPhotonSoundManager.PlayDieSFX();
@@ -61,7 +64,7 @@ public class PlayerManager : MonoBehaviour
 
     // if the player dont die and the camera dont loose after all other players die and active ther camara win
 
-    public void Win(Hashtable changedProps)
+    /*public void Win(Hashtable changedProps)
     {
         
         if (Camaraloose.activeSelf == false && changedProps.ContainsKey("deaths")) 
@@ -73,7 +76,7 @@ public class PlayerManager : MonoBehaviour
             Debug.Log("You Lose");
         }
         
-    }
+    }*/
     
     /*public void GetKill()
     {

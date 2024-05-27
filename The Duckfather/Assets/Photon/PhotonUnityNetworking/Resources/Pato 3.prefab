@@ -129,11 +129,6 @@ MonoBehaviour:
   nickName: 
   nickNameText: {fileID: 0}
   PV: {fileID: 3529525577119342405}
-  balasUI: {fileID: 7638234671421318046}
-  bazucaUI: {fileID: 2376230717951880653}
-  revolverUI: {fileID: 3314449339089538072}
-  thomsonUI: {fileID: 907959211936680281}
-  pistolaUI: {fileID: 3574779978258755888}
 --- !u!1 &1286882242808789815
 GameObject:
   m_ObjectHideFlags: 0
@@ -3166,7 +3161,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 5093458103520528027}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7638234671421318046}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
@@ -3175,12 +3170,6 @@ MonoBehaviour:
 --- !u!224 &5150920022783041549 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 131773517858547350, guid: d3245d919c3b93c49bba5a6d0b8460ff,
-    type: 3}
-  m_PrefabInstance: {fileID: 5093458103520528027}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7638234671421318046 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3220052698020635909, guid: d3245d919c3b93c49bba5a6d0b8460ff,
     type: 3}
   m_PrefabInstance: {fileID: 5093458103520528027}
   m_PrefabAsset: {fileID: 0}
