@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class LifeManager : MonoBehaviour
 {
     [Header("Sistema de vida")]
-    [SerializeField] float vida = 100;
+    //[SerializeField] float vida = 100;
     [SerializeField] float escudo = 100;
     [SerializeField] float tiempoParaRegen;
     [SerializeField] float cantidadDeRegeneracion;
@@ -36,6 +36,9 @@ public class LifeManager : MonoBehaviour
     PlayerManager playerManager;
 
     public PlayerPhotonSoundManager playerPhotonSoundManager;
+
+    const float maxHealth = 100;
+    float vida = maxHealth;
     private void Awake()
     {
         playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
@@ -134,7 +137,9 @@ public class LifeManager : MonoBehaviour
             }
             else*/
             //{
-                healthBar.sizeDelta = new Vector2(originalHealthBarSize * vida / 100, healthBar.sizeDelta.y);
+                //healthBar.sizeDelta = new Vector2(originalHealthBarSize * vida / 100, healthBar.sizeDelta.y);
+
+                healthBar.sizeDelta = new Vector2(vida / maxHealth, healthBar.sizeDelta.y);
                 vida -= Dano;
                 //playerPhotonSoundManager.PlayHurtSFX();
             //}

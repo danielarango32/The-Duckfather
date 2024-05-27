@@ -85,9 +85,28 @@ public class Pause : MonoBehaviour
     public void BackToLobby()
     {
         ClosePauseMenu();
-        //GameObject.FindGameObjectsWithTag("join game screen").SetActive(true);
-        SceneManager.LoadScene("Online 2");
         PhotonNetwork.LeaveRoom();
+        PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
+        PhotonNetwork.Destroy(GameObject.Find("PlayerManager"));
+        PhotonNetwork.Destroy(GameObject.Find("Player"));
+        PhotonNetwork.Destroy(GameObject.Find("launcher"));
+        PhotonNetwork.Destroy(GameObject.Find("MenuManager"));
+        PhotonNetwork.Destroy(GameObject.Find("PlayerNameManager"));
+        PhotonNetwork.DestroyAll();
+        PhotonNetwork.Destroy(GameObject.Find("RoomManager"));
+        PhotonNetwork.Destroy(GameObject.Find("Room"));
+        PhotonNetwork.Destroy(GameObject.Find("RoomManagerNew"));
+        PhotonNetwork.Destroy(GameObject.Find("Menu"));
+        PhotonNetwork.Destroy(GameObject.Find("Main"));
+        PhotonNetwork.Destroy(GameObject.Find("Room Manager"));
+
+
+        PhotonNetwork.Destroy(GameObject.Find("launcher"));
+        PhotonView.Destroy(PV);
+        PhotonNetwork.Disconnect();
+        PhotonNetwork.LoadLevel("Online 2");
+        //GameObject.FindGameObjectsWithTag("join game screen").SetActive(true);
+        //SceneManager.LoadScene("Online 2");
         Cursor.lockState = CursorLockMode.None;
     }
     

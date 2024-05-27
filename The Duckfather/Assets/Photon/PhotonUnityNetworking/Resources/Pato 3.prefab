@@ -2147,7 +2147,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8b6eaad042f4434a8fa806b5affd9c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vida: 100
   escudo: 0
   tiempoParaRegen: 0
   cantidadDeRegeneracion: 0
