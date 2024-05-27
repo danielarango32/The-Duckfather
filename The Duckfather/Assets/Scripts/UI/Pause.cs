@@ -88,6 +88,7 @@ public class Pause : MonoBehaviour
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
         PhotonNetwork.Destroy(GameObject.Find("PlayerManager"));
+        PhotonNetwork.Destroy(GameObject.Find("ScoreBoardItem"));
         PhotonNetwork.Destroy(GameObject.Find("Player"));
         PhotonNetwork.Destroy(GameObject.Find("launcher"));
         PhotonNetwork.Destroy(GameObject.Find("MenuManager"));

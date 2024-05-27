@@ -7,6 +7,7 @@ using Photon.Realtime;
 public class Launcher : MonoBehaviourPunCallbacks
 {
     public static Launcher instance;
+    
 
     [SerializeField] TMP_InputField roomNameInputField;
     [SerializeField] TMP_Text errorText;
@@ -20,6 +21,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     private void Awake()
     {
         instance = this;
+        
     }
 
     void Start()

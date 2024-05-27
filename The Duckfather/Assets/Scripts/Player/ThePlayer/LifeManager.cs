@@ -14,6 +14,8 @@ public class LifeManager : MonoBehaviour
     [SerializeField] float cantidadDeRegeneracion;
     
     public bool isLocalPlayer;
+
+    [SerializeField] Image healthBarImage;
     
     public RectTransform healthBar;
     public RectTransform shieldBar;
@@ -39,6 +41,7 @@ public class LifeManager : MonoBehaviour
 
     const float maxHealth = 100;
     float vida = maxHealth;
+
     private void Awake()
     {
         playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
@@ -119,7 +122,7 @@ public class LifeManager : MonoBehaviour
         
         Debug.Log("El dano que llega es=" + Dano);
 
-        //StartCoroutine(Danorecibido());
+        StartCoroutine(Danorecibido());
 
           
            /* if (escudo > 0)
@@ -139,7 +142,7 @@ public class LifeManager : MonoBehaviour
             //{
                 //healthBar.sizeDelta = new Vector2(originalHealthBarSize * vida / 100, healthBar.sizeDelta.y);
 
-                healthBar.sizeDelta = new Vector2(vida / maxHealth, healthBar.sizeDelta.y);
+                healthBarImage.fillAmount = vida / maxHealth;
                 vida -= Dano;
                 //playerPhotonSoundManager.PlayHurtSFX();
             //}

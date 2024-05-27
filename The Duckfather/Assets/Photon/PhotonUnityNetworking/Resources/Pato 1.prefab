@@ -3675,6 +3675,7 @@ MonoBehaviour:
   tiempoParaRegen: 0
   cantidadDeRegeneracion: 0
   isLocalPlayer: 0
+  healthBarImage: {fileID: 7159926579608198818}
   healthBar: {fileID: 4125794364719535733}
   shieldBar: {fileID: 5150920022783041549}
   sliderVida: {fileID: 3004235234983095019}
@@ -4885,6 +4886,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 5093458103520528027}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7159926579608198818 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2734444060457670713, guid: d3245d919c3b93c49bba5a6d0b8460ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 5093458103520528027}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9174147714790488532 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4178926581548416847, guid: d3245d919c3b93c49bba5a6d0b8460ff,
