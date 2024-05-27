@@ -59,9 +59,11 @@ public class LifeManager : MonoBehaviour
     }
     private void Update()
     {
-        //sliderVida.GetComponent<RectTransform>().sizeDelta = new Vector2(originalHealthBarSize * vida / 100, sliderVida.GetComponent<RectTransform>().sizeDelta.y);
-        sliderVida.value = vida;
-        sliderEscudo.value = escudo;
+        if (PV.IsMine)
+        {
+            sliderVida.value = vida;
+            sliderEscudo.value = escudo; 
+        }
 
         if (danorecibido)
         {
@@ -111,48 +113,43 @@ public class LifeManager : MonoBehaviour
     [PunRPC]
     public void QuitarVida(float Dano, PhotonMessageInfo info = default)
     {
-        Debug.Log("El dano que llega es=" + Dano);
-
-        StartCoroutine(Danorecibido());
         
-
-        if (escudo>0)
+        if (PV.IsMine)
         {
-            escudo -= Dano;
-            
-            shieldBar.sizeDelta = new Vector2(originalShieldBarSize * escudo / 100, shieldBar.sizeDelta.y);
+            Debug.Log("El dano que llega es=" + Dano);
 
-            if (escudo < 0)
+            StartCoroutine(Danorecibido());
+            
+            if (escudo > 0)
             {
+                escudo -= Dano;
+
+                shieldBar.sizeDelta = new Vector2(originalShieldBarSize * escudo / 100, shieldBar.sizeDelta.y);
+
+                if (escudo < 0)
+                {
+
+                    escudo = 0;
+                }
+
+            }
+            else
+            {
+                healthBar.sizeDelta = new Vector2(originalHealthBarSize * vida / 100, healthBar.sizeDelta.y);
+                vida -= Dano;
+                playerPhotonSoundManager.PlayHurtSFX();
+            }
+
+
+
+            if (vida <= 0)
+            {
+
+                Die();
                 
-                escudo = 0;
             }
-            
-        }
-        else
-        {
-            healthBar.sizeDelta = new Vector2(originalHealthBarSize * vida / 100, healthBar.sizeDelta.y);
-            vida -= Dano;
-            playerPhotonSoundManager.PlayHurtSFX();
-        }
-        
-        
 
-        if (vida <= 0 )
-        {
-            
-            Die();
-           // PlayerManager.Find(info.Sender).GetKill();
-            
-            
-            /*healthBar.sizeDelta = new Vector2(originalHealthBarSize * vida / 100, healthBar.sizeDelta.y);
-            if (isLocalPlayer)
-            {
-                //Roomandlobbymanager.Instance.SpawnPlayer();
-            }
-            
-            //Destroy(this.gameObject);*/
-        } 
+        }
     }
 
     [PunRPC]
