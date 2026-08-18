@@ -28,7 +28,7 @@ MonoBehaviour:
     AuthMode: 0
     EnableLobbyStatistics: 0
     NetworkLogging: 1
-  DevRegion: 
+  DevRegion: us
   PunLogging: 0
   EnableSupportLogger: 0
   RunInBackground: 1
@@ -39,6 +39,37 @@ MonoBehaviour:
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
+  - ObtenerVida
+  - ObtenerEscudo
+  - QuitarVida
+  - "Da\xF1orecibido"
+  - Explode
+  - SetNickName
+  - TakeDamage
+  - Danorecibido
+  - Respawn
+  - DamageRecieved
+  - RPC_GetKill
+  - PlayFootstepSFX_RPC
+  - PlayGrabSFX_RPC
+  - PlayHurtSFX_RPC
+  - PlayShootSFX_RPC
+  - PlayPauseSFX_RPC
+  - PlayUnPauseSFX_RPC
+  - PlayJumpSFX_RPC
+  - PlaySelectSFX_RPC
+  - PlayFallSFX_RPC
+  - PlayPower1SFX_RPC
+  - PlayPower2SFX_RPC
+  - PlayQuackSFX_RPC
+  - PlayDieSFX_RPC
+  - StartTimer
+  - SyncTimer
+  - SyncWeaponSelection
+  - SyncAnimationParameters
+  - SyncMovement
+  - SyncJumpState
+  - SyncWeaponChange
   DisableAutoOpenWizard: 1
   ShowSettings: 0
-  DevRegionSetOnce: 0
+  DevRegionSetOnce: 1

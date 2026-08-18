@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {
@@ -21,6 +22,15 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     private float dashPower = 1f;
 
     public bool canDash = true;
+    
+    private float dashTime;
+    
+    public RectTransform DashBar;
+    
+    [Header("UI de dash")]
+    [SerializeField] Slider sliderDash;
+    
+    private float timeDashSize;
 
     //GRAVEDAD
     [SerializeField] float gravity = -20f;
@@ -32,28 +42,54 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     [SerializeField] private float groundDistance = 0.4f;
     public LayerMask groundeMask;
     [SerializeField] public bool isGrounded = false;
+    
 
-
-    [Header("Globalización De Variables")]
+    [Header("Globalizaciï¿½n De Variables")]
     public float x, z;
+    
+    PhotonView PV;
+    
+    PlayerManager playerManager;
 
+    private PlayerPhotonSoundManager playerPhotonSoundManager;
 
+    /*private void Awake()
+    {
+        playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
+    }*/
+    private void Start()
+    {
+        dashTime = DashBar.sizeDelta.x;
+        dashTime = sliderDash.GetComponent<RectTransform>().sizeDelta.x;
 
-
-
+        playerPhotonSoundManager = GetComponent<PlayerPhotonSoundManager>();
+        
+    }
     private void Update()
     {
 
         Movimiento();
         IsGrounded();
         Saltar();
+        sliderDash.value = timeDashSize;
+        
 
     }
+
+    [PunRPC]
+    public void SyncMovement(float x, float z)
+    {
+        this.x = x;
+        this.z = z;
+    }
+
 
     void Movimiento()
     {
         x = Input.GetAxis("Horizontal");
         z = Input.GetAxis("Vertical");
+
+        photonView.RPC("SyncMovement", RpcTarget.Others, x, z);
 
         if (Input.GetKeyDown(KeyCode.F) && isGrounded && velocity.y < 0 && canDash)
         {
@@ -82,8 +118,12 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(alturaSalto * -2 * gravity);
+            photonView.RPC("SyncJumpState", RpcTarget.Others, true);
         }
-
+        else
+        {
+            photonView.RPC("SyncJumpState", RpcTarget.Others, false);
+        }
 
         controller.Move(velocity * Time.deltaTime);
     }
@@ -93,8 +133,59 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(0.01f);
         dashPower = 1;
         canDash = false;
+        timeDashSize = Time.deltaTime;
+        Debug.Log(timeDashSize);
+        
         yield return new WaitForSeconds(CDDash);
         canDash = true;
+        timeDashSize = Time.time;
+        
     }
 
+
+    //Seccion de PowerUps
+    //PowerUP de Velocidad 
+    public void SetMoveSpeed(float newSpeedAdjustment, float returnTime)
+    {
+        speed += newSpeedAdjustment;
+        playerPhotonSoundManager.PlayPower1SFX();
+        StartCoroutine(ReturnSpeed(newSpeedAdjustment, returnTime));
+    }
+    public IEnumerator ReturnSpeed(float newSpeedAdjustment, float returnTime)
+    {
+
+
+
+        yield return new WaitForSeconds(returnTime);
+        ReturnMoveSpeed(newSpeedAdjustment);
+
+    }
+
+    public void ReturnMoveSpeed(float newSpeedAdjustment)
+    {
+        speed -= newSpeedAdjustment;
+    }
+
+    //PowerUp de Salto
+
+    public void SetJumpAmount(float newJumpAdjustment, float returnTime)
+    {
+        alturaSalto += newJumpAdjustment;
+        playerPhotonSoundManager.PlayPower2SFX();
+        StartCoroutine(ReturnJumpTime(newJumpAdjustment, returnTime));
+    }
+    public IEnumerator ReturnJumpTime(float newJumpAdjustment, float returnTime)
+    {
+
+
+
+        yield return new WaitForSeconds(returnTime);
+        ReturnJump(newJumpAdjustment);
+
+    }
+
+    public void ReturnJump(float newJumpAdjustment)
+    {
+        alturaSalto -= newJumpAdjustment;
+    }
 }

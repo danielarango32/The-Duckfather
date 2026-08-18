@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,10 +12,10 @@ public class Bala : MonoBehaviour
     [Tooltip("GameObject del efecto de la explosion")] //Efecto para la explosion
     public GameObject explosion;    
 
-    [Tooltip("layer de los enemigos a impactar")] //Layer en la que estarian enemigos. Se seleccioan que va a recibir daño por parte de la bala o la explosion
+    [Tooltip("layer de los enemigos a impactar")] //Layer en la que estarian enemigos. Se seleccioan que va a recibir daï¿½o por parte de la bala o la explosion
     public LayerMask whatIsEnemies; 
 
-    [Tooltip("Daño que causara la bala")]  //Daño que causara la bala
+    [Tooltip("Daï¿½o que causara la bala")]  //Daï¿½o que causara la bala
     public int explosionDamage;    
     [Tooltip("Rango de la explosion causada por la bala")]  //Rango de la explosion
     public float explosionRange;   
@@ -44,6 +45,8 @@ public class Bala : MonoBehaviour
 
     int collisions;                     //Cantidad de rebotes que puede realizar la bala
     PhysicMaterial physics_mat;
+    
+    
 
     private void Start()
     {
@@ -55,12 +58,17 @@ public class Bala : MonoBehaviour
         if (collisions > maxCollisions) Explode();
         maxLifetime -= Time.deltaTime;
         if (maxLifetime <= 0) Explode();
+        
     }
 
-    private void Explode()  //Explosion y daño al enemigo por la misma
+    [PunRPC]
+    private void Explode()  //Explosion y daï¿½o al enemigo por la misma
     {
-        
-        if (explosion != null) Instantiate(explosion, transform.position, Quaternion.identity);
+
+        if (explosion != null)
+        {
+            Instantiate(explosion, transform.position, Quaternion.identity);
+        } 
 
         
         Collider[] enemies = Physics.OverlapSphere(transform.position, explosionRange, whatIsEnemies);  
@@ -68,29 +76,49 @@ public class Bala : MonoBehaviour
         {
             //Atencion
 
-            //Aqui va la funcion "TakeDamage" del enemigo, en donde dice "scriptname" se reemplaza por el nombre del scrip del enemigo o el que controle el daño que recibira. Si la funcion de recibir daño es diferente, modificar el "TakeDamage" por el correspondiente. 
+            //Aqui va la funcion "TakeDamage" del enemigo, en donde dice "scriptname" se reemplaza por el nombre del scrip del enemigo o el que controle el daï¿½o que recibira. Si la funcion de recibir daï¿½o es diferente, modificar el "TakeDamage" por el correspondiente. 
             ///enemies[i].GetComponent<scriptname>().TakeDamage(explosionDamage);  
+            //enemies[i].GetComponent<PhotonView>().RPC("QuitarVida", RpcTarget.All, explosionDamage);
+            enemies[i].GetComponent<LifeManager>().QuitarVida(explosionDamage);
             
+            
+
             if (enemies[i].GetComponent<Rigidbody>())
+            {
                 enemies[i].GetComponent<Rigidbody>().AddExplosionForce(explosionForce, transform.position, explosionRange);
+            }
+                
         }
+        
+
 
         //Delay para destruir 
+
         Invoke("Delay", 0.05f);
+        Invoke("DelayExplosion", 5.0f);
     }
     private void Delay()
     {
         Destroy(gameObject);
+        
+    }
+    private void DelayExplosion()
+    {
+        Destroy(explosion);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-       
-        if (collision.collider.CompareTag("Bullet")) return; //Se puede obviar esta linea si en Unity se desactiva la colison de balas con balas en los projects settings  
+
+        Explode();
+        /*
+         if (collision.collider.CompareTag("Bullet")) return; //Se puede obviar esta linea si en Unity se desactiva la colison de balas con balas en los projects settings  
         collisions++;
         if (collision.collider.CompareTag("Player") && explodeOnTouch) Explode();
+         
+         */
 
-        
+
     }
 
     private void Setup() //Rebotes
@@ -100,7 +128,7 @@ public class Bala : MonoBehaviour
         physics_mat.bounciness = bounciness;
         physics_mat.frictionCombine = PhysicMaterialCombine.Minimum;
         physics_mat.bounceCombine = PhysicMaterialCombine.Maximum;
-        GetComponent<SphereCollider>().material = physics_mat;
+        GetComponent<MeshCollider>().material = physics_mat;
 
        
         rb.useGravity = useGravity;   //Gravedad
@@ -113,5 +141,7 @@ public class Bala : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, explosionRange);
     }
+
+    
 }
 
