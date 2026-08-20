@@ -22,12 +22,14 @@ Nueve integrantes, con los roles tal como aparecen en la diapositiva *Team*:
 | Sara Londoño | Animator |
 | David Marín | 3D Modeler · Animator |
 | Emanuel Perez | Developer |
+| Mateo Arango (External help) | Developer | 
 | Felipe Aguilar | Developer and Rigger |
 | Daniel Arango | Project Manager, Programers |
 | Andres Delgado | Art Director |
 | Michael Munera | 3D Modeler · Animator |
 | Juan Pablo Cardona | 3D Modeler · Animator |
 | Emilio Jimenez | Animation Director |
+
 
 ## 3. Servicios
 
