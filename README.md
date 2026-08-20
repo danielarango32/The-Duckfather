@@ -92,16 +92,6 @@ la presentación original):
 
 - **1 – Se usarán power ups**
 - **3 – Conquistar zona**
-
-## 8. Contacto
-
-Última diapositiva, con los datos de contacto del estudio:
-
-- `ultrstudio@hotmail.com`
-- `www.ultrastudio.com`
-- Los teléfonos que aparecen (`+123-456-7890`) son el texto de ejemplo de la
-  plantilla de Canva, no números reales.
-
 ---
 
 ## Estado del repositorio
