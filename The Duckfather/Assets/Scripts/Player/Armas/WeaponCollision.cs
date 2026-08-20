@@ -23,7 +23,7 @@ public class WeaponCollision : MonoBehaviour
             
 
             this.gameObject.SetActive(false);
-            Destroy(this.gameObject, 0.5f);
+            NetworkCleanup.Remove(this.gameObject);
 
 
            // spawnChanger.changeActivator();

@@ -53,6 +53,16 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
     private PlayerPhotonSoundManager playerPhotonSoundManager;
 
+    // Sincronizacion por red. Antes salia un RPC de movimiento y otro de salto
+    // en cada frame, cambiara algo o no.
+    private const float MovementSyncThreshold = 0.05f;
+    private const float MovementSyncInterval = 0.1f;
+
+    private float lastSentX;
+    private float lastSentZ;
+    private float nextMovementSyncTime;
+    private bool lastSentJumpState;
+
     /*private void Awake()
     {
         playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
@@ -89,7 +99,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         x = Input.GetAxis("Horizontal");
         z = Input.GetAxis("Vertical");
 
-        photonView.RPC("SyncMovement", RpcTarget.Others, x, z);
+        SyncMovementIfChanged();
 
         if (Input.GetKeyDown(KeyCode.F) && isGrounded && velocity.y < 0 && canDash)
         {
@@ -99,6 +109,45 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         Vector3 move = transform.right * x + transform.forward * z;
         controller.Move(move * speed * dashPower * Time.deltaTime);
+    }
+
+    /// <summary>
+    /// Envia el input de movimiento solo cuando cambia de verdad, y como mucho
+    /// 1/MovementSyncInterval veces por segundo.
+    /// </summary>
+    private void SyncMovementIfChanged()
+    {
+        if (!photonView.IsMine || Time.time < nextMovementSyncTime)
+        {
+            return;
+        }
+
+        if (!MovementNeedsSync())
+        {
+            return;
+        }
+
+        lastSentX = x;
+        lastSentZ = z;
+        nextMovementSyncTime = Time.time + MovementSyncInterval;
+        photonView.RPC(nameof(SyncMovement), RpcTarget.Others, x, z);
+    }
+
+    private bool MovementNeedsSync()
+    {
+        // Arrancar y pararse se notifican siempre: con solo el umbral, el
+        // ultimo valor enviado podria quedarse en un residuo y el muneco
+        // remoto seguiria andando en el sitio.
+        bool stoppedNow = x == 0f && z == 0f;
+        bool wasStopped = lastSentX == 0f && lastSentZ == 0f;
+
+        if (stoppedNow != wasStopped)
+        {
+            return true;
+        }
+
+        return Mathf.Abs(x - lastSentX) > MovementSyncThreshold
+            || Mathf.Abs(z - lastSentZ) > MovementSyncThreshold;
     }
 
     void IsGrounded()
@@ -115,17 +164,33 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
     void Saltar()
     {
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        bool isJumping = Input.GetButtonDown("Jump") && isGrounded;
+
+        if (isJumping)
         {
             velocity.y = Mathf.Sqrt(alturaSalto * -2 * gravity);
-            photonView.RPC("SyncJumpState", RpcTarget.Others, true);
-        }
-        else
-        {
-            photonView.RPC("SyncJumpState", RpcTarget.Others, false);
         }
 
+        SyncJumpStateIfChanged(isJumping);
+
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    /// <summary>
+    /// La rama else mandaba SyncJumpState(false) en cada frame. Ahora solo se
+    /// envia en el flanco: dos RPC por salto en lugar de 60 por segundo.
+    /// </summary>
+    private void SyncJumpStateIfChanged(bool isJumping)
+    {
+        if (!photonView.IsMine || isJumping == lastSentJumpState)
+        {
+            return;
+        }
+
+        lastSentJumpState = isJumping;
+        // SyncJumpState es un [PunRPC] de AnimatorController, en este mismo
+        // GameObject: por eso va por nombre y no con nameof.
+        photonView.RPC("SyncJumpState", RpcTarget.Others, isJumping);
     }
 
     IEnumerator DashActivado()

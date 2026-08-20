@@ -26,6 +26,14 @@ public class PlayerManager : MonoBehaviour
     SpawnManager spawnManager;
 
     Pause pause;
+
+    private const int MinimumPlayersForWin = 2;
+
+    // Estado de fin de partida: sin esto, WinningConditions() arrancaba una
+    // corrutina nueva en cada frame mientras la condicion siguiera cumpliendose.
+    private bool matchEnded;
+    private bool matchHasHadRivals;
+
     void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -72,16 +80,33 @@ public class PlayerManager : MonoBehaviour
 
     public void WinningConditions()
     {
-         if (PV.IsMine && Death == 5)
-         {
-             StartCoroutine(Loose());
-             Debug.Log("You Lose");
-         }
-         if( PhotonNetwork.PlayerList.Length == 1 && PV.IsMine)
-         {
-             StartCoroutine(Wining());
-             Debug.Log("You Win");
-         }
+        if (!PV.IsMine || matchEnded)
+        {
+            return;
+        }
+
+        // La victoria solo cuenta si en algun momento hubo rivales. Al crear
+        // una partida estas solo en la sala, y eso disparaba la victoria en el
+        // primer frame.
+        if (PhotonNetwork.PlayerList.Length >= MinimumPlayersForWin)
+        {
+            matchHasHadRivals = true;
+        }
+
+        if (Death == 5)
+        {
+            matchEnded = true;
+            Debug.Log("You Lose");
+            StartCoroutine(Loose());
+            return;
+        }
+
+        if (matchHasHadRivals && PhotonNetwork.PlayerList.Length == 1)
+        {
+            matchEnded = true;
+            Debug.Log("You Win");
+            StartCoroutine(Wining());
+        }
     }
 
     // if the player dont die and the camera dont loose after all other players die and active ther camara win
@@ -151,31 +176,9 @@ public class PlayerManager : MonoBehaviour
         
     }
 
-    void EndGame(){
-        PhotonNetwork.LeaveRoom();
-        PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
-        PhotonNetwork.Destroy(GameObject.Find("PlayerManager"));
-        PhotonNetwork.Destroy(GameObject.Find("ScoreBoardItem"));
-        PhotonNetwork.Destroy(GameObject.Find("Player"));
-        PhotonNetwork.Destroy(GameObject.Find("launcher"));
-        PhotonNetwork.Destroy(GameObject.Find("MenuManager"));
-        PhotonNetwork.Destroy(GameObject.Find("PlayerNameManager"));
-        PhotonNetwork.DestroyAll();
-        PhotonNetwork.Destroy(GameObject.Find("RoomManager"));
-        PhotonNetwork.Destroy(GameObject.Find("Room"));
-        PhotonNetwork.Destroy(GameObject.Find("RoomManagerNew"));
-        PhotonNetwork.Destroy(GameObject.Find("Menu"));
-        PhotonNetwork.Destroy(GameObject.Find("Main"));
-        PhotonNetwork.Destroy(GameObject.Find("Room Manager"));
-
-
-        PhotonNetwork.Destroy(GameObject.Find("launcher"));
-        PhotonView.Destroy(PV);
-        PhotonNetwork.Disconnect();
-        PhotonNetwork.LoadLevel("Online 2");
-        //GameObject.FindGameObjectsWithTag("join game screen").SetActive(true);
-        //SceneManager.LoadScene("Online 2");
-        Cursor.lockState = CursorLockMode.None;
+    void EndGame()
+    {
+        RoomManagerNew.ExitMatch();
     }
    
 }

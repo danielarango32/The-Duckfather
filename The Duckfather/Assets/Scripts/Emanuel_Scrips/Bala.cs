@@ -48,6 +48,8 @@ public class Bala : MonoBehaviour
     
     
 
+    private const float VidaDelEfectoDeExplosion = 5f;
+
     private void Start()
     {
         Setup();
@@ -67,7 +69,12 @@ public class Bala : MonoBehaviour
 
         if (explosion != null)
         {
-            Instantiate(explosion, transform.position, Quaternion.identity);
+            // El retardo va asociado al propio efecto, no a la bala: el
+            // Invoke("DelayExplosion", 5) de antes se cancelaba al destruirse
+            // la bala 0,05 s despues, y encima apuntaba al prefab de
+            // referencia en lugar de al clon recien creado.
+            GameObject efecto = Instantiate(explosion, transform.position, Quaternion.identity);
+            Destroy(efecto, VidaDelEfectoDeExplosion);
         } 
 
         
@@ -95,16 +102,12 @@ public class Bala : MonoBehaviour
         //Delay para destruir 
 
         Invoke("Delay", 0.05f);
-        Invoke("DelayExplosion", 5.0f);
     }
     private void Delay()
     {
-        Destroy(gameObject);
-        
-    }
-    private void DelayExplosion()
-    {
-        Destroy(explosion);
+        // La bala se crea con PhotonNetwork.Instantiate: con Object.Destroy
+        // desaparecia solo en el cliente que disparo.
+        NetworkCleanup.Remove(gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)

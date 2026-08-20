@@ -71,11 +71,17 @@ public class ShootinController : MonoBehaviour
    private int grabSFXIndex = 0;
     private PlayerPhotonSoundManager playerPhotonSoundManager;
 
+    private void Awake()
+    {
+        // Se resolvian en Start(), pero SelectorDeArma() puede llegar desde
+        // WeaponCollision.OnTriggerEnter antes de que Start() haya corrido.
+        photonView = GetComponent<PhotonView>();
+        playerPhotonSoundManager = GetComponent<PlayerPhotonSoundManager>();
+    }
+
     private void Start()
     {
         firerateTimer = fireRate;
-        playerPhotonSoundManager = GetComponent<PlayerPhotonSoundManager>();
-        photonView = GetComponent<PhotonView>();
     }
 
     /*
@@ -170,11 +176,31 @@ public class ShootinController : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Punto de entrada local: aplica el arma, suena el cambio y lo propaga.
+    /// Solo actua sobre el jugador propio; el trigger de recogida salta en
+    /// todos los clientes, pero al resto el arma le llega por SyncWeaponChange.
+    /// </summary>
     public void SelectorDeArma(float numeroDeArma)
     {
-       shootSFXIndex = (int)numeroDeArma;
-        grabSFXIndex = (int)numeroDeArma;
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
+        ApplyWeapon(numeroDeArma);
         playerPhotonSoundManager.PlayGrabSFX(grabSFXIndex);
+        photonView.RPC(nameof(SyncWeaponChange), RpcTarget.Others, numeroDeArma);
+    }
+
+    /// <summary>
+    /// Aplica el arma sin tocar la red. La usan tanto el jugador propio como el
+    /// RPC de sincronizacion, y por eso aqui no se emite ningun RPC.
+    /// </summary>
+    private void ApplyWeapon(float numeroDeArma)
+    {
+        shootSFXIndex = (int)numeroDeArma;
+        grabSFXIndex = (int)numeroDeArma;
 
         numArma = numeroDeArma;
         if (numeroDeArma == 0)
@@ -277,14 +303,13 @@ public class ShootinController : MonoBehaviour
             thomsonUI.gameObject.SetActive(false);
             pistolaUI.gameObject.SetActive(false);
         }
-
-        photonView.RPC("SyncWeaponChange", RpcTarget.Others, numeroDeArma);
     }
 
     [PunRPC]
     public void SyncWeaponChange(float weaponNumber)
     {
-        SelectorDeArma(weaponNumber);
+        // Aplica sin reenviar: aqui se cerraba el bucle A -> B -> A -> B...
+        ApplyWeapon(weaponNumber);
     }
 
     void Shoot()
