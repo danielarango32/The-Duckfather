@@ -24,6 +24,42 @@ toca RPC o flujo de sala necesita una prueba en el editor con dos clientes.
 
 ## 20/08/2026
 
+### F-13, F-17, F-18, F-24, F-43, F-50 · Borrado de sistemas reemplazados
+
+30 assets borrados con sus `.meta`: 8 scripts, 10 prefabs huérfanos y 12
+escenas fuera del build.
+
+- **Scripts:** `Room and lobby manager.cs` y `Multiplayer/RoomManager.cs` (los
+  dos gestores de sala anteriores a `Launcher`), `GunSpawn.cs` (el spawner roto
+  de F-24, duplicado de `SpawnGun`), `DisparoRaycast.cs` (disparo sin red),
+  `Recoger_Arma.cs` (NRE por frame, cuerpo vacío), `ItemInfo.cs` (77 campos sin
+  usar), `win.cs` y `MovimientoJugador.cs`.
+- **Escenas:** `Scenes/DANI/{Offline,Online}`, `Scenes/Elite/{Offline,Online}`,
+  `Scenes/TEO/{Offline,Online}` y las 6 de `Scenes/Rolix/scene no funciona/`.
+- **Prefabs:** `Prefabs/Offline_Teo.prefab`, los 6 de `Scenes/DANI/prefabas/` y
+  los 3 de `Scenes/Elite/Prefabs_PowerUps/`.
+
+**Verificación previa al borrado.** Se extrajo el GUID de cada candidato y se
+buscó en los 1.580 assets del proyecto. Ninguno aparece en las tres escenas del
+build ni en ninguno de los 28 prefabs de
+`Photon/PhotonUnityNetworking/Resources/`, que es donde viven de verdad los
+objetos que instancia `PhotonNetwork.Instantiate` por nombre. Los prefabs de
+`Scenes/DANI/prefabas/` eran copias huérfanas: se comprobó que `Pato 1.prefab`
+referencia las de `Resources`, no esas.
+
+**Corrección importante sobre el plan inicial.** La propuesta era borrar las
+carpetas `DANI/`, `Elite/` y `TEO/` enteras. El análisis de dependencias lo
+desmintió: **46 de sus 122 ficheros son carga viva**. `DANI/Animaciones/` tiene
+los animator controllers y el FBX del pato que usan `Pato 1/2/3` y `Player*`;
+`Elite/Audio/` tiene 26 sonidos que usan esos mismos prefabs y hasta
+`Online 2.unity`. Borrar por carpeta habría roto el juego. Se borraron solo los
+ficheros con cero referencias externas.
+
+**Deliberadamente NO borrado:** los 46 ficheros de arte y audio sin referenciar
+que quedan en esas carpetas. Técnicamente son huérfanos, pero son fuentes de
+los compañeros (FBX, texturas, mp3) y esa decisión es suya, no una consecuencia
+técnica del borrado de código.
+
 ### F-05 · La lista de salas se reconstruía desde el delta
 
 `UI/newScript/Launcher.cs`
@@ -85,8 +121,13 @@ va asociado al propio efecto y sobrevive a la destrucción de la bala;
 causa real es que `SpawnGun` las crea con `Instantiate` local, así que cada
 cliente tiene su propia copia y `NetworkCleanup.Remove()` degrada
 —correctamente— a un borrado local. El arma seguirá pudiendo recogerse dos
-veces hasta que el spawner pase a `PhotonNetwork.Instantiate`, que es parte del
-bloque 8 (**F-17**, **F-24**). El cambio deja el camino listo para entonces.
+veces hasta que el spawner pase a `PhotonNetwork.Instantiate` con el prefab en
+una carpeta `Resources`.
+
+Esto no lo cubrió el bloque 8: allí se borró `GunSpawn` (la implementación
+rota), pero `SpawnGun` —la que quedó viva— sigue instanciando en local. Es
+trabajo pendiente sin bloque asignado, y `NetworkCleanup.Remove()` ya deja el
+camino listo para cuando se haga.
 
 ### F-31, F-32 · Victoria automática al crear la partida y corrutinas por frame
 
@@ -231,16 +272,20 @@ era crear una sala con éxito.
 
 ## Hallazgos que siguen abiertos
 
-Los 39 restantes del informe. El último bloque del orden propuesto:
-
-| Orden | Qué | Hallazgos |
-|---|---|---|
-| 8 | Borrar los sistemas reemplazados | F-13, F-17, F-18, F-24, F-43, F-50 |
-
-Con el bloque 8 se cierra el orden acordado. Lo que quede después no tiene
-prioridad asignada: son sobre todo los hallazgos de rendimiento y código muerto
+**El orden de arreglo acordado (bloques 1 a 8) está completo:** 20 hallazgos
+corregidos y 2 parciales (F-16 y F-50). Quedan 30 sin prioridad asignada: sobre todo los de rendimiento y código muerto
 del bloque E del informe, más los de convenciones y repositorio.
 
-Además, dos que quedaron a un paso de cambios ya hechos: **F-33** (usar
-`deathsTarget` en vez del literal `5`) y **F-23** (`AnimatorController` lee el
-input local en jugadores remotos y pisa el RPC de salto).
+Dos quedaron a un paso de cambios ya hechos y serían los siguientes naturales:
+
+| Hallazgo | Qué | Dónde |
+|---|---|---|
+| F-33 | Usar `deathsTarget` en vez del literal `5`, y `>=` en vez de `==` | `PlayerManager.WinningConditions()` |
+| F-23 | `AnimatorController` lee el input local en jugadores remotos y pisa cada frame el RPC de salto | `AnimatorController.Update()` |
+
+F-23 es el que impide que el salto se vea bien en los demás jugadores, pese a
+que F-22 ya arregló el envío del RPC.
+
+Sigue abierto también **F-27** (`Bala.Explode()` sin guarda de reentrada) y
+**F-28** (daño de explosión aplicado en local), que se dejaron intactos al
+tocar `Bala.cs` para F-25 por ser hallazgos propios.
