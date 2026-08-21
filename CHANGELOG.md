@@ -22,6 +22,38 @@ toca RPC o flujo de sala necesita una prueba en el editor con dos clientes.
 
 ---
 
+## 21/08/2026
+
+### F-23 · Los patos remotos saltaban con tu input
+
+`Dani/AnimatorController.cs`
+
+`PlayerSetUp.IsNotLocalPlayer()` deja el `AnimatorController` habilitado también
+en los jugadores remotos, y hace falta que sea así: es lo que mueve su animator.
+Pero su `Update()` leía `Input.GetButtonDown("Jump")` — el input **local** — con
+dos consecuencias:
+
+1. todos los patos remotos saltaban a la vez que tú;
+2. la rama `else` escribía `IsJumping = false` en cada frame, pisando el valor
+   que acababa de dejar el RPC `SyncJumpState` y dejando ese RPC sin ningún
+   efecto.
+
+- Nuevo `UpdateOwnJumpState()`, que sale temprano si el `PhotonView` no es
+  nuestro. En los remotos el parámetro `IsJumping` pasa a escribirlo únicamente
+  el RPC.
+- `MotionX` y `MotionY` se quedan como estaban, y siguen funcionando en ambos
+  casos: `playerMovement.x/z` los alimenta el input local en el dueño y el RPC
+  `SyncMovement` en los remotos. Se verificó en el código de PUN que los RPC sí
+  llegan a componentes deshabilitados — `ExecuteRpc` recorre
+  `RpcMonoBehaviours` sin filtrar por `enabled` —, que es lo que hace que eso
+  funcione aunque `PlayerMovement` esté desactivado en los remotos.
+- El literal `"IsJumping"` pasa a constante: lo escriben dos caminos distintos y
+  conviene que sea literalmente el mismo parámetro.
+
+Con esto queda cerrado el problema del salto en red: **F-22** arregló el envío
+del RPC (solo en el flanco, dos por salto) y **F-23** hace que ese RPC llegue a
+mandar de verdad en el receptor.
+
 ## 20/08/2026
 
 ### F-13, F-17, F-18, F-24, F-43, F-50 · Borrado de sistemas reemplazados
@@ -272,19 +304,15 @@ era crear una sala con éxito.
 
 ## Hallazgos que siguen abiertos
 
-**El orden de arreglo acordado (bloques 1 a 8) está completo:** 20 hallazgos
-corregidos y 2 parciales (F-16 y F-50). Quedan 30 sin prioridad asignada: sobre todo los de rendimiento y código muerto
+**El orden de arreglo acordado (bloques 1 a 8) está completo:** 21 hallazgos
+corregidos y 2 parciales (F-16 y F-50). Quedan 29 sin prioridad asignada: sobre todo los de rendimiento y código muerto
 del bloque E del informe, más los de convenciones y repositorio.
 
-Dos quedaron a un paso de cambios ya hechos y serían los siguientes naturales:
+El siguiente natural, por quedar a un paso de un cambio ya hecho:
 
 | Hallazgo | Qué | Dónde |
 |---|---|---|
 | F-33 | Usar `deathsTarget` en vez del literal `5`, y `>=` en vez de `==` | `PlayerManager.WinningConditions()` |
-| F-23 | `AnimatorController` lee el input local en jugadores remotos y pisa cada frame el RPC de salto | `AnimatorController.Update()` |
-
-F-23 es el que impide que el salto se vea bien en los demás jugadores, pese a
-que F-22 ya arregló el envío del RPC.
 
 Sigue abierto también **F-27** (`Bala.Explode()` sin guarda de reentrada) y
 **F-28** (daño de explosión aplicado en local), que se dejaron intactos al
