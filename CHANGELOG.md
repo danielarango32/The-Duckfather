@@ -24,6 +24,103 @@ toca RPC o flujo de sala necesita una prueba en el editor con dos clientes.
 
 ## 21/08/2026
 
+### F-54 · No se podía jugar una segunda partida sin reiniciar la app
+
+`Scenes/Rolix/Online 2.unity`
+
+Al terminar una partida y volver al menú, la consola mostraba
+`PhotonView ID duplicate found: 999` seguido de una `InvalidOperationException:
+Duplicate key 999` **sin capturar**, y la pantalla de sala quedaba rota
+(`No cameras rendering`, restos de otra pantalla superpuestos) sin responder.
+
+Causa, confirmada cruzando la consola con el código fuente de Photon:
+
+- El GameObject «Room Manager» de `Online 2.unity` (dueño de `RoomManagerNew`)
+  tenía **también** un componente `PhotonView`, con un `sceneViewId` fijo
+  (`999`) horneado en el archivo de escena.
+- `RoomManagerNew` se marca `DontDestroyOnLoad`. Al volver del menú tras la
+  partida, `ReturnToMenu()` recarga `Online 2.unity` desde cero: nace un
+  segundo «Room Manager», con el **mismo** `sceneViewId`.
+- La guarda de singleton en código (`if (instance) Destroy(gameObject)`) no
+  llega a tiempo: el registro del `PhotonView` ocurre en el setter de
+  `ViewID` (`PhotonView.cs:319`), independiente del orden de `Awake()` entre
+  componentes hermanos, y `Destroy()` es diferido al final del frame.
+- El propio manejo de duplicados de Photon está roto:
+  `RegisterPhotonView` (`PhotonNetworkPart.cs:987-1022`) registra el aviso y
+  llama a `RemoveInstantiatedGO(...)`, pero esa baja no es síncrona — el
+  `photonViewList.Add(...)` que sigue revienta sin que nada lo capture.
+
+Arreglo: **`RoomManagerNew.cs` nunca usa su propio `PhotonView`** — no llama a
+`photonView.RPC(...)` en ningún sitio; solo necesita ser
+`MonoBehaviourPunCallbacks` para recibir los callbacks globales de Photon, lo
+que no requiere tener un `PhotonView` propio. Se quitó el componente
+`PhotonView` del GameObject «Room Manager» directamente en el YAML de la
+escena — sin tocar ningún `.cs`. Verificado con un lector YAML real: la lista
+de componentes del GameObject pasa de 3 a 2 (`Transform` + `RoomManagerNew`),
+sin referencias huérfanas al `fileID` eliminado en el resto del archivo.
+
+**Por qué no había forma de que el código lo evitara solo:** el choque ocurre
+en la capa de registro de Photon, que corre independientemente del orden de
+inicialización de los componentes de este proyecto. Quitar el `PhotonView` no
+es un parche — es quitar la causa: sin un `ViewID` que fijar, no hay id que
+pueda chocar.
+
+### F-53 · Doble clic en «empezar partida» congelaba el cliente entero
+
+`UI/newScript/Launcher.cs`, `docs/lobby-transiciones.feature`
+
+Hallazgo **nuevo**, reportado desde el editor: pulsar varias veces el botón de
+empezar partida y luego «Volver» dejaba la pantalla en «Cargando...» para
+siempre, con 11 entradas `Online 3 (is loading)` colgando de la jerarquía.
+
+Cadena completa, reconstruida sobre el código de PUN:
+
+1. `StartGame()` no tenía guarda: la escena vieja sigue viva mientras
+   `Online 3` carga en segundo plano, así que el botón seguía siendo clicable.
+2. Cada clic llamaba otra vez a `PhotonNetwork.LoadLevel()`. Photon detecta la
+   carga en curso, la marca `allowSceneActivation = false` y **pierde la
+   referencia** (`PhotonNetworkPart.cs:2166-2174`): queda huérfana, congelada,
+   sin cancelarse de verdad. Una por clic.
+3. Con varias cargas `Single` solapadas y pausadas a medias, ninguna llega a
+   completarse.
+4. `LoadLevel()` pone `IsMessageQueueRunning = false` (`PhotonNetwork.cs:3068`)
+   y solo lo restaura `NewSceneLoaded()` cuando Unity dispara `sceneLoaded`
+   (`PhotonNetworkPart.cs:1468-1473`). Como ninguna escena termina, esa bandera
+   se queda en `false` **para siempre**.
+5. Esa bandera gobierna el bucle de envío (`PhotonHandler.cs:172`, `:185`) y el
+   de recepción (`:226`). Con ella en `false` el cliente deja de enviar y
+   recibir todo.
+6. «Volver» → `Launcher.LeaveRoom()`: abre el menú «loading» y llama a
+   `PhotonNetwork.LeaveRoom()`, que nunca llega a salir del cliente. `OnLeftRoom`
+   no dispara y la pantalla se queda en «Cargando...».
+
+Arreglo, sin tocar código de Photon (es paquete de terceros y se revertiría en
+la siguiente actualización):
+
+- Nueva bandera `isTransitioning` con `TryBeginTransition()` / `EndTransition()`.
+  Se aplica a las **cuatro** operaciones de red disparadas por botón:
+  `CreateRoom`, `JoinRoom`, `StartGame` y `LeaveRoom`.
+- `StartGame()` además oculta el botón de inmediato, como defensa en profundidad.
+- Todos los callbacks cierran la transición: `OnJoinedRoom`, `OnLeftRoom`,
+  `OnJoinedLobby`, `OnCreateRoomFailed`, `OnJoinRoomFailed` y `OnDisconnected`.
+  Si un fallo no la cerrara, los botones quedarían mudos el resto de la sesión.
+- Se comprueba el `bool` que devuelven `CreateRoom`, `JoinRoom` y `LeaveRoom`:
+  las tres pueden fallar en el sitio sin lanzar ningún callback, y ese `false`
+  ignorado dejaba la bandera atascada.
+- La escena `"Online 3"` pasa a constante `GameSceneName`.
+
+**Un fallo de mi primer diseño, para que quede registrado:** `TryBeginTransition()`
+llamaba a `ShowError()`, que reseteaba la bandera. El segundo clic (rechazado)
+desbloqueaba la transición en curso y el tercero volvía a colar un `LoadLevel`
+— el bug otra vez. Por eso `ShowError()` ya no toca la bandera y el cierre es
+explícito en cada callback. Está recogido como hipótesis de mutación nº 4.
+
+**Entregables de la skill `unity-clean-code`:** el Gherkin y el plan de QA y
+mutación están en `docs/lobby-transiciones.feature`. Los tests NUnit **no** se
+escribieron: `Launcher` llama directamente a la clase estática `PhotonNetwork`,
+así que no es testeable en EditMode sin extraer antes una interfaz inyectable.
+El `.feature` documenta esa deuda y los pasos concretos para saldarla.
+
 ### F-23 · Los patos remotos saltaban con tu input
 
 `Dani/AnimatorController.cs`
@@ -304,8 +401,10 @@ era crear una sala con éxito.
 
 ## Hallazgos que siguen abiertos
 
-**El orden de arreglo acordado (bloques 1 a 8) está completo:** 21 hallazgos
-corregidos y 2 parciales (F-16 y F-50). Quedan 29 sin prioridad asignada: sobre todo los de rendimiento y código muerto
+**El orden de arreglo acordado (bloques 1 a 8) está completo:** 22 hallazgos
+corregidos y 2 parciales (F-16 y F-50). Quedan 29 del informe original sin
+prioridad asignada, más los que vayan apareciendo al probar en el editor
+(F-53 salió así): sobre todo los de rendimiento y código muerto
 del bloque E del informe, más los de convenciones y repositorio.
 
 El siguiente natural, por quedar a un paso de un cambio ya hecho:

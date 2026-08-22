@@ -10,6 +10,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     private const int MaxRoomNameLength = 32;
     private const int MaxReconnectAttempts = 1;
     private const int TargetFrameRate = 60;
+    private const string GameSceneName = "Online 3";
 
     private const string NoConnectionMessage =
         "Sin conexion con el servidor. Espera unos segundos e intentalo de nuevo.";
@@ -27,6 +28,12 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     private int reconnectAttempts;
     private bool hasRequestedLobby;
+
+    // Una operacion de red disparada por boton esta en curso. Sin esta guarda,
+    // pulsar dos veces "empezar partida" encadenaba varios LoadLevel: Photon
+    // deja huerfana la carga anterior y IsMessageQueueRunning se queda en false
+    // para siempre, con lo que el cliente deja de enviar y recibir.
+    private bool isTransitioning;
 
     // Photon entrega el listado de salas por deltas, asi que hay que
     // mantener el acumulado aqui y redibujar la UI desde el.
@@ -98,6 +105,33 @@ public class Launcher : MonoBehaviourPunCallbacks
         MenuManager.instance.OpenMenu("error");
     }
 
+    /// <summary>
+    /// Deja pasar una unica operacion de red a la vez. Devuelve false si ya
+    /// hay otra en curso, sin tocar su estado: rechazar un clic de mas no debe
+    /// desbloquear la transicion que ya esta corriendo.
+    /// </summary>
+    private bool TryBeginTransition()
+    {
+        if (isTransitioning)
+        {
+            Debug.LogWarning("Operacion de red ignorada: ya hay una en curso.");
+            return false;
+        }
+
+        isTransitioning = true;
+        return true;
+    }
+
+    /// <summary>
+    /// Cierra la transicion. La llaman tanto los callbacks de exito como los
+    /// de fallo: si un fallo no la cerrara, los botones quedarian mudos para
+    /// el resto de la sesion.
+    /// </summary>
+    private void EndTransition()
+    {
+        isTransitioning = false;
+    }
+
     public override void OnConnectedToMaster()
     {
         Debug.Log("Connected to Master");
@@ -109,6 +143,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         hasRequestedLobby = false;
+        EndTransition();
 
         // Photon reenvia el listado completo justo despues de entrar: si
         // quedara algo del lobby anterior se mezclarian salas ya inexistentes.
@@ -127,6 +162,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         Debug.LogWarning("Disconnected from Photon: " + cause);
         hasRequestedLobby = false;
+        EndTransition();
         ClearRoomList();
 
         if (reconnectAttempts < MaxReconnectAttempts)
@@ -162,12 +198,24 @@ public class Launcher : MonoBehaviourPunCallbacks
             return;
         }
 
-        PhotonNetwork.CreateRoom(roomName);
+        if (!TryBeginTransition())
+        {
+            return;
+        }
+
+        if (!PhotonNetwork.CreateRoom(roomName))
+        {
+            EndTransition();
+            ShowError("No se pudo iniciar la creacion de la sala.");
+            return;
+        }
+
         MenuManager.instance.OpenMenu("loading");
     }
 
     public override void OnJoinedRoom()
     {
+        EndTransition();
         MenuManager.instance.OpenMenu("room");
         roomNameText.text = PhotonNetwork.CurrentRoom.Name;
 
@@ -193,24 +241,48 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
+        EndTransition();
         Debug.Log("Failed to create room: " + message);
         ShowError("No se pudo crear la sala: " + message);
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
+        EndTransition();
         Debug.Log("Failed to join room: " + message);
         ShowError("No se pudo entrar en la sala: " + message);
     }
 
     public void StartGame()
     {
-        PhotonNetwork.LoadLevel("Online 3");
+        if (!TryBeginTransition())
+        {
+            return;
+        }
+
+        // Ocultarlo ademas de la guarda: mientras Online 3 carga en segundo
+        // plano esta escena sigue viva y el boton seguiria siendo clicable.
+        startGameButton.SetActive(false);
+
+        PhotonNetwork.LoadLevel(GameSceneName);
     }
 
     public void LeaveRoom()
     {
-        PhotonNetwork.LeaveRoom();
+        if (!TryBeginTransition())
+        {
+            return;
+        }
+
+        if (!PhotonNetwork.LeaveRoom())
+        {
+            // No estabamos en una sala: OnLeftRoom no va a llegar, asi que hay
+            // que cerrar la transicion aqui o los botones quedarian mudos.
+            EndTransition();
+            MenuManager.instance.OpenMenu("title");
+            return;
+        }
+
         MenuManager.instance.OpenMenu("loading");
     }
 
@@ -227,12 +299,24 @@ public class Launcher : MonoBehaviourPunCallbacks
             return;
         }
 
-        PhotonNetwork.JoinRoom(info.Name);
+        if (!TryBeginTransition())
+        {
+            return;
+        }
+
+        if (!PhotonNetwork.JoinRoom(info.Name))
+        {
+            EndTransition();
+            ShowError("No se pudo iniciar la entrada a la sala.");
+            return;
+        }
+
         MenuManager.instance.OpenMenu("loading");
     }
 
     public override void OnLeftRoom()
     {
+        EndTransition();
         MenuManager.instance.OpenMenu("title");
     }
 
