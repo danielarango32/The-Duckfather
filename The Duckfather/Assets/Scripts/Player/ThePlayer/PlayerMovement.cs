@@ -17,20 +17,29 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
 
     //DASH
-    [SerializeField] private float CDDash;
-    [SerializeField] private float dashModifier;
+    [Tooltip("Segundos de enfriamiento entre dos dashes")]
+    [SerializeField] private float CDDash = 10f;
+
+    [Tooltip("Multiplicador de velocidad mientras dura el impulso")]
+    [SerializeField] private float dashModifier = 4f;
+
+    [Tooltip("Duracion del impulso en segundos")]
+    [SerializeField] private float duracionDash = 0.15f;
+
     private float dashPower = 1f;
 
     public bool canDash = true;
-    
-    private float dashTime;
-    
+
+    [Tooltip("Objeto UI/Barra/dash; de aqui se saca el slider de enfriamiento")]
     public RectTransform DashBar;
-    
-    [Header("UI de dash")]
-    [SerializeField] Slider sliderDash;
-    
-    private float timeDashSize;
+
+    // El campo sliderDash del prefab apuntaba a un TextMeshProUGUI (el contador
+    // de balas), asi que Unity lo dejaba en null: Start() reventaba en su
+    // primera linea y Update() lanzaba una NullReferenceException por frame.
+    // Ahora el slider se resuelve desde DashBar, que si apunta a UI/Barra/dash.
+    private Slider sliderDash;
+
+    private float dashCooldownRestante;
 
     //GRAVEDAD
     [SerializeField] float gravity = -20f;
@@ -42,15 +51,13 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     [SerializeField] private float groundDistance = 0.4f;
     public LayerMask groundeMask;
     [SerializeField] public bool isGrounded = false;
-    
 
-    [Header("Globalizaci�n De Variables")]
+
+    [Header("Globalizacion De Variables")]
     public float x, z;
-    
-    PhotonView PV;
-    
-    PlayerManager playerManager;
 
+    // Ni PV ni playerManager llegaron a usarse nunca: la red se consulta con la
+    // propiedad photonView que ya trae MonoBehaviourPunCallbacks.
     private PlayerPhotonSoundManager playerPhotonSoundManager;
 
     // Sincronizacion por red. Antes salia un RPC de movimiento y otro de salto
@@ -63,17 +70,22 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     private float nextMovementSyncTime;
     private bool lastSentJumpState;
 
-    /*private void Awake()
-    {
-        playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
-    }*/
     private void Start()
     {
-        dashTime = DashBar.sizeDelta.x;
-        dashTime = sliderDash.GetComponent<RectTransform>().sizeDelta.x;
+        if (DashBar != null)
+        {
+            sliderDash = DashBar.GetComponent<Slider>();
+        }
+
+        if (sliderDash != null)
+        {
+            sliderDash.minValue = 0f;
+            sliderDash.maxValue = 1f;
+            sliderDash.value = 1f;
+        }
 
         playerPhotonSoundManager = GetComponent<PlayerPhotonSoundManager>();
-        
+
     }
     private void Update()
     {
@@ -81,8 +93,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         Movimiento();
         IsGrounded();
         Saltar();
-        sliderDash.value = timeDashSize;
-        
+        ActualizarEnfriamientoDash();
+
 
     }
 
@@ -101,9 +113,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         SyncMovementIfChanged();
 
-        if (Input.GetKeyDown(KeyCode.F) && isGrounded && velocity.y < 0 && canDash)
+        // Sobraba comprobar velocity.y < 0: IsGrounded() deja la velocidad
+        // vertical en -2 en cuanto se toca el suelo, y ademas se evaluaba con el
+        // valor del frame anterior porque IsGrounded() corre despues de esto.
+        if (Input.GetKeyDown(KeyCode.F) && isGrounded && canDash)
         {
-            dashPower = dashModifier;
             StartCoroutine(DashActivado());
         }
 
@@ -193,23 +207,51 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         photonView.RPC("SyncJumpState", RpcTarget.Others, isJumping);
     }
 
+    /// <summary>
+    /// Impulso de duracion fija. Antes esperaba 0,01 s -menos de un frame a
+    /// 60 fps- y ponia canDash a false despues del yield, asi que el dash duraba
+    /// un frame y el bloqueo llegaba tarde.
+    ///
+    /// No hace falta RPC: el PhotonView del pato observa un PhotonTransformView,
+    /// asi que el desplazamiento ya viaja a los demas clientes.
+    /// </summary>
     IEnumerator DashActivado()
     {
-        yield return new WaitForSeconds(0.01f);
-        dashPower = 1;
         canDash = false;
-        timeDashSize = Time.deltaTime;
-        Debug.Log(timeDashSize);
-        
-        yield return new WaitForSeconds(CDDash);
-        canDash = true;
-        timeDashSize = Time.time;
-        
+        dashCooldownRestante = CDDash;
+        dashPower = dashModifier;
+
+        yield return new WaitForSeconds(duracionDash);
+
+        dashPower = 1f;
+    }
+
+    /// <summary>
+    /// Descuenta el enfriamiento y lo refleja en la barra: 0 recien gastado,
+    /// 1 listo para volver a usarse. Antes se le asignaba Time.time, que crece
+    /// sin limite y dejaba la barra clavada al maximo.
+    /// </summary>
+    private void ActualizarEnfriamientoDash()
+    {
+        if (dashCooldownRestante > 0f)
+        {
+            dashCooldownRestante = Mathf.Max(0f, dashCooldownRestante - Time.deltaTime);
+            canDash = dashCooldownRestante <= 0f;
+        }
+
+        if (sliderDash == null)
+        {
+            return;
+        }
+
+        sliderDash.value = CDDash > 0f
+            ? 1f - (dashCooldownRestante / CDDash)
+            : 1f;
     }
 
 
     //Seccion de PowerUps
-    //PowerUP de Velocidad 
+    //PowerUP de Velocidad
     public void SetMoveSpeed(float newSpeedAdjustment, float returnTime)
     {
         speed += newSpeedAdjustment;

@@ -2029,10 +2029,9 @@ MonoBehaviour:
   speed: 10
   alturaSalto: 2
   CDDash: 10
-  dashModifier: 20
+  dashModifier: 4
   canDash: 1
   DashBar: {fileID: 4178660677163511238}
-  sliderDash: {fileID: 1677548347832031925}
   gravity: -20
   groundCheck: {fileID: 7027765017119489000}
   groundDistance: 0.01
@@ -2042,6 +2041,7 @@ MonoBehaviour:
   isGrounded: 0
   x: 0
   z: 0
+  duracionDash: 0.15
 --- !u!114 &1788872850252932323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2147,20 +2147,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8b6eaad042f4434a8fa806b5affd9c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  escudo: 0
-  tiempoParaRegen: 0
-  cantidadDeRegeneracion: 0
-  isLocalPlayer: 0
+  tiempoParaRegen: 5
+  cantidadDeRegeneracion: 20
   healthBarImage: {fileID: 7159926579608198818}
-  healthBar: {fileID: 4125794364719535733}
-  shieldBar: {fileID: 5150920022783041549}
   sliderVida: {fileID: 3004235234983095019}
   sliderEscudo: {fileID: 3093798571450554924}
-  danorecibido: 0
-  contador: 0
   ui: {fileID: 1795972037064954129}
   PV: {fileID: 3529525577119342405}
   playerPhotonSoundManager: {fileID: 0}
+  vidaMax: 100
+  escudoMax: 100
 --- !u!114 &2941845554713244246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2874,6 +2870,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: BackToLobby
       objectReference: {fileID: 0}
+    - target: {fileID: 3475583358338055323, guid: d3245d919c3b93c49bba5a6d0b8460ff,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3841577770491185662, guid: d3245d919c3b93c49bba5a6d0b8460ff,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -2893,6 +2894,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ClosePauseMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 4821919259607283988, guid: d3245d919c3b93c49bba5a6d0b8460ff,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5412069603263474535, guid: d3245d919c3b93c49bba5a6d0b8460ff,
         type: 3}

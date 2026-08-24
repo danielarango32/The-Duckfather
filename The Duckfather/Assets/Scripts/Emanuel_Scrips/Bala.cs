@@ -83,12 +83,18 @@ public class Bala : MonoBehaviour
         {
             //Atencion
 
-            //Aqui va la funcion "TakeDamage" del enemigo, en donde dice "scriptname" se reemplaza por el nombre del scrip del enemigo o el que controle el da�o que recibira. Si la funcion de recibir da�o es diferente, modificar el "TakeDamage" por el correspondiente. 
-            ///enemies[i].GetComponent<scriptname>().TakeDamage(explosionDamage);  
-            //enemies[i].GetComponent<PhotonView>().RPC("QuitarVida", RpcTarget.All, explosionDamage);
-            enemies[i].GetComponent<LifeManager>().QuitarVida(explosionDamage);
-            
-            
+            // Se llamaba a QuitarVida() directamente, pero eso corre en el
+            // cliente que disparo, donde el pato golpeado no es suyo: el
+            // primer if de QuitarVida cortaba y la explosion no quitaba nada.
+            // TakeDamage enruta el golpe por RPC hasta el dueno del pato.
+            LifeManager vidaEnemigo = enemies[i].GetComponent<LifeManager>();
+
+            if (vidaEnemigo != null)
+            {
+                vidaEnemigo.TakeDamage(explosionDamage);
+            }
+
+
 
             if (enemies[i].GetComponent<Rigidbody>())
             {

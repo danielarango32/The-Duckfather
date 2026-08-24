@@ -22,6 +22,91 @@ toca RPC o flujo de sala necesita una prueba en el editor con dos clientes.
 
 ---
 
+## 23/08/2026
+
+### Barra de vida, escudo funcional y dash
+
+`Player/ThePlayer/LifeManager.cs`, `Player/ThePlayer/PlayerMovement.cs`,
+`Emanuel_Scrips/Bala.cs`, `Resources/Pato 1|2|3.prefab`
+
+**Barra de vida.** Convivían dos indicadores accionados por separado: el
+`Slider` de `UI/Barra/vida` se escribía en cada frame y la `Image` rellenable de
+`UI/Barra/backgrounVida/vida` solo dentro de `QuitarVida()`. Al regenerar vida
+la Image se quedaba congelada y contradecía al slider. Además `QuitarVida()`
+asignaba `fillAmount` **antes** de restar el daño, así que la barra siempre iba
+un golpe por detrás. Ahora un único `RefrescarUI()` actualiza los dos, y se
+llama después de aplicar el daño. `sliderVida`/`sliderEscudo` reciben su
+`minValue`/`maxValue` en `Start()` en lugar de depender de lo horneado.
+
+**Escudo.** Estaba declarado pero inerte: la lógica que le restaba daño estaba
+comentada, `ObtenerEscudo()` estaba vacío y los prefabs traían `escudo: 0`. Se
+implementó absorción real —el escudo consume el daño primero y solo el sobrante
+llega a la vida— y regeneración con prioridad al escudo. En los prefabs
+`tiempoParaRegen` y `cantidadDeRegeneracion` valían **0**, de modo que la
+regeneración era instantánea y de cero puntos; pasan a 5 s y 20 puntos/s. La
+tasa era `cantidadDeRegeneracion / 100` por `FixedUpdate` (dependiente del paso
+físico); ahora es por segundo con `Time.deltaTime`.
+
+**Espera antes de regenerar.** La pareja `danorecibido`/`contador` con corrutina
+de 2 s se relanzaba en cada impacto: al encadenar dos golpes, la corrutina del
+primero bajaba la bandera y la regeneración arrancaba antes de tiempo. Se
+sustituye por un único acumulador `tiempoSinDano`.
+
+**Daño de la bazuca (no se verificó nunca en red).** `Bala.Explode()` llamaba a
+`QuitarVida()` directamente sobre el `LifeManager` del pato alcanzado. Eso corre
+en el cliente que disparó, donde ese pato no es suyo, así que la guarda
+`if (!PV.IsMine) return` cortaba y **la explosión no quitaba vida a nadie**.
+Ahora usa `TakeDamage()`, que enruta el golpe por RPC hasta el propietario.
+`TakeDamage()` no tenía ni un solo llamante hasta ahora.
+
+**Dash.** Ya existía asociado a `F`, pero:
+
+- `sliderDash` está tipado como `Slider` y en los tres prefabs apuntaba a un
+  **`TextMeshProUGUI`** (el contador de balas `UI/Balas/Arma/NumBalas`). Unity
+  resuelve a `null` una referencia de tipo incompatible, así que `Start()`
+  lanzaba `NullReferenceException` en su primera línea —dejando
+  `playerPhotonSoundManager` sin asignar, que es lo que usan los power-ups de
+  velocidad y salto— y `Update()` repetía la excepción **en cada frame**. El
+  slider se obtiene ahora desde `DashBar`, que sí apunta a `UI/Barra/dash`.
+- La corrutina esperaba `0.01 s`, menos de un frame a 60 fps, y ponía
+  `canDash = false` *después* del `yield`: el impulso duraba un frame y el
+  bloqueo llegaba tarde. Ahora hay `duracionDash` (0,15 s) y el bloqueo es
+  inmediato.
+- La barra de enfriamiento recibía `Time.deltaTime` y luego `Time.time`, que
+  crece sin límite; quedaba clavada al máximo. Ahora va de 0 a 1 sobre `CDDash`.
+- `dashModifier` baja de **20 a 4**: con una duración real de 0,15 s, 20× habría
+  desplazado al pato unas 30 unidades de golpe.
+
+No necesita RPC: el `PhotonView` del pato observa un `PhotonTransformView`, así
+que el desplazamiento ya viaja al resto de clientes.
+
+**Código muerto retirado:** `isLocalPlayer`, `healthBar`, `shieldBar`,
+`originalHealthBarSize`, `originalShieldBarSize`, `ObtenerVida()`,
+`ObtenerEscudo()` y `Danorecibido()` en `LifeManager`; `dashTime`,
+`timeDashSize`, `PV` y `playerManager` en `PlayerMovement`. Ninguno tenía
+lectores fuera de su propio archivo.
+
+**Verificación:** `Assembly-CSharp` compila con **0 errores**; los avisos bajan
+de 81 a 79 (los dos `CS0169` de `PlayerMovement`). Los tres prefabs se
+reparsearon con un lector YAML real (214/168/168 documentos, 0 fallos). Falta
+por probar en el editor con dos clientes: el daño de la bazuca y la muerte con
+escudo activo.
+
+**Qué acciona cada barra.** El contenedor `UI/Barra` se reactivó a mano en los
+tres patos. Dentro de él, el GameObject `UI/Barra/vida` (un `Slider`) sigue
+desactivado, así que la barra de vida que se ve es la `Image` de
+`UI/Barra/backgrounVida/vida` — tipo *Filled*, método *Horizontal*, con sprite —
+y se acciona por `fillAmount`. Escudo (`UI/Barra/Escudo`) y dash
+(`UI/Barra/dash`) sí son sliders activos, con su hijo `Fill` presente y con
+sprite, y se accionan por `value`. `RefrescarUI()` cubre los tres casos.
+
+**Efecto en el equilibrio:** con `escudoMax = 100` sobre `vidaMax = 100` el pato
+pasa a aguantar 200 puntos de daño efectivo. El revólver (25) necesita ahora 8
+impactos para matar en vez de 4. Si resulta demasiado, el ajuste es bajar
+`escudoMax` en los tres prefabs.
+
+---
+
 ## 21/08/2026
 
 ### F-54 · No se podía jugar una segunda partida sin reiniciar la app

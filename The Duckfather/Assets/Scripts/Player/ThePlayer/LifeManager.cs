@@ -1,172 +1,198 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Timers;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Vida y escudo del pato. El escudo absorbe el dano antes que la vida y ambos
+/// se regeneran tras unos segundos sin recibir impactos.
+///
+/// Solo el dueno del pato lleva la cuenta: QuitarVida sale por RPC hacia el
+/// propietario y el resto de clientes no tocan estos valores.
+/// </summary>
 public class LifeManager : MonoBehaviour
 {
     [Header("Sistema de vida")]
-    //[SerializeField] float vida = 100;
-    [SerializeField] float escudo = 100;
-    [SerializeField] float tiempoParaRegen;
-    [SerializeField] float cantidadDeRegeneracion;
-    
-    public bool isLocalPlayer;
+    [Tooltip("Vida maxima; debe coincidir con el Max Value del slider de vida")]
+    [SerializeField] private float vidaMax = 100f;
 
-    [SerializeField] Image healthBarImage;
-    
-    public RectTransform healthBar;
-    public RectTransform shieldBar;
-    
-    private float originalHealthBarSize;
-    private float originalShieldBarSize;
+    [Tooltip("Escudo maximo; absorbe el dano antes que la vida")]
+    [SerializeField] private float escudoMax = 100f;
 
+    [Tooltip("Segundos sin recibir dano antes de que arranque la regeneracion")]
+    [SerializeField] private float tiempoParaRegen = 5f;
+
+    [Tooltip("Puntos regenerados por segundo: primero escudo, luego vida")]
+    [SerializeField] private float cantidadDeRegeneracion = 20f;
 
     [Header("UI de vida")]
-    [SerializeField] Slider sliderVida;
-    [SerializeField] Slider sliderEscudo;
+    [SerializeField] private Slider sliderVida;
+    [SerializeField] private Slider sliderEscudo;
 
-    public bool danorecibido;
-    public float contador;
-    
-    [SerializeField] GameObject ui;
-    
+    [Tooltip("Barra rellenable de UI/Barra/backgrounVida/vida, superpuesta al slider")]
+    [SerializeField] private Image healthBarImage;
+
+    [SerializeField] private GameObject ui;
+
+    [Header("Red")]
     public PhotonView PV;
-    
-    PlayerManager playerManager;
 
+    // Lo usara el efecto de dano; se deja cableado desde el prefab.
     public PlayerPhotonSoundManager playerPhotonSoundManager;
 
-    const float maxHealth = 100;
-    float vida = maxHealth;
+    private PlayerManager playerManager;
+
+    private float vida;
+    private float escudo;
+
+    // Segundos desde el ultimo impacto. Sustituye a la pareja
+    // danorecibido/contador con corrutina de 2 s: al encadenar dos golpes, la
+    // corrutina del primero bajaba la bandera y la regeneracion arrancaba antes
+    // de tiempo.
+    private float tiempoSinDano;
+
+    public float Vida => vida;
+    public float Escudo => escudo;
 
     private void Awake()
     {
         playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
-    }
 
-    private void Start()
-    {
-        /*originalHealthBarSize = healthBar.sizeDelta.x;
-        originalHealthBarSize = sliderVida.GetComponent<RectTransform>().sizeDelta.x;
-        
-        
-        originalShieldBarSize = shieldBar.sizeDelta.x;
-        originalShieldBarSize = sliderEscudo.GetComponent<RectTransform>().sizeDelta.x;*/
-        
+        // Va en Awake y no en Start porque PlayerSetUp desactiva este
+        // componente para los patos remotos: si su Start ganaba la carrera, el
+        // Start de aqui no llegaba a correr y la UI ajena se quedaba en pantalla.
         if (!PV.IsMine)
         {
             Destroy(ui);
         }
-        
-        
     }
+
+    private void Start()
+    {
+        vida = vidaMax;
+        escudo = escudoMax;
+        tiempoSinDano = tiempoParaRegen;
+
+        ConfigurarSlider(sliderVida, vidaMax);
+        ConfigurarSlider(sliderEscudo, escudoMax);
+        RefrescarUI();
+    }
+
+    private static void ConfigurarSlider(Slider slider, float maximo)
+    {
+        if (slider == null)
+        {
+            return;
+        }
+
+        slider.minValue = 0f;
+        slider.maxValue = maximo;
+    }
+
     private void Update()
     {
-        
-        
-        sliderVida.value = vida;
-        sliderEscudo.value = escudo; 
-        
-
-        if (danorecibido)
+        if (!PV.IsMine)
         {
-            contador = 0;
+            return;
         }
-        else
+
+        tiempoSinDano += Time.deltaTime;
+
+        if (tiempoSinDano >= tiempoParaRegen)
         {
-            contador += Time.deltaTime;
+            Regenerar(cantidadDeRegeneracion * Time.deltaTime);
         }
     }
 
-    private void FixedUpdate()
-    {
-        if (contador >= tiempoParaRegen)
-        {
-            
-            ObtenerVida();
-        }
-    }
-
-
-    [PunRPC]
-    void ObtenerVida()
-    {
-        if (vida < 100)
-        {
-            vida = vida + cantidadDeRegeneracion / 100;
-        }
-        else
-        {
-            vida = 100;
-        }
-       
-    }
-    [PunRPC]
-    void ObtenerEscudo()
-    {
-
-    }
-    
+    /// <summary>
+    /// Punto de entrada del dano: enruta el golpe al dueno del pato, que es
+    /// quien lleva la cuenta de vida y escudo.
+    /// </summary>
     public void TakeDamage(float damage)
     {
         PV.RPC(nameof(QuitarVida), PV.Owner, damage);
     }
-    
+
     [PunRPC]
     public void QuitarVida(float Dano, PhotonMessageInfo info = default)
     {
-        if(!PV.IsMine) return;
-        
-        Debug.Log("El dano que llega es=" + Dano);
+        if (!PV.IsMine)
+        {
+            return;
+        }
 
-        StartCoroutine(Danorecibido());
+        tiempoSinDano = 0f;
 
-          
-           /* if (escudo > 0)
-            {
-                escudo -= Dano;
+        // El escudo absorbe primero y solo el sobrante llega a la vida.
+        float restante = Dano;
 
-                shieldBar.sizeDelta = new Vector2(originalShieldBarSize * escudo / 100, shieldBar.sizeDelta.y);
+        if (escudo > 0f)
+        {
+            float absorbido = Mathf.Min(escudo, restante);
+            escudo -= absorbido;
+            restante -= absorbido;
+        }
 
-                if (escudo < 0)
-                {
+        // La barra se refrescaba ANTES de restar el dano, asi que siempre iba
+        // un golpe por detras.
+        vida = Mathf.Max(0f, vida - restante);
+        RefrescarUI();
 
-                    escudo = 0;
-                }
-
-            }
-            else*/
-            //{
-                //healthBar.sizeDelta = new Vector2(originalHealthBarSize * vida / 100, healthBar.sizeDelta.y);
-
-                healthBarImage.fillAmount = vida / maxHealth;
-                vida -= Dano;
-                //playerPhotonSoundManager.PlayHurtSFX();
-            //}
-            if (vida <= 0)
-            {
-                Die();
-            }
-
+        if (vida <= 0f)
+        {
+            Die();
+        }
     }
 
-    [PunRPC]
-    IEnumerator Danorecibido()
+    /// <summary>
+    /// Reparte la regeneracion: primero rellena el escudo y lo que sobra va a
+    /// la vida.
+    /// </summary>
+    private void Regenerar(float cantidad)
     {
-        danorecibido = true;
-        yield return new WaitForSeconds(2f);
-        danorecibido = false;
+        if (cantidad <= 0f || (escudo >= escudoMax && vida >= vidaMax))
+        {
+            return;
+        }
 
-        yield return null;
+        if (escudo < escudoMax)
+        {
+            float aplicado = Mathf.Min(escudoMax - escudo, cantidad);
+            escudo += aplicado;
+            cantidad -= aplicado;
+        }
 
-    }  
-    
-    void Die()
+        if (cantidad > 0f && vida < vidaMax)
+        {
+            vida = Mathf.Min(vidaMax, vida + cantidad);
+        }
+
+        RefrescarUI();
+    }
+
+    private void RefrescarUI()
+    {
+        if (sliderVida != null)
+        {
+            sliderVida.value = vida;
+        }
+
+        if (sliderEscudo != null)
+        {
+            sliderEscudo.value = escudo;
+        }
+
+        // La barra rellenable solo se tocaba al recibir dano, asi que al
+        // regenerar se quedaba congelada y contradecia al slider.
+        if (healthBarImage != null)
+        {
+            healthBarImage.fillAmount = vidaMax > 0f ? vida / vidaMax : 0f;
+        }
+    }
+
+    private void Die()
     {
         playerManager.Die();
     }
-    
 }
