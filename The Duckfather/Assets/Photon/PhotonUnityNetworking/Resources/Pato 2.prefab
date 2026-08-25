@@ -2531,6 +2531,12 @@ MonoBehaviour:
   sliderEscudo: {fileID: 3093798571450554924}
   healthBarImage: {fileID: 7159926579608198818}
   ui: {fileID: 1795972037064954129}
+  colorFlashVida: {r: 1, g: 0, b: 0, a: 1}
+  colorFlashEscudo: {r: 0, g: 1, b: 1, a: 1}
+  duracionFlash: 0.15
+  intensidadFlash: 6
+  deathVfx: {fileID: 413361622400378864, guid: f76c2c5066af9ef429a156d3fc6fdad4, type: 3}
+  respawnDelay: 2
   PV: {fileID: 3529525577119342405}
   playerPhotonSoundManager: {fileID: 0}
 --- !u!114 &2941845554713244246

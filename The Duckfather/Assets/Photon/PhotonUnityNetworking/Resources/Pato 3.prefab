@@ -2157,6 +2157,7 @@ MonoBehaviour:
   playerPhotonSoundManager: {fileID: 0}
   vidaMax: 100
   escudoMax: 100
+  deathVfx: {fileID: 413361622400378864, guid: f76c2c5066af9ef429a156d3fc6fdad4, type: 3}
 --- !u!114 &2941845554713244246
 MonoBehaviour:
   m_ObjectHideFlags: 0

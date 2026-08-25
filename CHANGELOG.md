@@ -107,6 +107,178 @@ impactos para matar en vez de 4. Si resulta demasiado, el ajuste es bajar
 
 ---
 
+## 23/08/2026 (2)
+
+### Flash de golpe y VFX de muerte
+
+`Player/ThePlayer/LifeManager.cs`, `UI/newScript/PlayerManager.cs`,
+`Resources/Pato 1|2|3.prefab`
+
+**Flash de golpe.** `QuitarVida()` ahora manda un `[PunRPC]` (`FlashDeGolpe`,
+`RpcTarget.All`) que tiñe el `SkinnedMeshRenderer` del pato en rojo si el golpe
+llegó a la vida, o en cian si lo absorbió por completo el escudo. Se ve en
+todos los clientes, incluido el que disparó — antes no había ningún feedback
+visual sobre el propio pato al recibir daño.
+
+Se usa `MaterialPropertyBlock` en vez de `renderer.material`: lo segundo
+instancia una copia del material en cada impacto (las dos mallas de Pato 1
+comparten `pato.mat`, así que se habrían desincronizado y habría fugado
+memoria). El material del pato no tiene el keyword `_EMISSION` activo —
+`_EmissionColor` no habría hecho nada — así que se tiñe `_BaseColor`
+directamente.
+
+Pato 2 y Pato 3 sacan su malla de un FBX anidado (`Rig_Duck_2`) en vez de
+traerla inline como Pato 1, así que los renderers se resuelven con
+`GetComponentsInChildren<Renderer>()` en `Awake()` en lugar de una referencia
+serializada — cubre los tres skins sin tener que cablear nada a mano.
+
+**SFX de golpe y muerte en los tres skins.** `LifeManager.playerPhotonSoundManager`
+solo estaba cableado en Pato 1; en Pato 2 y 3 el campo del inspector venía
+vacío, así que `PlayHurtSFX()` estaba comentado. Ahora se resuelve con
+`GetComponent<PlayerPhotonSoundManager>()` en `Awake()` si el campo llega
+vacío, y se llama tanto al recibir daño como al morir.
+
+`PlayerManager.playerPhotonSoundManager` era un campo muerto: se asignaba con
+`GetComponent<PlayerPhotonSoundManager>()` en `Start()`, pero ese componente
+no existe en `PlayerManager.prefab` — siempre valía `null`. Por eso la llamada
+a `PlayDieSFX()` estaba comentada; si se hubiera descomentado tal cual habría
+lanzado `NullReferenceException`. Se retiró el campo y la asignación; el SFX de
+muerte ahora sale desde `LifeManager`, que sí tiene un
+`PlayerPhotonSoundManager` real en el mismo GameObject.
+
+**VFX de muerte.** `PlayerManager.Die()` destruía el controller y creaba uno
+nuevo en la misma línea — respawn instantáneo, sin ninguna animación ni pausa.
+Como la cámara vive dentro del prefab del pato (`PlayerSetUp._camara`,
+`_camaraCinemachine`), destruirlo y esperar antes de crear el siguiente habría
+dejado un hueco sin ninguna cámara activa — la misma pantalla en negro que ya
+documenta F-54 en este changelog.
+
+En vez de eso, `LifeManager` añade una `SecuenciaDeMuerte()` que:
+
+1. Desactiva `PlayerMovement` y `ShootinController` (el pato no se mueve ni
+   dispara mientras está "muerto").
+2. Instancia `Explosión pato.prefab` — un asset que ya existía en
+   `Resources/`, con partículas de plumas, `PhotonView` y
+   `PhotonTransformView`, pero al que no lo referenciaba ni un script ni una
+   escena ni otro prefab. Ya trae `VFX_Destroyer`, así que se autodestruye
+   solo.
+3. Manda `[PunRPC] MostrarPato(false)` a todos los clientes, que apaga todos
+   los `Renderer` del pato (cuerpo y arma activa) en sincronía con la
+   explosión.
+4. Espera `respawnDelay` (2 s por defecto).
+5. Solo entonces llama a `PlayerManager.Die()`, que sigue haciendo lo mismo de
+   siempre: `PhotonNetwork.Destroy` + `CreateController()`.
+
+El controller viejo se mantiene vivo (solo oculto) durante la espera
+precisamente para que su cámara siga renderizando. `PlayerManager.Die()` no
+cambió su lógica interna — solo pasó a ejecutarse más tarde, después del hueco
+de muerte.
+
+**Prefabs:** se añadió `deathVfx: {fileID: 413361622400378864, guid:
+f76c2c5066af9ef429a156d3fc6fdad4, type: 3}` (referencia a `Explosión pato.prefab`)
+al bloque de `LifeManager` en los tres `Pato N.prefab`, a mano en el YAML — el
+resto de campos nuevos (`respawnDelay`, `colorFlashVida`, `colorFlashEscudo`,
+`duracionFlash`) toman el valor por defecto del script porque nunca existieron
+en el prefab.
+
+**Verificación:** `Assembly-CSharp` compila con **0 errores**; el único aviso
+nuevo es el `CS0649` esperado de `deathVfx` (todo `[SerializeField]` sin
+asignación visible para el compilador se marca así — no indica que el cableado
+del prefab haya fallado; eso se verificó aparte con un lector YAML real, 211/
+165/168 documentos, 0 fallos). **Sin abrir el editor no se puede confirmar**:
+que el flash se vea con el color correcto, que la explosión se vea en todos
+los clientes, ni que la cámara efectivamente se quede viendo la escena durante
+el hueco de muerte — las tres necesitan una prueba en el editor con dos
+clientes.
+
+---
+
+## 24/08/2026
+
+### Flash de golpe más notorio y orden de la secuencia de muerte
+
+`Player/ThePlayer/LifeManager.cs`, `Scenes/DANI/Animaciones/Propias/Pato 1/pato.mat`,
+`Scenes/DANI/Animaciones/Propias/Pato 2/pato.mat`, `Scenes/DANI/PatosModelosTesxturas/Textura pato3.mat`
+
+Tras la primera prueba en el editor con varios clientes, se reportaron tres
+problemas sobre el flash de golpe y el VFX de muerte del 23/08/2026 (2):
+
+1. El VFX de muerte se veía bien para el jugador que muere, pero el resto veía
+   primero la explosión, luego el pato todavía en pie, y solo después
+   desaparecía.
+2. El flash de golpe solo lo veía el jugador que recibía el daño.
+3. Ese flash se veía muy tenue incluso para quien sí lo veía.
+
+**Diagnóstico del punto 1 y 2 (RPCs entre clientes).** Se revisó el código
+fuente real de Photon PUN2 (`Assets/Photon/PhotonUnityNetworking/Code/PhotonNetworkPart.cs`,
+`ExecuteRpc` y `RPC`) para descartar explicaciones especulativas:
+
+- Los métodos `[PunRPC]` privados sí se ejecutan: `ExecuteRpc` invoca por
+  reflexión (`mInfo.Invoke`) sin filtrar por visibilidad, y tampoco filtra por
+  `MonoBehaviour.enabled` — `RefreshRpcMonoBehaviourCache()` usa
+  `GetComponents<MonoBehaviour>()`, que incluye componentes desactivados. La
+  hipótesis de que `PlayerSetUp` desactiva `LifeManager` en los patos remotos
+  y por eso no llegan los RPC queda descartada.
+- `StartCoroutine` funciona igual con el componente desactivado, mientras el
+  GameObject siga activo — tampoco explica que `FlashDeGolpe` no se vea.
+- El nombre de ambos métodos ya estaba registrado en
+  `PhotonServerSettings.asset` → `RpcList` (se comprobó directamente en el
+  archivo), así que no hay desajuste de índice cliente-a-cliente por ese lado
+  — y aunque no lo estuviera, el código cae a enviar el nombre completo como
+  string, que cualquier receptor interpreta igual.
+
+No se encontró ningún defecto en el mecanismo de RPC en sí. La explicación más
+probable que **no** se pudo descartar sin acceso a la consola de un cliente no
+propietario en el momento del golpe: **algún cliente de prueba corriendo un
+build viejo**, compilado antes de que `FlashDeGolpe`/`MostrarPato` existieran
+— ese build no tiene el método en su ensamblado y el mensaje se ignora en
+silencio para ese cliente en particular. Si las pruebas mezclan un .exe
+exportado antes de esta sesión con el editor (que sí tiene el código
+actualizado), eso solo explicaría el problema para el build viejo, no para el
+resto. **Pendiente de confirmar**: si el problema persiste tras recompilar
+todos los clientes desde el código actual, hace falta revisar la consola de un
+cliente que no sea el dueño del pato en el instante del golpe/muerte.
+
+**Arreglo aplicado de todos modos: orden de los dos mensajes de red en la
+muerte.** Aunque no se confirmó un defecto de RPC, `SecuenciaDeMuerte()` sí
+mandaba el `Instantiate` del VFX antes que el RPC de ocultar — dos mensajes de
+red independientes que no tienen por qué llegar juntos. Se invirtió el orden
+(ocultar primero, VFX después) para que en el peor caso el pato desaparezca a
+la vez o antes que la explosión, no después.
+
+**Arreglo del punto 3 (muy tenue).** El flash solo tocaba `_BaseColor`
+(albedo): ese valor lo multiplica la luz de la escena antes de llegar a
+pantalla, así que se atenúa según el ángulo de cámara, las sombras y la
+distancia — exactamente el tipo de cosa que se ve bien de cerca y de frente
+pero débil desde otro ángulo. `pato.mat` traía además el keyword `_EMISSION`
+desactivado (confirmado en los tres materiales de piel: `Pato 1/pato.mat`,
+`Pato 2/pato.mat` y `Textura pato3.mat`, los tres con el mismo shader URP/Lit),
+así que escribir `_EmissionColor` por script no habría hecho nada.
+
+Se activó `_EMISSION` en los tres materiales (`m_ValidKeywords: [_EMISSION]`),
+dejando `_EmissionColor` en negro por defecto — sin cambio visible en reposo,
+mismo truco que ya usa `PlayerContrast_MTL.mat` en el proyecto. El flash ahora
+también escribe `_EmissionColor` a `color * intensidadFlash` (HDR, por defecto
+6x) vía `MaterialPropertyBlock`: la emisión se suma al resultado ya iluminado
+en vez de multiplicarse por la luz ambiente, así que se ve igual de fuerte sin
+importar el ángulo de cámara ni la iluminación de la escena.
+
+No se sabía con certeza qué material usan de piel Pato 2 y Pato 3 en tiempo de
+ejecución: ambos comparten el mismo FBX anidado (`Rig_Duck_2.fbx`) sin ningún
+override de material en el prefab, así que el material lo resuelve el
+importador de Unity por nombre. Se activó el keyword en los tres candidatos
+(`Pato 1/pato.mat`, `Pato 2/pato.mat`, `Textura pato3.mat`) para cubrir
+cualquiera que termine siendo el real, en vez de adivinar cuál.
+
+**Verificación:** `Assembly-CSharp` compila con **0 errores**, 80 avisos
+(iguales a la entrada anterior). Los tres `.mat` se revisaron a mano
+(`m_ValidKeywords` bien formado, mismo patrón que un material ya existente en
+el proyecto). **Sigue sin poder verificarse sin el editor:** si el flash y el
+ocultamiento ahora sí llegan a todos los clientes cuando se prueba con
+builds actualizados, y si la intensidad de 6x resulta demasiado o poco.
+
+---
+
 ## 21/08/2026
 
 ### F-54 · No se podía jugar una segunda partida sin reiniciar la app

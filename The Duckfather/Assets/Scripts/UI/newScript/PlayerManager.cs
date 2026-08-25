@@ -21,7 +21,6 @@ public class PlayerManager : MonoBehaviour
 
     private int Kills;
     private int Death = 0;
-    private PlayerPhotonSoundManager playerPhotonSoundManager;
 
     SpawnManager spawnManager;
 
@@ -47,10 +46,8 @@ public class PlayerManager : MonoBehaviour
         {
             RandomSkin();
             CreateController();
-            
+
         }
-        
-        playerPhotonSoundManager= GetComponent<PlayerPhotonSoundManager>();
     }
 
     public void Update()
@@ -65,13 +62,15 @@ public class PlayerManager : MonoBehaviour
 
     }
 
+    // La llama LifeManager.SecuenciaDeMuerte() tras el VFX de muerte y el
+    // respawnDelay: el SFX y las particulas de muerte se disparan alla, antes
+    // de este punto, mientras el controller viejo seguia en pie.
     public void Die()
     {
         PhotonNetwork.Destroy(controller);
         //PhotonNetwork.Destroy(gameObject);
         CreateController();
         Death++;
-        //playerPhotonSoundManager.PlayDieSFX();
         Hashtable hash = new Hashtable();
         hash.Add("deaths", Death);
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
