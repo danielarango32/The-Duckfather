@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 /// <summary>
 /// Vida, escudo, flash de golpe y muerte del pato. El escudo absorbe el dano
@@ -228,8 +229,38 @@ public class LifeManager : MonoBehaviour
 
         if (vida <= 0f)
         {
+            // info.Sender es quien mando el RPC que hizo el ultimo daño: para
+            // el raycast siempre es el que dispara (RpcTarget.All lo manda su
+            // propio cliente), y para la bazuca ahora tambien, porque
+            // Bala.Explode() ya solo aplica dano en el cliente dueno de la
+            // bala. Sin el guardado != PV.Owner, volarte con tu propia bazuca
+            // te sumaria una kill.
+            if (info.Sender != null && !info.Sender.Equals(PV.Owner))
+            {
+                PV.RPC(nameof(AcreditarKill), info.Sender);
+            }
+
             Die();
         }
+    }
+
+    /// <summary>
+    /// Corre en el cliente del atacante (PV.RPC con target = info.Sender), no
+    /// en el del pato que murio: por eso lee y escribe
+    /// PhotonNetwork.LocalPlayer y no PV.Owner. Un jugador solo puede escribir
+    /// sus propias CustomProperties.
+    /// </summary>
+    [PunRPC]
+    private void AcreditarKill()
+    {
+        int kills = 0;
+        if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Kills", out object actual))
+        {
+            kills = (int)actual;
+        }
+
+        Hashtable hash = new Hashtable { { "Kills", kills + 1 } };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
     }
 
     [PunRPC]

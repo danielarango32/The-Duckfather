@@ -19,7 +19,6 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private GameObject looseUI;
     GameObject controller;
 
-    private int Kills;
     private int Death = 0;
 
     SpawnManager spawnManager;
@@ -123,22 +122,10 @@ public class PlayerManager : MonoBehaviour
         }
         
     }*/
-    
-    /*public void GetKill()
-    {
-        PV.RPC(nameof(this.RPC_GetKill), PV.Owner);
-    }
 
-    [PunRPC]
-    void RPC_GetKill()
-    {
-        Kills++;
-        playerPhotonSoundManager.PlayQuackSFX();
-        Hashtable hash = new Hashtable();
-        hash.Add("Kills", Kills);
-        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
-    }*/
-    
+    // El conteo de kills quedo implementado en LifeManager.AcreditarKill():
+    // arranca desde el mismo golpe que mata (donde se sabe PhotonMessageInfo.
+    // Sender, el atacante), no desde aqui, que ya no tiene esa informacion.
     public void RandomSkin()
     {
         int skinIndex = Random.Range(0, 3);

@@ -22,6 +22,65 @@ toca RPC o flujo de sala necesita una prueba en el editor con dos clientes.
 
 ---
 
+## 25/08/2026
+
+### Contador de kills
+
+`Player/ThePlayer/LifeManager.cs`, `Emanuel_Scrips/Bala.cs`,
+`UI/newScript/ScoreBoardItem.cs`, `UI/newScript/PlayerManager.cs`
+
+El scoreboard ya tenía el campo `killsText` y lo leía correctamente de
+`player.CustomProperties["Kills"]`, pero nada en el proyecto escribía esa
+propiedad nunca: la única implementación era un `GetKill()`/`RPC_GetKill()`
+comentado en `PlayerManager`, sin un solo llamante ni comentado ni activo. El
+contador se veía en la UI pero se quedaba siempre en el valor por defecto del
+prefab.
+
+**Dónde se acredita la kill.** `QuitarVida()` ya recibía un parámetro
+`PhotonMessageInfo info` pero lo ignoraba por completo. `info.Sender` es quien
+mandó el RPC que aplicó el golpe — para el raycast, siempre el que dispara
+(`RpcTarget.All` lo manda su propio cliente); para la bazuca, ahora también,
+después del arreglo de abajo. Al golpe que deja `vida <= 0`, se manda un
+`[PunRPC] AcreditarKill()` dirigido a `info.Sender`, que sí corre en el
+cliente del atacante y puede escribir sus propias `CustomProperties` — un
+jugador no puede escribir las de otro. Con guardado explícito
+`info.Sender != PV.Owner`: sin él, volarte con tu propia bazuca te sumaría una
+kill.
+
+**Bug necesario de arreglar para que la atribución fuera confiable:**
+`Bala.Explode()` no tenía ninguna guarda de red — cada cliente conectado
+detecta la misma colisión por física local y la llama por su cuenta. Eso ya
+estaba señalado como F-27/F-28 en la auditoría y se había dejado abierto
+porque no bloqueaba nada hasta ahora: sin guarda, el daño de la bazuca se
+aplicaba una vez por cliente conectado (multiplicando el daño real), y
+`PhotonMessageInfo.Sender` que ve `QuitarVida` podía terminar siendo
+cualquiera de esos clientes, no necesariamente el que disparó. Ahora
+`Explode()` resuelve su propio `PhotonView` en `Awake()` y solo aplica daño
+si `photonView.IsMine` — la explosión visual (`Instantiate` local del efecto)
+y el empuje físico (`AddExplosionForce`) siguen corriendo en todos los
+clientes como antes, solo el daño quedó gateado.
+
+**Bug de mayúsculas en el listener del scoreboard.** `ScoreBoardItem.UpdateStats()`
+lee `"Kills"` (con K mayúscula), pero `OnPlayerPropertiesUpdate()` comprobaba
+`changedProps.ContainsKey("kills")` en minúscula — nunca iban a coincidir, así
+que aunque la propiedad se hubiera actualizado, el scoreboard no se habría
+refrescado en vivo para nadie que no fuera dueño de ese `ScoreBoardItem`.
+Corregido a `"Kills"`.
+
+**Código muerto retirado:** el campo `Kills` de `PlayerManager` (nunca leído:
+CS0169) y el bloque comentado `GetKill()`/`RPC_GetKill()`, superado por
+`LifeManager.AcreditarKill()` — este último sí tiene acceso a
+`PhotonMessageInfo.Sender` en el momento del golpe, que `PlayerManager.Die()`
+(llamado después, ya sin esa información) nunca pudo tener.
+
+**Verificación:** `Assembly-CSharp` compila con **0 errores**; los avisos
+bajan de 80 a 79 (se va el `CS0169` de `PlayerManager.Kills`). **Sin abrir el
+editor no se puede confirmar:** que el contador suba de verdad en una partida
+con dos clientes, ni que el guardado anti-suicidio (`info.Sender != PV.Owner`)
+funcione como se espera con la bazuca.
+
+---
+
 ## 23/08/2026
 
 ### Barra de vida, escudo funcional y dash

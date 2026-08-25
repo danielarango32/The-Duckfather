@@ -50,6 +50,13 @@ public class Bala : MonoBehaviour
 
     private const float VidaDelEfectoDeExplosion = 5f;
 
+    private PhotonView photonView;
+
+    private void Awake()
+    {
+        photonView = GetComponent<PhotonView>();
+    }
+
     private void Start()
     {
         Setup();
@@ -78,23 +85,31 @@ public class Bala : MonoBehaviour
         } 
 
         
-        Collider[] enemies = Physics.OverlapSphere(transform.position, explosionRange, whatIsEnemies);  
+        Collider[] enemies = Physics.OverlapSphere(transform.position, explosionRange, whatIsEnemies);
         for (int i = 0; i < enemies.Length; i++)
         {
             //Atencion
 
-            // Se llamaba a QuitarVida() directamente, pero eso corre en el
-            // cliente que disparo, donde el pato golpeado no es suyo: el
-            // primer if de QuitarVida cortaba y la explosion no quitaba nada.
-            // TakeDamage enruta el golpe por RPC hasta el dueno del pato.
-            LifeManager vidaEnemigo = enemies[i].GetComponent<LifeManager>();
-
-            if (vidaEnemigo != null)
+            // Explode() no tiene guarda de red: cada cliente conectado detecta
+            // la misma colision por fisica local y la llama por su cuenta. Sin
+            // este "solo el dueno de la bala aplica dano", el impacto se
+            // multiplicaba por el numero de jugadores en la sala, y el
+            // PhotonMessageInfo.Sender que ve QuitarVida (para acreditar la
+            // kill) podia terminar siendo cualquiera de esos clientes en vez
+            // del que realmente disparo.
+            if (photonView != null && photonView.IsMine)
             {
-                vidaEnemigo.TakeDamage(explosionDamage);
+                // Se llamaba a QuitarVida() directamente, pero eso corre en el
+                // cliente que disparo, donde el pato golpeado no es suyo: el
+                // primer if de QuitarVida cortaba y la explosion no quitaba nada.
+                // TakeDamage enruta el golpe por RPC hasta el dueno del pato.
+                LifeManager vidaEnemigo = enemies[i].GetComponent<LifeManager>();
+
+                if (vidaEnemigo != null)
+                {
+                    vidaEnemigo.TakeDamage(explosionDamage);
+                }
             }
-
-
 
             if (enemies[i].GetComponent<Rigidbody>())
             {

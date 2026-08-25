@@ -37,11 +37,15 @@ public class ScoreBoardItem : MonoBehaviourPunCallbacks
     {
         if (targetPlayer == player)
         {
-            if (changedProps.ContainsKey("kills") || changedProps.ContainsKey("deaths"))
+            // "kills" en minuscula nunca coincide: SetCustomProperties() en
+            // LifeManager.AcreditarKill() escribe "Kills" (con K mayuscula,
+            // igual que UpdateStats() la lee mas arriba), asi que este
+            // listener nunca se disparaba para un kill nuevo.
+            if (changedProps.ContainsKey("Kills") || changedProps.ContainsKey("deaths"))
             {
                 this.UpdateStats();
             }
-            
+
         }
     }
 }
