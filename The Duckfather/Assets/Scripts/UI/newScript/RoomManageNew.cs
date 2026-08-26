@@ -43,6 +43,8 @@ public class RoomManagerNew : MonoBehaviourPunCallbacks
     {
         if (scene.buildIndex == sceneNumber)
         {
+            // El reset de "deaths"/"Kills" vive en Launcher.OnJoinedRoom(),
+            // no aqui: ver el comentario de ese metodo para el porque.
             PhotonNetwork.Instantiate("PlayerManager", Vector3.zero, Quaternion.identity);
             Debug.Log("PlayerManager instantiated");
         }

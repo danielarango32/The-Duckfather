@@ -22,6 +22,342 @@ toca RPC o flujo de sala necesita una prueba en el editor con dos clientes.
 
 ---
 
+## 25/08/2026 (8)
+
+### El scoreboard publico arrancaba con las muertes de la partida anterior
+
+`UI/newScript/Launcher.cs`, `UI/newScript/RoomManageNew.cs`
+
+Reportado con captura: el HUD propio mostraba "Muertes: 1" pero la tabla
+publica (Tab) mostraba "2" para el mismo jugador, en la misma partida.
+
+**Causa, confirmada en el codigo fuente real de Photon Realtime
+(`LoadbalancingPeer.cs:1973`, `LoadBalancingClient.cs:2109-2119`), no por
+especulacion:**
+
+- `broadcastPropsChangeToAll` vale `true` por defecto, y `Launcher.CreateRoom()`
+  llama `PhotonNetwork.CreateRoom(roomName)` sin `RoomOptions` — se queda en
+  ese valor por defecto.
+- Con `BroadcastPropsChangeToAll = true`, `SetCustomProperties()` **no
+  actualiza el cache local al instante**: `OpSetPropertiesOfActor()` solo hace
+  el update optimista en el propio cliente cuando esa bandera es `false`; si
+  es `true` (este caso), incluso el que hizo el cambio tiene que esperar a
+  que el servidor se lo confirme de vuelta.
+- El reset de "deaths"/"Kills" (agregado en la entrada (4) de este mismo dia)
+  vivia en `RoomManagerNew.OnSceneLoaded()`, que corre pegado, en el mismo
+  frame en que carga la escena de partida — y `ScoreBoard.Start()` (que crea
+  cada `ScoreBoardItem` y hace su **unica** lectura garantizada de
+  `player.CustomProperties["deaths"]`) corre en esa misma escena, esa misma
+  ventana. La lectura de `ScoreBoard` ganaba la carrera casi siempre: leia el
+  valor de la partida **anterior** antes de que la ida y vuelta al servidor
+  terminara de aplicar el reset. `DeathsCounterDisplay`, en cambio, no sufre
+  esto — no lee hasta la primera muerte propia, con los 2 s de `respawnDelay`
+  de sobra para que esa misma ida y vuelta ya haya terminado.
+
+**Arreglo:** el reset se movio de `RoomManagerNew.OnSceneLoaded()` a
+`Launcher.OnJoinedRoom()` — el callback que corre apenas se entra a la sala,
+**todavia en el lobby**, no en la escena de partida. Entre eso y que el
+Master Client aprieta "empezar partida" (que recien ahi dispara
+`PhotonNetwork.LoadLevel()`) hay de sobra para que la ida y vuelta al
+servidor termine antes de que `ScoreBoard.Start()` llegue a leer nada.
+`RoomManagerNew.OnSceneLoaded()` vuelve a limitarse a instanciar
+`PlayerManager`, como antes de la entrada (4).
+
+**Verificacion:** `Assembly-CSharp` compila con **0 errores**, 62 avisos
+(iguales). **Sigue sin poder confirmarse sin el editor:** que el scoreboard
+arranque en 0 en una partida nueva con dos clientes reales, y que ya no haya
+ninguna ventana donde se vea un valor viejo aunque sea por un instante.
+
+---
+
+## 25/08/2026 (7)
+
+### Regresion de prefabs: el editor de Unity abierto en paralelo piso la entrada (5)
+
+`Photon/PhotonUnityNetworking/Resources/UI.prefab`,
+`Photon/PhotonUnityNetworking/Resources/DeathsText.prefab`
+
+Entre la entrada (5) y esta, el usuario tuvo el editor de Unity abierto
+reacomodando el panel "Puntaje" a mano (nuevo tamano/posicion mas compacto,
+`Muertes` y `DeathsText` pasaron de una columna estirada a una fila unica) y,
+al parecer, probo arrastrar el componente `KillsCounterDisplay` directamente
+sobre `DeathsText` en vez de crear un objeto propio. El resultado, verificado
+con el editor ya cerrado:
+
+- `UI.prefab`: el `m_AddedComponents` que agregaba `DeathsCounterDisplay` a la
+  instancia nested de `DeathsText` habia vuelto a `[]` — la funcion de
+  muertes quedo descableada de nuevo — y toda la fila "Kills" que se habia
+  agregado en (5) habia desaparecido junto con eso.
+- `DeathsText.prefab` (el prefab **base**, no la instancia): quedo con un
+  `MonoBehaviour` extra apuntando al guid de `KillsCounterDisplay`, colgado
+  del mismo GameObject que ya tiene `DeathsCounterDisplay` via override — dos
+  scripts escribiendo el mismo `TMP_Text.text` en cada frame que cualquiera
+  de los dos se disparara.
+
+**Arreglo, sin volver a entrar en modo de edicion de prefab anidado (mismo
+criterio que en (3)):**
+
+- Se quito el componente extra de `DeathsText.prefab` (vuelve a sus 4
+  documentos originales: GameObject, RectTransform, CanvasRenderer, TMP).
+- Se restauro el `m_AddedComponents` de `DeathsCounterDisplay` sobre la
+  instancia nested de `DeathsText` en `UI.prefab`, con IDs nuevos (los
+  viejos ya no estaban reservados).
+- La fila "Kills" se re-agrego, pero esta vez **como hermano independiente
+  de "Puntaje"** (un nuevo GameObject "Kills" bajo la misma raiz), en lugar
+  de como hijo de "Puntaje" — asi no vuelve a depender de la geometria que
+  el usuario ya afino a mano dentro de ese panel. Se clonaron los valores
+  exactos que dejo el usuario para `Muertes`/`DeathsText` (fila de 360x90,
+  label a la izquierda con ancla `{0, 0.5}`, contador de 90x90 con ancla
+  `{1, 0.5}`) y se coloco la fila nueva 100 unidades mas abajo del borde
+  inferior de "Puntaje" — nada de lo que el usuario acomodo se toco.
+
+**Leccion para la proxima sesion:** si el editor de Unity puede estar abierto
+en paralelo, preguntar antes de tocar `.prefab` por YAML — un Auto Save o
+cualquier interaccion en el Inspector puede pisar la edicion sin aviso, y el
+`git diff` despues de escribir no lo distingue de una corrupcion real hasta
+que se lee con cuidado.
+
+**Verificacion:** los 135 documentos de `UI.prefab` (122 + 13 nuevos) y los 4
+de `DeathsText.prefab` parsean con un lector real, sin fileIDs duplicados y
+sin referencias colgantes (chequeado explicitamente sobre ambos archivos,
+no solo el conteo). `Assembly-CSharp` compila con **0 errores**, 62 avisos.
+**Sigue sin poder confirmarse sin el editor:** que las dos filas ("Muertes"
+arriba, "Kills" abajo) se vean bien alineadas en pantalla.
+
+---
+
+## 25/08/2026 (6)
+
+### Disparar sobre un cuerpo ya muerto acreditaba kills y muertes de mas
+
+`Player/ThePlayer/LifeManager.cs`
+
+Reportado tras probar los dos contadores en el editor: si seguias disparando
+en la misma direccion despues de matar a alguien, el contador de kills
+seguia subiendo por esa misma muerte, y el de muertes de la victima tambien
+se inflaba de mas — los dos sintomas venian de la misma causa.
+
+**Causa.** `SecuenciaDeMuerte()` oculta el cuerpo (`MostrarPato(false)`) y
+espera `respawnDelay` (2 s) antes de destruir el controller, pero nunca
+desactiva su collider. `QuitarVida()` no tenia ninguna guarda contra golpes
+recibidos durante esa ventana: cada impacto extra que le pegara al cuerpo ya
+"muerto" volvia a evaluar `vida <= 0f` como verdadero, y volvia a correr todo
+el bloque de muerte — otro `[PunRPC] AcreditarKill` al atacante (una kill de
+mas) y otro `Die()` en la victima (`Death++` y `SetCustomProperties`
+otra vez, con un `PhotonNetwork.Destroy`/`CreateController()` extra de
+regalo, sobre un controller que la primera `Die()` ya habia reemplazado).
+
+**Arreglo.** Nuevo campo `muerto` en `LifeManager`. Se pone en `true` en el
+mismo punto donde se decide la muerte (dentro del `if (vida <= 0f)`, antes de
+acreditar la kill), y `QuitarVida()` sale temprano si ya esta puesto —
+`if (!PV.IsMine || muerto) return;` — junto a la guarda existente de
+`PV.IsMine`. No hace falta resetearlo en ningun lado: cada respawn es un
+`LifeManager` nuevo (el controller se destruye y se recrea entero), asi que
+el valor por defecto (`false`) ya es correcto para cada vida nueva.
+
+**Verificacion:** `Assembly-CSharp` compila con **0 errores**, 62 avisos
+(los mismos de antes; ninguno nuevo). **Sigue sin poder confirmarse sin el
+editor:** que una rafaga sobre un cuerpo ya muerto ahora solo cuente una kill
+y una muerte, con dos clientes reales.
+
+---
+
+## 25/08/2026 (5)
+
+### Contador de kills propias en el HUD
+
+`UI/newScript/KillsCounterDisplay.cs` (nuevo),
+`Photon/PhotonUnityNetworking/Resources/UI.prefab`
+
+Al revisar en el editor la entrada anterior, se aclaró qué contador faltaba de
+verdad: el panel "Puntaje" solo mostraba las muertes propias (`Muertes` +
+`DeathsText`, ya arreglado). Faltaba el mismo tipo de contador para las kills
+propias — cuántas veces mataste en la partida — en la misma esquina superior
+derecha.
+
+**Por qué no podía copiarse tal cual `DeathsCounterDisplay`.** Ese componente
+se apoya en que el controller (y por tanto el propio componente) se destruye
+y se vuelve a crear en cada muerte propia, así que un `Start()` fresco ya
+alcanza. Una kill no tiene ese punto de apoyo: `LifeManager.AcreditarKill()`
+corre en el cliente del atacante sin destruir ni recrear su propio pato. El
+nuevo `KillsCounterDisplay` es `MonoBehaviourPunCallbacks` y escucha
+`OnPlayerPropertiesUpdate` (mismo patrón que ya usa `ScoreBoardItem` para el
+marcador), filtrando por `PhotonNetwork.LocalPlayer` y la clave `"Kills"`.
+
+**Prefabs.** No existía ningún `GameObject` de reserva para esto (a diferencia
+de `DeathsText.prefab`, que ya estaba huérfano en el proyecto antes de esta
+sesión). Se agregaron dos objetos nuevos, directamente como hijos planos de
+`Puntaje` en `UI.prefab` — no como instancia de prefab anidado, porque
+`Puntaje` y su label `Muertes` ya son objetos planos de `UI.prefab`, no
+vienen de un sub-prefab: un label estático `"Kills"` (clon del `Text (TMP)` de
+`Muertes`, mismo estilo) y `KillsText` (clon del estilo numérico de
+`DeathsText`, con `KillsCounterDisplay` colgado) en la fila de abajo. Se hizo
+así, sin entrar en modo de edición de prefab anidado, precisamente por los dos
+incidentes de corrupción de esa técnica documentados en la entrada anterior.
+`Puntaje.m_SizeDelta.y` sube de 208.8 a 300 para que entre la fila nueva.
+
+Posiciones puestas a ojo (fila nueva 150/230 unidades por debajo del label
+`Muertes`, mismo ancho de caja): son el único punto de esta entrada sin
+verificar visualmente y se ajustan fácil arrastrando en el editor si no
+quedan bien.
+
+**Verificación:** los 133 documentos YAML de `UI.prefab` (124 + 9 nuevos: 4
+del label, 5 del contador) parsean con un lector real, sin IDs duplicados y
+sin referencias colgantes — ninguno de los 9 `fileID` nuevos falta en el
+archivo. `Assembly-CSharp` compila con el Roslyn de Unity 2022.3.19f1: **0
+errores**, 62 avisos (ninguno nuevo). **Sigue sin poder confirmarse sin el
+editor:** que el contador suba en vivo al conseguir una kill real, y que la
+posición de la fila nueva se vea bien en pantalla.
+
+---
+
+## 25/08/2026 (4)
+
+### El conteo de muertes (y de kills) se arrastraba de la partida anterior
+
+`UI/newScript/RoomManageNew.cs`
+
+Tras confirmar en el editor que el HUD sí mostraba un número (la entrada
+anterior lo dejó cableado y verificado, pero sin poder probar una muerte real
+con dos clientes), quedaba una duda: ¿de dónde salía ese número si nunca había
+habido una muerte en esa partida?
+
+Se revisó el código fuente real de Photon Realtime
+(`Assets/Photon/PhotonRealtime/Code/LoadBalancingClient.cs`) en vez de
+especular, siguiendo el mismo método ya usado para F-53:
+
+- `LocalPlayer` se crea **una sola vez**, en el constructor de
+  `LoadBalancingClient` (línea 798). Es el mismo objeto durante toda la sesión
+  de la app — sobrevive a `LeaveRoom()`/`JoinRoom()` sin recrearse.
+- Al conectar al game server para entrar a una sala (tanto `CreateRoom` como
+  `JoinRoom`), el propio cliente arma `allProps.Merge(this.LocalPlayer.CustomProperties)`
+  y lo manda como `PlayerProperties` de esa sala (líneas 2811-2819). No es solo
+  que el HUD lea un valor viejo: Photon **reenvía activamente** lo que tenga
+  cacheado como el valor "oficial" de arranque del actor en la sala nueva.
+
+Nada en el proyecto ponía `"deaths"` ni `"Kills"` a 0 al empezar partida
+(`Launcher.OnJoinedRoom()` y `RoomManageNew.OnSceneLoaded()` revisados a
+fondo). Con eso, jugar dos partidas seguidas sin cerrar la app hacía que la
+segunda arrancara ya con el conteo de la primera — el síntoma exacto
+reportado ("el contador no funciona"), aunque el campo interno `Death` de
+`PlayerManager` sí se resetea bien porque vive en un objeto que se destruye al
+salir de sala.
+
+**Arreglo:** `RoomManagerNew.OnSceneLoaded()` — el punto donde ya se
+instancia `PlayerManager` una vez por partida — ahora resetea
+`PhotonNetwork.LocalPlayer`'s `"deaths"` y `"Kills"` a 0 justo antes de esa
+instanciación. Se corrigen los dos juntos porque comparten la misma causa: el
+mismo mecanismo de Photon que arrastraba `"deaths"` arrastra `"Kills"` igual,
+y el marcador (`ScoreBoardItem`) ya lee ambas claves.
+
+**Verificación:** `Assembly-CSharp` compila con el Roslyn de Unity 2022.3.19f1
+(`csc.dll` vía `dotnet exec`, con las 254 referencias + 11 `ProjectReference`
+resueltas contra `Library/ScriptAssemblies`, igual que en entradas previas):
+**0 errores**, 62 avisos (todos preexistentes, ninguno nuevo por este cambio).
+**Sigue sin poder confirmarse sin el editor:** que jugar dos partidas seguidas
+efectivamente arranque en 0 con dos clientes reales.
+
+---
+
+## 25/08/2026 (3)
+
+### Cableado de DeathsCounterDisplay, y corrupción de prefabs por Auto Save
+
+`Photon/PhotonUnityNetworking/Resources/UI.prefab`
+
+Tras crear `DeathsCounterDisplay` (entrada anterior), dos intentos de
+agregarlo a mano en el editor —con **Auto Save activado** y varias instancias
+de `Unity.exe` corriendo sobre el mismo proyecto— corrompieron prefabs sin
+llegar a agregar el componente:
+
+- **Intento 1:** `Pato 2.prefab` y `Pato 3.prefab` perdieron `DashBar`,
+  `balasUI`, `numBalasUI`, `bazucaUI`, `revolverUI`, `thomsonUI`, `pistolaUI`,
+  `sliderVida`, `sliderEscudo` y `healthBarImage` (los diez a `{fileID: 0}`).
+  `UI.prefab` se reescribió casi entero (2.238 líneas), lo que sugiere que
+  Unity renumeró IDs internos al entrar en su modo de edición anidado.
+  Síntomas en juego: `UnassignedReferenceException` en `bazucaUI`,
+  `NullReferenceException` en `ShootinController.FixedUpdate()` (repetida,
+  una por frame) y el arma/pato con el contorno de selección del editor
+  visible en la captura (se leyó como "la UI se rompió", pero era el
+  resaltado de selección de Unity sobre el GameObject activo).
+- **Intento 2:** con los tres patos ya restaurados, `Pato 1.prefab` perdió 227
+  líneas de overrides del menú de Pausa (anclaje de botones, el callback
+  `BackToLobby`, tamaño de fuente) — otra vez sin que `DeathsCounterDisplay`
+  llegara a guardarse en ningún archivo.
+
+Los dos intentos se revirtieron con `git checkout` sobre los archivos
+afectados, verificado con `git diff --stat` después de cada uno.
+
+**Arreglo real, sin volver a entrar en modo de edición anidado:** los tres
+`Pato N.prefab` anidan el mismo `UI.prefab`, así que el componente solo hace
+falta agregarlo **una vez**, ahí, no en cada pato. Se usó el mecanismo real de
+Unity para agregar un componente a una instancia de prefab anidada
+(`m_AddedComponents` en el bloque `PrefabInstance`), verificado antes contra
+un ejemplo ya existente en el proyecto (`JumpPowerUp.prefab`) para no adivinar
+el formato: un nuevo GameObject `stripped` apuntando al GameObject raíz real
+de `DeathsText.prefab` (`m_CorrespondingSourceObject`), y un nuevo
+`MonoBehaviour` con el guid de `DeathsCounterDisplay.cs` colgado de ese
+GameObject.
+
+**Verificación:** los 124 documentos YAML de `UI.prefab` parsean con un lector
+real (0 fallos), igual que los tres `Pato N.prefab` (0 fallos, sin tocarlos —
+heredan el componente nuevo automáticamente por anidamiento, sin necesitar
+ninguna referencia adicional de su parte). `Assembly-CSharp` compila con **0
+errores**, 79 avisos. **Sigue sin poder confirmarse sin el editor:** que el
+contador suba de verdad tras una muerte real con dos clientes — recomendado
+probar con Unity cerrado salvo por la instancia que se vaya a usar, y con
+Auto Save desactivado mientras se navegan estos prefabs anidados, para evitar
+que se repita la corrupción.
+
+---
+
+## 25/08/2026 (2)
+
+### Contador de muertes propias en el HUD
+
+`UI/newScript/DeathsCounterDisplay.cs` (nuevo), `UI/newScript/PlayerManager.cs`
+
+El panel "Puntaje" (arriba a la derecha del HUD, dentro de `UI.prefab`) tiene
+un `Text (TMP)` fijo con la palabra "Muertes" y una instancia de
+`DeathsText.prefab` al lado — pero **`DeathsText.prefab` es un
+`TextMeshProUGUI` crudo, sin ningún script propio**, y ningún otro script del
+proyecto lo menciona por nombre (`grep` a todo `Assets/Scripts/` da cero
+resultados). El campo muestra su texto por defecto ("0") para siempre; nunca
+hubo código que lo conectara al conteo real de muertes.
+
+Nuevo `DeathsCounterDisplay`, autocontenido: va en el mismo GameObject que el
+`TMP_Text` y lo resuelve con `GetComponent<TMP_Text>()` en `Awake()`, sin
+ninguna referencia serializada entre prefabs — evita depender de un campo
+cableado a mano a tres niveles de anidamiento (`Pato N.prefab` → `UI.prefab`
+→ `DeathsText.prefab`), justo el tipo de referencia frágil que ya se rompió
+una vez esta sesión (Unity revirtió solo el cambio del keyword `_EMISSION` en
+`pato.mat` mientras el Editor estaba abierto). En `Start()` lee
+`PhotonNetwork.LocalPlayer.CustomProperties["deaths"]` una sola vez — no hace
+falta escuchar `OnPlayerPropertiesUpdate`, porque el controller (y por tanto
+este componente) se destruye y se vuelve a crear en cada muerte propia, así
+que un valor fresco en cada `Start()` ya cubre el caso.
+
+**Bug de orden que había que arreglar para que el valor no llegara
+atrasado.** `PlayerManager.Die()` llamaba a `CreateController()` **antes** de
+incrementar `Death` y escribir la `CustomProperty`. El pato nuevo (y su
+`DeathsCounterDisplay`) arrancaba su `Start()` con el conteo de la muerte
+*anterior*, no la que se acababa de producir. Se invirtió el orden: ahora
+`Death++` y `SetCustomProperties` corren antes de `CreateController()`.
+
+**Pendiente, a mano en el editor (no se tocó vía YAML por lo mismo de
+arriba):** agregar el componente `DeathsCounterDisplay` al GameObject
+`DeathsText` dentro de `UI > Puntaje` en los **tres** `Pato N.prefab` —
+seleccionar `Pato N` en el Project, entrar en modo de edición de prefab,
+`UI > Puntaje > DeathsText`, Add Component → `DeathsCounterDisplay`.
+
+**Verificación:** el `.csproj` de Unity no se había regenerado todavía con el
+archivo nuevo (0 coincidencias al buscarlo ahí), así que la primera pasada de
+compilación lo compiló todo *menos* este script sin que se notara — se
+detectó comparando el conteo de fuentes esperado contra el real. Recompilado
+a mano incluyendo el archivo: **0 errores**, sin avisos nuevos.
+
+---
+
 ## 25/08/2026
 
 ### Contador de kills

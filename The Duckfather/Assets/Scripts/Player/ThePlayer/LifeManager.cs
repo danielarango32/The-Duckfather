@@ -83,6 +83,12 @@ public class LifeManager : MonoBehaviour
     private float vida;
     private float escudo;
 
+    // El cuerpo sigue en pie (con su collider activo) durante respawnDelay
+    // mientras SecuenciaDeMuerte lo oculta: sin esta bandera, cada golpe extra
+    // que llegara en esa ventana volvia a acreditar una kill al atacante y una
+    // muerte a esta victima, aunque ya estuviera muerta.
+    private bool muerto;
+
     // Segundos desde el ultimo impacto. Sustituye a la pareja
     // danorecibido/contador con corrutina de 2 s: al encadenar dos golpes, la
     // corrutina del primero bajaba la bandera y la regeneracion arrancaba antes
@@ -195,7 +201,7 @@ public class LifeManager : MonoBehaviour
     [PunRPC]
     public void QuitarVida(float Dano, PhotonMessageInfo info = default)
     {
-        if (!PV.IsMine)
+        if (!PV.IsMine || muerto)
         {
             return;
         }
@@ -229,6 +235,8 @@ public class LifeManager : MonoBehaviour
 
         if (vida <= 0f)
         {
+            muerto = true;
+
             // info.Sender es quien mando el RPC que hizo el ultimo daño: para
             // el raycast siempre es el que dispara (RpcTarget.All lo manda su
             // propio cliente), y para la bazuca ahora tambien, porque

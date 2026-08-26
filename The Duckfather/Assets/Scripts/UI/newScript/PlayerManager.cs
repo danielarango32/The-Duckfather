@@ -68,12 +68,18 @@ public class PlayerManager : MonoBehaviour
     {
         PhotonNetwork.Destroy(controller);
         //PhotonNetwork.Destroy(gameObject);
-        CreateController();
+
+        // Death++ y SetCustomProperties van ANTES de CreateController(): el
+        // pato nuevo lee "deaths" en su propio Start() (DeathsCounterDisplay),
+        // asi que si se creara primero, su HUD arrancaria mostrando el
+        // conteo de antes de esta muerte.
         Death++;
         Hashtable hash = new Hashtable();
         hash.Add("deaths", Death);
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
         Debug.Log("Death: " + Death);
+
+        CreateController();
     }
 
     public void WinningConditions()

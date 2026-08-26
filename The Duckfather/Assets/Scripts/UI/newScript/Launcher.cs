@@ -4,6 +4,7 @@ using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using Photon.Realtime;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
@@ -215,6 +216,18 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        // Se resetea aqui y no en RoomManagerNew.OnSceneLoaded (que corre al
+        // cargar la escena de partida): SetCustomProperties no actualiza el
+        // cache local al instante en esta sala (BroadcastPropsChangeToAll
+        // viene en su valor por defecto, true), asi que el reset tarda una
+        // ida y vuelta al servidor en reflejarse. Poniendolo aqui, apenas se
+        // entra a la sala, ese viaje ya termino mucho antes de que
+        // ScoreBoard.Start() lea "deaths"/"Kills" en la escena de partida; en
+        // OnSceneLoaded corria demasiado pegado a esa lectura y el scoreboard
+        // arrancaba con el valor de la partida anterior.
+        Hashtable hash = new Hashtable { { "deaths", 0 }, { "Kills", 0 } };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+
         EndTransition();
         MenuManager.instance.OpenMenu("room");
         roomNameText.text = PhotonNetwork.CurrentRoom.Name;
